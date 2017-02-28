@@ -1,0 +1,69 @@
+﻿@model EKE.Models.AccountViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Photo Marathon | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/Layout/iCheck/square/blue.css">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+          asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/LayoutAdmin/admin-layout.min.css">
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a><b>Admin</b> EKE</a>
+        </div>
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your session</p>
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <div class="form-group has-feedback">
+                    <input asp-for="UserName" class="form-control" placeholder="Email">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input asp-for="RememberMe" type="checkbox"> Remember Me
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                </div>
+                <div class="row">
+                    @Html.ValidationSummary()
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+    <script src="~/js/LayoutAdmin/admin-layout.min.js" asp-append-version="true"></script>
+    <script src="~/js/Layout/icheck.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+</body>
+</html>

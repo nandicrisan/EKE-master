@@ -1,0 +1,46 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Lista de articole</h3>
+            </div>
+            <div class="box-body">
+                <div class="dataTables_wrapper form-inline dt-bootstrap" id="example2_wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover dataTable" id="blog-item-table" role="grid" aria-describedby="example2_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>Titlu</th>
+                                        <th>Publicat de</th>
+                                        <th>Data publicări</th>
+                                        <th>Descriere</th>
+                                        <th>Opțiuni</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="=row">
+                    @*<div class="col-sm-10"></div>*@
+                    <div class="col-sm-2">
+                        <a href="~/Admin/AddBlogItem" class="btn btn-block btn-success" type="button">Adăugare articol</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/Admin/blog/blog.min.js"></script>
+}

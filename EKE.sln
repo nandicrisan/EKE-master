@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4D7EA0BF-3D33-40E6-91A5-8D093AC46564}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA8B3A8F-07DD-455B-B623-096A789C979E}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PM-Regi.Web", "src\EKE\PM-Regi.Web.xproj", "{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EKE.Data", "src\EKE.Data\EKE.Data.xproj", "{CFE4F63A-570C-473E-92E7-59E452E83ABD}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EKE.Service", "src\EKE.Service\EKE.Service.xproj", "{03BFE44F-9AAC-4400-9A02-7AECCC3497CA}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EKE-Admin.Web", "src\EKE-Admin.Web\EKE-Admin.Web.xproj", "{28538E88-D36C-4C68-A5E0-5A031306B476}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EKE-Gyopar.Web", "src\EKE-Gyopar.Web\EKE-Gyopar.Web.xproj", "{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD} = {CFE4F63A-570C-473E-92E7-59E452E83ABD}
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA} = {03BFE44F-9AAC-4400-9A02-7AECCC3497CA}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28538E88-D36C-4C68-A5E0-5A031306B476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28538E88-D36C-4C68-A5E0-5A031306B476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28538E88-D36C-4C68-A5E0-5A031306B476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28538E88-D36C-4C68-A5E0-5A031306B476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8CF747AB-69AE-48D8-88C8-2BE9AD77A9E7} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+		{28538E88-D36C-4C68-A5E0-5A031306B476} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+	EndGlobalSection
+EndGlobal

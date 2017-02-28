@@ -1,0 +1,63 @@
+﻿@model EKE.Data.Entities.BlogItem
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="row">
+    <form asp-action="addblogitem" asp-controller="admin" enctype="multipart/form-data">
+        <input asp-for="Id" class="hidden"/>
+        <input asp-for="MainImageName" class="hidden"/>
+        <input asp-for="DateAdded" type="hidden" />
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Adăugare articol</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        @Html.ValidationSummary()
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input class="form-control input-lg" type="text" asp-for="Title" placeholder="Titlu">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input class="form-control" asp-for="CreatedBy" placeholder="Creat de">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <textarea class="form-control" asp-for="ShortDescription" placeholder="Descriere scurtă"></textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <textarea class="form-control" asp-for="Content" id="blog-content"></textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label for="exampleInputFile">Imagine</label>
+                        <input id="exampleInputFile" name="main-image" type="file">
+                        <p class="help-block">.jpg .png</p>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <a href="~/admin/blog" class="btn btn-default">Cancel</a>
+                    <button class="btn btn-info pull-right" type="submit">Adaugă</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section scripts
+{
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="~/js/Admin/addblogitem/addblogitem.min.js"></script>
+}

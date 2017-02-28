@@ -1,0 +1,167 @@
+﻿@model EKE.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Înscriere";
+    List<EKE.Data.Entities.WorkShop> workShops = ViewBag.WorkShops;
+}
+
+@if (Model.RegisterStatus.Inactive)
+{
+    @Html.Partial("_Overlay", Model.RegisterStatus.Message)
+}
+
+<main id="content" role="main">
+    <div class="container container-boxes">
+        <div class="row box white-bg">
+            <div class="col-sm-12">
+                <div class="black-input">
+                    <h3 class="ubuntu-font">Înscrie-te</h3>
+                    <p>
+                        Completează formularul și înscrie-te la competiția Photo Marathon, unde cele mai bune fotografii sunt premiate și promovate în cadrul expoziției Photo Marathon’16! Mai mult decât atât, poți participa și la workshop-urile special pregătite pentru tine!
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="margin-1"></div>
+                <img src="~/images/start-line2.jpg" />
+            </div>
+            <div class="col-sm-9">
+                <div class="black-input">
+                    <form asp-controller="Account" asp-action="Register" method="post" class="no-bottom">
+                        <label asp-for="Photographer.FirstName" class="sr-only">Nume</label>
+                        <input asp-for="Photographer.FirstName" class="underline" placeholder="Nume">
+                        <span asp-validation-for="Photographer.FirstName" class="input-validation-side rubberBand"></span>
+
+                        <label for="prename" class="sr-only">Prenume</label>
+                        <input asp-for="Photographer.LastName" class="underline" placeholder="Prenume">
+                        <span asp-validation-for="Photographer.LastName" class="input-validation-side"></span>
+
+                        <label for="email" class="sr-only">Email</label>
+                        <input asp-for="Photographer.Email" class="underline" placeholder="Adresă de email">
+                        <span asp-validation-for="Photographer.Email" class="input-validation-side"></span>
+
+                        <label for="phone" class="sr-only">Nr. de telefon</label>
+                        <input asp-for="Photographer.PhoneNumber" class="underline" placeholder="Nr. de telefon">
+                        <span asp-validation-for="Photographer.PhoneNumber" class="input-validation-side"></span>
+
+                        <label for="phone" class="sr-only">Oraș</label>
+                        <input asp-for="Photographer.City" class="underline" placeholder="Oraș">
+                        <span asp-validation-for="Photographer.City" class="input-validation-side"></span>
+
+                        <label for="phone" class="sr-only">Vârstă</label>
+                        <input asp-for="Photographer.Age" class="underline" placeholder="Vârstă">
+                        <span asp-validation-for="Photographer.Age" class="input-validation-side"></span>
+
+                        <p class="display-inline-block margin-bottom-none">Editia la care te inscrii</p>
+                        <div class="row">
+                            <div class="form-group col-md-12" style="margin:8px 0 8px 0;">
+                                <select class="ui dropdown fluid" name="EditionId">
+                                    <option value="0">Nespecificat</option>
+                                    <option value="1">Photo Marathon Cluj Napoca</option>
+                                    <option value="2">Photo Marathon Timisoara</option>
+                                    <option value="3">Photo Marathon Sibiu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="margin-1"></div>
+                        <p for="fotop" class="radio-label vertical-align-middle">Fotograf amator &nbsp;</p>
+                        <input type="radio" class="radio-input" name="IsProfessionist" value="false" />
+                        <p for="fotop" class="radio-label vertical-align-middle"> &nbsp;Fotograf profesionist &nbsp;</p>
+                        <input type="radio" class="radio-input" name="IsProfessionist" value="true" />
+                        <div class="margin-1"></div>
+                        <p>Mă înscriu la:</p>
+                        <div class="display-inline-block">
+                            <input asp-for="Photographer.RegisterForWorkShop" type="checkbox" value="false" id="workshop" name="check" />
+                            <label for="workshop"></label>
+                        </div>
+                        <p class="display-inline-block margin-bottom-none">Workshop &nbsp;</p>
+                        <div class="row">
+                            <div class="form-group col-md-12" id="workshops" style="display:none; margin-top:15px;">
+                                <select class="ui dropdown fluid" name="WorkshopId" id="workshops-select">
+                                    @foreach (var workShop in workShops)
+                                    {
+                                        <option data-price="@workShop.Price" value="@workShop.Id">@workShop.Name</option>
+                                    }
+                                </select>
+                                @*<div id="order-data">
+                                        <h5>Adresă de facturare</h5>
+                                        <div class="col-md-12">
+                                            <p class="radio-label vertical-align-middle">Persoană fizică &nbsp;</p>
+                                            <input asp-for="BillingData.LegalPerson" type="radio" checked class="radio-input" value="false" />
+                                            <p class="radio-label vertical-align-middle"> &nbsp;Persoană juridică &nbsp;</p>
+                                            <input asp-for="BillingData.LegalPerson" type="radio" class="radio-input" value="true" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input asp-for="BillingData.Address" class="underline" placeholder="Adresă">
+                                            <span asp-validation-for="BillingData.Address" class="input-validation-side"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input asp-for="BillingData.NrReg" class="underline" placeholder="Numărul de înregistrare">
+                                            <span asp-validation-for="BillingData.NrReg" class="input-validation-side"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input asp-for="BillingData.Cnp" class="underline" placeholder="CUI/CNP">
+                                            <span asp-validation-for="BillingData.Cnp" class="input-validation-side"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input asp-for="BillingData.Bank" class="underline" placeholder="Banca">
+                                            <span asp-validation-for="BillingData.Bank" class="input-validation-side"></span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input asp-for="BillingData.Cont" class="underline" placeholder="IBAN">
+                                            <span asp-validation-for="BillingData.Cont" class="input-validation-side"></span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="display-inline-block">
+                            <input asp-for="Photographer.RegisterForMarathon" type="checkbox" value="true" id="EKE" name="check" />
+                            <label for="EKE"></label>
+                        </div>
+                        <p class="display-inline-block">Maratonul foto &nbsp;</p>
+                        <br />
+                        <div class="display-inline-block">
+                            <input asp-for="Photographer.Rules" type="checkbox" id="rules" name="check" />
+                            <label for="rules"></label>
+                        </div>
+                        <p class="display-inline-block margin-bottom-none">&nbsp; Am citit regulamentul concursului de <a asp-controller="Home" asp-action="Rules">aici</a> și sunt de acord cu toate condițiile.</p>
+                        <div class="row"></div>
+                        <div class="display-inline-block">
+                            <input asp-for="Photographer.HasNewsLetter" type="checkbox" value="true" id="newsletter" name="check" />
+                            <label for="newsletter"></label>
+                        </div>
+                        <p class="display-inline-block">&nbsp; Vreau să primesc și alte informatii legate de Photo Marathon</p>
+                        <span asp-validation-for="Photographer.Rules" class="input-validation"></span>
+                        <div class="margin-1"></div>
+                        <input type="submit" value="Trimite">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<link rel="stylesheet" type="text/css" href="~/css/Layout/dropdown.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/Layout/transition.min.css" />
+<link rel="stylesheet" type="text/css" href="~/css/Layout/iCheck/minimal/blue.css" />
+
+@section scripts
+{
+    <script src="~/js/Account/register.min.js" asp-append-version="true"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.1/jquery.validate.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/Layout/dropdown.min.js"></script>
+    <script src="~/js/Layout/transition.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            Main.SetActiveMenuItem(5);
+            $('.ui.dropdown').dropdown();
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue',
+                radioClass: 'iradio_minimal-blue',
+                increaseArea: '20%' // optional
+            });
+            Main.SetOverlay();
+        })
+    </script>
+}

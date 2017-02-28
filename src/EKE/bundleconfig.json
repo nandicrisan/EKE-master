@@ -1,0 +1,114 @@
+﻿// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/css/Layout/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/Layout/style.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Layout/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/Layout/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  //admnin layout css bundle
+  {
+    "outputFileName": "wwwroot/css/LayoutAdmin/admin-layout.min.css",
+    "inputFiles": [
+      "wwwroot/css/Layout/admin/*.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/LayoutAdmin/admin-layout.min.js",
+    "inputFiles": [
+      "wwwroot/js/Layout/admin/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/Account/register.min.js",
+    "inputFiles": [
+      "wwwroot/js/Account/register.js",
+      "wwwroot/js/Layout/icheck.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  //admin/photographers
+  {
+    "outputFileName": "wwwroot/js/Admin/photographers/photographer.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/photographers/init.js",
+      "wwwroot/js/Admin/photographers/photographer.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  //admin/photoletter
+  {
+    "outputFileName": "wwwroot/js/Admin/photoletter/photoletter.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/photoletter/init.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/Admin/photoletter/photoletter.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/photoletter/init.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/Admin/blog/blog.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/blog/init.js",
+      "wwwroot/js/Admin/blog/blog-admin.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/Admin/addblogitem/addblogitem.min.js",
+    "inputFiles": [
+      "wwwroot/js/Admin/addblogitem/init.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

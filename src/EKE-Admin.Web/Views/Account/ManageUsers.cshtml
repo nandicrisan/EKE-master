@@ -1,0 +1,36 @@
+﻿@using NonFactors.Mvc.Grid;
+@model List<EKE.Data.Entities.ApplicationUser>
+@{
+}
+
+<section class="content-header">
+    <h1>
+        Felhasználók kezelése
+        <small>Admin panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>*@
+</section>
+<section class="content">
+    @(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Email).Titled("Email cím");
+        columns.Add(model => model.UserName).Titled("Felhasználónév");
+        columns.Add(model => model.RoleAssigned).Titled("Típus");
+        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-primary'><i class='fa fa-pencil'></i></button>").Encoded(false);
+        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-danger'><i class='fa fa-trash'></i></button>").Encoded(false);
+    })
+    .Filterable()
+    .Sortable()
+    .Pageable()
+    )
+</section>
+@section scripts{
+    <script>
+        $('.mvc-grid').mvcgrid();
+    </script>
+}

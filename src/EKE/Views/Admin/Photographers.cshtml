@@ -1,0 +1,68 @@
+﻿@model EKE.Data.Entities.RegisterStatus
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="row">
+    <div class="col-sm-12 margin-5">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Status înregistrare</h3>
+            </div>
+            <div class="box-body">
+                <form asp-controller="Account" asp-action="RegisterStatus" method="post">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <div class="col-xs-1 checkbox">
+                        <label> <input type="checkbox" asp-for="@Model.Inactive" /> Inactiv</label>
+                    </div>
+                    <div class="col-xs-6 margin-top-5">
+                        <input asp-for="Message" class="underline form-control" placeholder="Mesaj">
+                    </div>
+                    <div class="col-xs-2 margin-top-4">
+                        <input type="submit" value="Salveaza" class="btn btn-default">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Lista de fotografi înregistrați</h3>
+            </div>
+            <div class="box-body">
+                <div class="dataTables_wrapper form-inline dt-bootstrap" id="example2_wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover dataTable" id="photographers-table" role="grid" aria-describedby="example2_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>Nume</th>
+                                        <th>Prenume</th>
+                                        <th>Email</th>
+                                        <th>Nr. telefon</th>
+                                        <th>Data înregistrări</th>
+                                        <th>Profesionist/Amator</th>
+                                        <th>Workshop</th>
+                                        <th>Maraton</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/js/Admin/Photographers/photographer.min.js"></script>
+}

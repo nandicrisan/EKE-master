@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "EKE.Data": "1.0.0-*",
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
+  }
+}

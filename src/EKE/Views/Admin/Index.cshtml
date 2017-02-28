@@ -1,0 +1,27 @@
+﻿@model EKE.Models.HomeViewModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<main id="content" role="main">
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-users" aria-hidden="true"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Fotografi</span>
+                    <span class="info-box-number">@Model.PhotograperCount</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Înscrieri photoletter</span>
+                    <span class="info-box-number">@Model.NewsletterCount</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
