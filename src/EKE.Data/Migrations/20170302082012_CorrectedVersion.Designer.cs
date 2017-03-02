@@ -9,9 +9,10 @@ using EKE.Data.Entities.Enumes;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170302082012_CorrectedVersion")]
+    partial class CorrectedVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -161,7 +162,7 @@ namespace EKE.Data.Migrations
                     b.ToTable("MagazineCategories");
                 });
 
-            modelBuilder.Entity("EKE.Data.Entities.MagazineTag", b =>
+            modelBuilder.Entity("EKE.Data.Entities.MagazinTag", b =>
                 {
                     b.Property<int>("MagazinId");
 
@@ -171,7 +172,7 @@ namespace EKE.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("MagazineTag");
+                    b.ToTable("MagazinTag");
                 });
 
             modelBuilder.Entity("EKE.Data.Entities.MediaElement", b =>
@@ -355,10 +356,10 @@ namespace EKE.Data.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
-            modelBuilder.Entity("EKE.Data.Entities.MagazineTag", b =>
+            modelBuilder.Entity("EKE.Data.Entities.MagazinTag", b =>
                 {
                     b.HasOne("EKE.Data.Entities.Magazine", "Magazin")
-                        .WithMany("MagazineTags")
+                        .WithMany("MagazinTags")
                         .HasForeignKey("MagazinId")
                         .OnDelete(DeleteBehavior.Cascade);
 

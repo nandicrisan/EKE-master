@@ -1,6 +1,6 @@
 ﻿namespace EKE.Data.Entities
 {
-    public class MagazinTag
+    public class MagazineTag
     {
         public int MagazinId { get; set; }
         public Magazine Magazin { get; set; }

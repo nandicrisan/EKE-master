@@ -11,27 +11,27 @@ namespace EKE.Data
         }
 
         #region Entities
-        DbSet<Article> Newsletters { get; set; }
-        DbSet<Author> Photographers { get; set; }
-        DbSet<Magazine> WorkShops { get; set; }
-        DbSet<MagazineCategory> BlogItems { get; set; }
-        DbSet<MediaElement> BillingDatas { get; set; }
-        DbSet<Tag> RegisterStatus { get; set; }
+        DbSet<Article> Articles { get; set; }
+        DbSet<Author> Authors { get; set; }
+        DbSet<Magazine> Magazines { get; set; }
+        DbSet<MagazineCategory> MagazineCategories { get; set; }
+        DbSet<MediaElement> MediaElements { get; set; }
+        DbSet<Tag> Tags { get; set; }
         #endregion
 
         //Model configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Magazin to tag relationship
-            modelBuilder.Entity<MagazinTag>()
+            modelBuilder.Entity<MagazineTag>()
            .HasKey(t => new { t.MagazinId, t.TagId });
 
-            modelBuilder.Entity<MagazinTag>()
+            modelBuilder.Entity<MagazineTag>()
                 .HasOne(pt => pt.Magazin)
-                .WithMany(p => p.MagazinTags)
+                .WithMany(p => p.MagazineTags)
                 .HasForeignKey(pt => pt.MagazinId);
 
-            modelBuilder.Entity<MagazinTag>()
+            modelBuilder.Entity<MagazineTag>()
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.MagazinTags)
                 .HasForeignKey(pt => pt.TagId);

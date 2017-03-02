@@ -316,7 +316,7 @@
                     <li class="header">SzuperAdmin navigáció</li>
 
                     <li class="active">
-                        <a href="#">
+                        <a asp-action="Index" asp-controller="Home">
                             <i class="fa fa-th"></i> <span>Áttekintés</span>
                         </a>
                     </li>
@@ -332,18 +332,10 @@
                             <i class="fa fa-list"></i> <span>Folyóiratok</span>
                         </a>
                     </li>
-                    <li class="treeview">
-                        <a href="#">
+                    <li class="">
+                        <a asp-controller="Magazine" asp-action="Index">
                             <i class="fa fa-newspaper-o"></i> <span>Lapok kezelése</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
                         </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-angle-right"></i> Gyopár</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right""></i> Erdély</a></li>
-                            @*listazas folyoiratok alapjan*@
-                        </ul>
                     </li>
 
                     <li class="header">EKE - Eszköztár</li>

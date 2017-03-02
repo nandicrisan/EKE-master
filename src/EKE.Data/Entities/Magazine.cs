@@ -17,7 +17,7 @@ namespace EKE.Data.Entities
         public virtual Author Author { get; set; }
         public DateTime DateAdded { get; set; }
         public ICollection<Article> Articles { get; set; }
-        public ICollection<MagazinTag> MagazinTags { get; set; }
+        public ICollection<MagazineTag> MagazineTags { get; set; }
         public virtual ICollection<MediaElement> MediaElements { get; set; }
     }
 }
