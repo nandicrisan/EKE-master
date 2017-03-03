@@ -1,7 +1,7 @@
 ﻿using EKE.Data.Entities.Base;
 using System.Collections.Generic;
 
-namespace EKE.Data.Entities
+namespace EKE.Data.Entities.Gyopar
 {
     public class MagazineCategory : IEntityBase
     {

@@ -9,9 +9,10 @@ using EKE.Data.Entities.Enumes;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170303083743_db-fixing-Magazine")]
+    partial class dbfixingMagazine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")

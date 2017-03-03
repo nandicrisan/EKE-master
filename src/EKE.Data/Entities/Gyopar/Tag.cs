@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EKE.Data.Entities
+namespace EKE.Data.Entities.Gyopar
 {
     public class Tag : IEntityBase
     {

@@ -1,4 +1,4 @@
-﻿namespace EKE.Data.Entities
+﻿namespace EKE.Data.Entities.Gyopar
 {
     public class MagazineTag
     {

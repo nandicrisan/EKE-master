@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using EKE.Data.Entities;
+using EKE.Data.Entities.Gyopar;
 
 namespace EKE.Data
 {

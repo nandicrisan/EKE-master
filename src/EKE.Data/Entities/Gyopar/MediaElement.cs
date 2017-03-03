@@ -1,7 +1,7 @@
 ﻿using EKE.Data.Entities.Base;
 using EKE.Data.Entities.Enumes;
 
-namespace EKE.Data.Entities
+namespace EKE.Data.Entities.Gyopar
 {
     public class MediaElement : IEntityBase
     {
