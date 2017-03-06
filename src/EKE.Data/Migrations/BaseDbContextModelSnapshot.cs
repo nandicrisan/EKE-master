@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using EKE.Data;
-using EKE.Data.Entities.Enumes;
+using EKE.Data.Entities.Enums;
 
 namespace EKE.Data.Migrations
 {
@@ -76,12 +76,14 @@ namespace EKE.Data.Migrations
 
                     b.Property<string>("Content");
 
+                    b.Property<DateTime>("DateCreated");
+
                     b.Property<int?>("MagazineId");
 
                     b.Property<string>("Slug")
                         .IsRequired();
 
-                    b.Property<string>("SubTitle");
+                    b.Property<string>("Subtitle");
 
                     b.Property<string>("Title")
                         .IsRequired();

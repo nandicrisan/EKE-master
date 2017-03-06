@@ -1,4 +1,4 @@
-﻿namespace EKE.Data.Entities.Enumes
+﻿namespace EKE.Data.Entities.Enums
 {
     public enum MediaTypesEnum
     {

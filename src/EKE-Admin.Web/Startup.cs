@@ -1,7 +1,9 @@
 ﻿using EKE.Data;
 using EKE.Data.Entities;
+using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
 using EKE.Data.Infrastructure;
+using EKE.Data.Repository;
 using EKE.Service.Services;
 using EKE.Service.Services.Admin;
 using Microsoft.AspNetCore.Builder;
@@ -47,7 +49,7 @@ namespace EKE_Admin.Web
             registerServices(services);
             setupServices(services);
         }
-       
+
         private void registerServices(IServiceCollection services)
         {
             //Add Identity
@@ -60,6 +62,10 @@ namespace EKE_Admin.Web
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<UserSeed>();
+            services.AddTransient<IMagazineService, MagazineService>();
+
+            services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
+            services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
             //Add Services
             services.AddMvc();
             services.AddSession();

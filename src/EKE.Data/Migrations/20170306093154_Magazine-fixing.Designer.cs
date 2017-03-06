@@ -9,8 +9,8 @@ using EKE.Data.Entities.Enums;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20170303083743_db-fixing-Magazine")]
-    partial class dbfixingMagazine
+    [Migration("20170306093154_Magazine-fixing")]
+    partial class Magazinefixing
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,12 +77,14 @@ namespace EKE.Data.Migrations
 
                     b.Property<string>("Content");
 
+                    b.Property<DateTime>("DateCreated");
+
                     b.Property<int?>("MagazineId");
 
                     b.Property<string>("Slug")
                         .IsRequired();
 
-                    b.Property<string>("SubTitle");
+                    b.Property<string>("Subtitle");
 
                     b.Property<string>("Title")
                         .IsRequired();

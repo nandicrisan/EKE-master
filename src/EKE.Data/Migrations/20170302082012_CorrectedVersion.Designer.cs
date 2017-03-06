@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using EKE.Data;
-using EKE.Data.Entities.Enumes;
+using EKE.Data.Entities.Enums;
 
 namespace EKE.Data.Migrations
 {

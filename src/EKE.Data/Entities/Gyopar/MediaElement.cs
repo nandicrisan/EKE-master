@@ -1,5 +1,5 @@
 ﻿using EKE.Data.Entities.Base;
-using EKE.Data.Entities.Enumes;
+using EKE.Data.Entities.Enums;
 
 namespace EKE.Data.Entities.Gyopar
 {
