@@ -48,3 +48,7 @@ textarea {
         color: white;
         cursor: pointer;
     }
+
+.magazine-list .box-body div {
+    padding: 0;
+}

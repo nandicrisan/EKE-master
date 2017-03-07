@@ -1,4 +1,5 @@
-﻿using EKE.Data;
+﻿using AutoMapper;
+using EKE.Data;
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
@@ -66,10 +67,12 @@ namespace EKE_Admin.Web
 
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
+            services.AddTransient<IEntityBaseRepository<MagazineCategory>, EntityBaseRepository<MagazineCategory>>();
             //Add Services
             services.AddMvc();
             services.AddSession();
             services.AddMvcGrid();
+            services.AddAutoMapper();
         }
 
         private void setupServices(IServiceCollection services)

@@ -1,0 +1,177 @@
+﻿@using NonFactors.Mvc.Grid;
+@model EKE_Admin.Web.ViewModels.MagazineListVM
+@{
+    ViewData["Title"] = "Folyóiratok kezelése";
+}
+<link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
+
+@Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+
+<section class="content-header">
+    <h1>
+        Folyóiratok kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+<section class="content">
+    <div class="box box-success">
+        <form asp-action="AddMagazineCategory" asp-controller="Magazine" method="post">
+            <div class="box-body">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Név*</label>
+                        <input name="Name" class="form-control" type="text" placeholder="Folyóirat neve">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Hozzáadta</label>
+                        <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" placeholder="@User.Identity.Name" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <label></label>
+                    <div class="row">
+                        <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </form>
+    </div>
+
+    @(Html
+    .Grid(Model.MagazineCategories)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Name).Titled("Név").MultiFilterable(true);
+        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(true);
+        columns.Add(model => model.Magazines != null ? model.Magazines.Count() : 0).Titled("Lapok száma").MultiFilterable(false);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazineCategory", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+    })
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+    )
+</section>
+
+<section class="content-header">
+    <h1>
+        Lapok kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+<section class="content">
+    <div class="box box-success">
+        <form asp-action="AddMagazine" asp-controller="Magazine" method="post">
+            <div class="box-body">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Kiadvány*</label>
+                        <select class="form-control select2" name="Category.Id" style="width: 100%;">
+                            <option value="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
+                            @if (Model.MagazineCategories.Count > 1)
+                            {
+                                @foreach (var item in Model.MagazineCategories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <label>Cím*</label>
+                    <input name="Title" class="form-control" type="text" placeholder="Cím">
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Évszám*</label>
+                        <select class="form-control select2" name="PublishYear" style="width: 100%;">
+                            <option name="PublishYear" selected="selected">1800</option>
+                            @for (int i = 1801; i <= DateTime.Now.Year; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>Lapszám*</label>
+                        <select class="form-control select2" name="PublishSection" style="width: 100%;">
+                            <option selected="selected">1</option>
+                            @for (int i = 2; i <= 12; i++)
+                            {
+                                <option>@i</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Kulcsszavak</label>
+                        <select name="MagazineTags" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
+                            <option>Alabama</option>
+                            <option>Alaska</option>
+                            <option>California</option>
+                            <option>Delaware</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Washington</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Hozzáadta</label>
+                        <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label></label>
+                        <div class="row">
+                            <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </form>
+    </div>
+
+    @(Html
+    .Grid(Model.Magazines)
+    .Build(columns =>
+    {
+        columns.Add(model => model.PublishYear).Titled("Kiadási év").MultiFilterable(true);
+        columns.Add(model => model.PublishSection).Titled("Kiadási szám").MultiFilterable(true);
+        columns.Add(model => model.Title).Titled("Cím").MultiFilterable(true);
+        columns.Add(model => model.MagazineTags).Titled("Kulcsszavak").MultiFilterable(true);
+        columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").MultiFilterable(true);
+        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(true);
+        columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").MultiFilterable(true);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+    })
+    .MultiFilterable()
+    .Sortable()
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+    )
+</section>
+
+@section scripts{
+    <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+        });
+    </script>
+}

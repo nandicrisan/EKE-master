@@ -31,7 +31,9 @@
     "EKE.Data": "1.0.0-*",
     "EKE.Service": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.1",
-    "NonFactors.Grid.Mvc6": "1.4.0"
+    "NonFactors.Grid.Mvc6": "1.4.0",
+    "AutoMapper": "5.2.0",
+    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.2.0"
   },
 
   "tools": {

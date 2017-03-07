@@ -1,0 +1,11 @@
+﻿@model string
+@if (Model != null && Model != "")
+{
+    <section class="content">
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> Figyelem!</h4>
+            @Model
+        </div>
+    </section>
+}

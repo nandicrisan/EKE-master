@@ -1,0 +1,55 @@
+﻿<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img class="img-responsive" src="~/images/logo/eke.gif" />
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Keresés...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">SzuperAdmin navigáció</li>
+
+            <li class="active">
+                <a asp-action="Index" asp-controller="Home">
+                    <i class="fa fa-th"></i> <span>Áttekintés</span>
+                </a>
+            </li>
+            <li class="">
+                <a asp-action="ManageUsers" asp-controller="Account">
+                    <i class="fa fa-user"></i> <span>Felhasználókezelés</span>
+                </a>
+            </li>
+
+            <li class="header">EKE - Gyopár</li>
+            <li class="">
+                <a asp-controller="Magazine" asp-action="MagazineList">
+                    <i class="fa fa-list"></i> <span>Folyóiratok</span>
+                </a>
+            </li>
+            <li class="">
+                <a asp-controller="Magazine" asp-action="Index">
+                    <i class="fa fa-newspaper-o"></i> <span>Lapok kezelése</span>
+                </a>
+            </li>
+
+            <li class="header">EKE - Eszköztár</li>
+            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Google Analytics</span></a></li>
+            <li><a href="#"><i class="fa fa-envelope text-red"></i> <span>Mailrendszer</span></a></li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
