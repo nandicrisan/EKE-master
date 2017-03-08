@@ -43,8 +43,8 @@ textarea {
         vertical-align: middle;
     }
 
-    .edit-magazines .form-group .input-group .input-group-addon:hover {
-        background-color: darkgreen;
+    .edit-magazines .form-group .input-group .input-group-addon:hover{
+        background-color: lightgray;
         color: white;
         cursor: pointer;
     }

@@ -197,7 +197,19 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazine = _magazineCatRepo.GetById(id);
+                var magazine = _magazineCatRepo.GetByIdIncluding(id, x => x.Magazines);
+
+                if (magazine == null)
+                    return new Result<bool>(ResultStatus.NOT_FOUND, "Folyóirat nem található!");
+
+                if (magazine.Magazines != null && magazine.Magazines.Count > 0)
+                {
+                    foreach (var item in magazine.Magazines)
+                    {
+                        _magazineRepo.Delete(item);
+                    }
+                }
+
                 _magazineCatRepo.Delete(magazine);
                 SaveChanges();
                 return new Result<bool>(true);

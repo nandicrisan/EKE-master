@@ -1,0 +1,19 @@
+﻿@using NonFactors.Mvc.Grid;
+@model IEnumerable<EKE.Data.Entities.Gyopar.Article>
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.DateCreated).Titled("Létrahozási dátum").MultiFilterable(true);
+        columns.Add(model => model.Title).Titled("Főcím").MultiFilterable(true);
+        columns.Add(model => model.Subtitle).Titled("Alcím").MultiFilterable(false);
+        columns.Add(model => model.Author.Name).Titled("Szerző").MultiFilterable(true);
+        columns.Add(model => model.Content.Substring(0, 100)).Titled("Tartalom").MultiFilterable(false);
+        columns.Add(model => model.Magazine.Title).Titled("Folyóirat").MultiFilterable(true);
+    })
+    .MultiFilterable()
+    .Filterable()
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+)

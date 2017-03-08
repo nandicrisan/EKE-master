@@ -55,6 +55,7 @@ namespace EKE_Admin.Web.Controllers
         [HttpPost]
         public IActionResult AddMagazine(Magazine model)
         {
+            ModelState.Remove("Category.Name");
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a validáció során! Kérem töltsön ki minden mezőt!");
@@ -103,7 +104,22 @@ namespace EKE_Admin.Web.Controllers
             TempData["ErrorMessage"] = string.Format("Hiba a törlés során ({0} : {1})", magazines.Status, magazines.Message);
             return RedirectToAction("MagazineList");
         }
-        
+
+        #endregion
+
+        #region Article
+        public IActionResult ArticleGrid(int year = 0)
+        {
+            var result = _magService.GetAllArticles();
+            if (!result.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", result.Status, result.Message);
+                return PartialView("_IndexGrid");
+            }
+
+            // Only grid string query values will be visible here.
+            return PartialView("Partials/_ArticleGrid", result.Data);
+        }
         #endregion
     }
 }
