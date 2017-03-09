@@ -3,9 +3,12 @@ using EKE.Data.Entities.Gyopar;
 using EKE.Service.Services.Admin;
 using EKE_Admin.Web.ViewModels;
 using EKE_Admin.Web.ViewModels.Configuration;
+using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -108,17 +111,54 @@ namespace EKE_Admin.Web.Controllers
         #endregion
 
         #region Article
-        public IActionResult ArticleGrid(int year = 0)
+        public IActionResult ArticleGrid(int format = 0, int year = 0, int section = 0)
         {
-            var result = _magService.GetAllArticles();
+            var predicate = PredicateBuilder.New<Article>();
+            if (format != 0)
+                predicate.And(x => x.Magazine.Category.Id == format);
+
+            if (year != 0)
+                predicate.And(x => x.Magazine.PublishYear == year);
+
+            if (section != 0)
+                predicate.And(x => x.Magazine.PublishSection.Contains(String.Format("{0}",section)));
+
+            var result = _magService.GetAllArticlesBy(predicate);
             if (!result.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", result.Status, result.Message);
-                return PartialView("_IndexGrid");
+                return PartialView("Partials/_ArticleGrid");
             }
 
             // Only grid string query values will be visible here.
             return PartialView("Partials/_ArticleGrid", result.Data);
+        }
+
+        public IActionResult CreateArticlePartial(int format = 0, int year = 0, int section = 0)
+        {
+            var magazineCategory = _magService.GetMagazineCategoryById(format);
+
+            if (!magazineCategory.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategory.Status, magazineCategory.Message);
+                return PartialView("Partials/_AddArticle");
+            }
+
+            var magazine = new Magazine();
+            magazine.Category = magazineCategory.Data;
+            magazine.PublishYear = year;
+            magazine.PublishSection = String.Format("{0}",section);
+
+            var model = new Article();
+            model.Magazine = magazine;
+            // Only grid string query values will be visible here.
+            return PartialView("Partials/_AddArticle", model);
+        }
+
+        [HttpPost]
+        public IActionResult AddArticle(Article model)
+        {
+            return null;
         }
         #endregion
     }

@@ -7,6 +7,7 @@ Magazine = {
         mYear: $(".mYear"),
         mNumber: $(".mNumber"),
         filter: $(".filter"),
+        addButton: $(".btn-bitbucket"),
     },
 
     mvcgrid: {
@@ -25,7 +26,7 @@ Magazine = {
         });
 
         s.mYear.change(function () {
-            
+
         });
 
         s.mNumber.change(function () {
@@ -33,39 +34,83 @@ Magazine = {
         });
 
         s.filter.on("click", function () {
-            if ($(this).children().hasClass("fa-times")) {
-                $(this).children().removeClass("fa-times");
-                $(this).children().addClass("fa-check");
-                $(this).parent().children(".select2").removeAttr("disabled")
-                Magazine.gridRequest();
-            } else {
-                $(this).children().addClass("fa-times");
-                $(this).children().removeClass("fa-check");
-                $(this).parent().children(".select2").attr("disabled", "disabled")
-            }
+            Magazine.tickFilters($(this));
+        });
+
+        s.addButton.on("click", function () {
+            var format = $(".mName option:selected").data("id");
+            var year = $(".mYear option:selected").text();
+            var number = $(".mNumber option:selected").text();
+            $.ajax({
+                url: '/Magazine/CreateArticlePartial',
+                dataType: 'html',
+                data: {
+                    format: format,
+                    year: parseInt(year),
+                    section: parseInt(number),
+                },
+                success: function (data) {
+                    $('.add-article').html(data);
+                    CKEDITOR.replace('editor');
+                },
+            });
         });
     },
 
+    tickFilters: function (elem) {
+        if (elem.children().hasClass("fa-times")) {
+            elem.children().removeClass("fa-times");
+            elem.children().addClass("fa-check");
+            elem.parent().children(".select2").removeAttr("disabled")
+            Magazine.gridRequest();
+        } else {
+            elem.children().addClass("fa-times");
+            elem.children().removeClass("fa-check");
+            elem.parent().children(".select2").attr("disabled", "disabled")
+        }
+
+        if (s.mName.attr("disabled") !== "disabled" && s.mYear.attr("disabled") !== "disabled" && s.mNumber.attr("disabled") !== "disabled") {
+            Magazine.showAddArticleButton(true);
+        } else {
+            Magazine.showAddArticleButton(false);
+        }
+    },
+
     gridRequest: function () {
-        if (s.mName.attr("disabled")) { null }
-        var format = 0;
-        var year = 0;
-        var section = 0;
+        var format;
+        if (s.mName.attr("disabled") !== "disabled") {
+            format = $(".mName option:selected").data("id");
+        }
+
+        var year;
+        if (s.mYear.attr("disabled") !== "disabled") {
+            year = $(".mYear option:selected").text();
+        }
+
+        var number;
+        if (s.mNumber.attr("disabled") !== "disabled") {
+            number = $(".mNumber option:selected").text();
+        }
 
         $('.mvc-grid').mvcgrid({
             requestType: 'get', // defaults to get
             reload: true,
             data: {
-                format: "",
-                year: 1900,
-                section: 0,
+                format: format,
+                year: parseInt(year),
+                section: parseInt(number),
             }
         });
     },
 
-    getMYears: function (numToGet) {
-        // $.ajax or something
-        // using numToGet as param
-    }
+    showAddArticleButton: function (show) {
+        if (show) {
+            s.addButton.css("display", "block")
+        }
+        else {
+            s.addButton.css("display", "none")
+        }
+
+    },
 
 };

@@ -5,6 +5,7 @@ using EKE.Service.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -18,12 +19,14 @@ namespace EKE.Service.Services.Admin
         Result<Magazine> Update(Magazine model);
 
         Result<List<Article>> GetAllArticles();
+        Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
         Result<Article> GetArticleById(int id);
         Result<Article> Add(Article model);
         Result<Article> Update(Article model);
 
         Result<MagazineCategory> Add(MagazineCategory model);
         Result<List<MagazineCategory>> GetAllMagazineCategories();
+        Result<MagazineCategory> GetMagazineCategoryById(int id);
 
         Result<bool> DeleteMagazineCategory(int id);
         Result<bool> DeleteMagazine(int id);
@@ -117,6 +120,19 @@ namespace EKE.Service.Services.Admin
             }
         }
 
+        public Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate)
+        {
+            try
+            {
+                var result = _articleRepo.GetAllIncludingPred(predicate).ToList();
+                return new Result<List<Article>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Article>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
         public Result<Article> GetArticleById(int id)
         {
             try
@@ -164,7 +180,6 @@ namespace EKE.Service.Services.Admin
         #region MagazineCategories
         public Result<List<MagazineCategory>> GetAllMagazineCategories()
         {
-
             try
             {
                 return new Result<List<MagazineCategory>>(_magazineCatRepo.GetAll().ToList());
@@ -219,10 +234,23 @@ namespace EKE.Service.Services.Admin
                 return new Result<bool>(ResultStatus.ERROR, ex.Message);
             }
         }
+
+
+        public Result<MagazineCategory> GetMagazineCategoryById(int id)
+        {
+            try
+            {
+                return new Result<MagazineCategory>(_magazineCatRepo.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return new Result<MagazineCategory>(ResultStatus.ERROR, ex.Message);
+            }
+        }
         #endregion
 
         #region General
-        public string GenerateSlug(string phrase, int year, int section)
+        public string GenerateSlug(string phrase, int year, string section)
         {
             string str = RemoveAccent(phrase).ToLower();
             // invalid chars           

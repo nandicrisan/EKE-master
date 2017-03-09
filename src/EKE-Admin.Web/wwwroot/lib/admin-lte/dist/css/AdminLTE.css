@@ -3506,18 +3506,18 @@ table.text-center th {
 }
 .btn-bitbucket {
   color: #ffffff;
-  background-color: #205081;
+  background-color: #00a65a;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-bitbucket:focus,
 .btn-bitbucket.focus {
   color: #ffffff;
-  background-color: #163758;
+  background-color: darkgreen;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-bitbucket:hover {
   color: #ffffff;
-  background-color: #163758;
+  background-color: darkgreen;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-bitbucket:active,

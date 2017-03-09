@@ -80,6 +80,8 @@ namespace EKE.Data.Migrations
 
                     b.Property<int?>("MagazineId");
 
+                    b.Property<int>("OrderNo");
+
                     b.Property<string>("PublishedBy");
 
                     b.Property<string>("Slug")
@@ -136,7 +138,8 @@ namespace EKE.Data.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<int>("PublishSection");
+                    b.Property<string>("PublishSection")
+                        .IsRequired();
 
                     b.Property<int>("PublishYear");
 
@@ -161,7 +164,8 @@ namespace EKE.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("PublishedBy");
 

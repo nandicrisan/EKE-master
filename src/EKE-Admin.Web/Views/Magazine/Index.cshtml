@@ -32,8 +32,8 @@
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mName" style="width: 100%;" disabled="disabled">
-                                <option selected="selected">Gyopár</option>
-                                <option>Erdély</option>
+                                <option selected="selected" data-id="1">Gyopár</option>
+                                <option data-id="2">Erdély</option>
                             </select>
                         </div>
                     </div>
@@ -103,7 +103,13 @@
                     </div>
                 </div>
             </div>
+            <a class="btn btn-block btn-social btn-bitbucket" style="display:none;">
+                <i class="fa fa-plus"></i> Cikk hozzáadása
+            </a>
         </div>
+    </div>
+
+    <div class="add-article">
     </div>
 
     @Html.AjaxGrid(Url.Action("ArticleGrid", "Magazine"))
@@ -114,6 +120,7 @@
     <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
     <script src="~/js/MVCGrid/mvc-grid.js"></script>
     <script src="~/js/Magazine/main.js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
     <script>
         $(function () {
             //Initialize Select2 Elements

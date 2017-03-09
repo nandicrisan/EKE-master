@@ -1,0 +1,47 @@
+﻿@model EKE.Data.Entities.Gyopar.Article
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cikk szerkesztése</h3>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#responseContent">
+        @Html.HiddenFor(x => x.Magazine)
+        <div class="box-body">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Cím</label>
+                    <input asp-for="Title" class="form-control" placeholder="Cím">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Alcím</label>
+                    <input asp-for="Subtitle" class="form-control" placeholder="Alcím">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Szerzõ</label>
+                    <input asp-for="Author.Name" class="form-control" placeholder="Szerzõ">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Tartalom</label>
+                    <textarea asp-for="Content" class="form-control" id="editor"></textarea>
+                </div>
+            </div>
+
+        </div><!-- /.box-body -->
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <div id="responseContent"></div>
+</div>

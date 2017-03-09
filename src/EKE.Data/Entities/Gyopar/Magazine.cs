@@ -14,7 +14,7 @@ namespace EKE.Data.Entities.Gyopar
         [Required(ErrorMessage = "Évszám megadása kötelező")]
         public int PublishYear { get; set; }
         [Required(ErrorMessage = "Lapszám megadása kötelező")]
-        public int PublishSection { get; set; }
+        public string PublishSection { get; set; }
         public virtual MagazineCategory Category { get; set; }
         public virtual Author Author { get; set; }
         public DateTime DateCreated { get; set; }

@@ -11,6 +11,7 @@
         columns.Add(model => model.Author.Name).Titled("Szerző").MultiFilterable(true);
         columns.Add(model => model.Content.Substring(0, 100)).Titled("Tartalom").MultiFilterable(false);
         columns.Add(model => model.Magazine.Title).Titled("Folyóirat").MultiFilterable(true);
+        columns.Add(model => model.OrderNo).Titled("Sorrend").MultiFilterable(true);
     })
     .MultiFilterable()
     .Filterable()
