@@ -5,35 +5,70 @@
         <h3 class="box-title">Cikk szerkesztése</h3>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#responseContent">
+    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#responseContent" enctype="multipart/form-data">
+        @Html.HiddenFor(x => x.Magazine.PublishSection)
+        @Html.HiddenFor(x => x.Magazine.PublishYear)
+        @Html.HiddenFor(x => x.Magazine.Category.Id)
+        @Html.HiddenFor(x => x.Magazine.Category)
         @Html.HiddenFor(x => x.Magazine)
         <div class="box-body">
 
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>Cím</label>
-                    <input asp-for="Title" class="form-control" placeholder="Cím">
+            <div class="col-md-9 row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Cím</label>
+                        <input asp-for="Title" class="form-control" placeholder="Cím" type="text">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Alcím</label>
+                        <input asp-for="Subtitle" class="form-control" placeholder="Alcím" type="text" />
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Szerzõ</label>
+                        <input asp-for="Author.Name" class="form-control" placeholder="Szerzõ" type="text">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Kulcsszavak</label>
+                        <select asp-for="ArticleTag" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
+                            <option>Alabama</option>
+                            <option>Alaska</option>
+                            <option>California</option>
+                            <option>Delaware</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Washington</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>Sorrend</label>
+                        <input asp-for="OrderNo" class="form-control" type="number" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Tartalom</label>
+                        <textarea asp-for="Content" class="form-control" id="editor"></textarea>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
-                    <label>Alcím</label>
-                    <input asp-for="Subtitle" class="form-control" placeholder="Alcím">
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>Szerzõ</label>
-                    <input asp-for="Author.Name" class="form-control" placeholder="Szerzõ">
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Tartalom</label>
-                    <textarea asp-for="Content" class="form-control" id="editor"></textarea>
+                    <label>Képek feltöltése</label>
+                    <input id="image-uploader" name="files" type="file" multiple>
                 </div>
             </div>
 

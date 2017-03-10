@@ -5,6 +5,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
 	config.language = 'hu';
+	config.height = 1000;
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config

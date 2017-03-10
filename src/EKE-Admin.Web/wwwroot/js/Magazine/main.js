@@ -8,6 +8,8 @@ Magazine = {
         mNumber: $(".mNumber"),
         filter: $(".filter"),
         addButton: $(".btn-bitbucket"),
+        addArticleContainer: $(".add-article"),
+        selectors: $(".select2"),
     },
 
     mvcgrid: {
@@ -34,26 +36,18 @@ Magazine = {
         });
 
         s.filter.on("click", function () {
+            Magazine.hideArticlePartial();
             Magazine.tickFilters($(this));
         });
 
+        s.selectors.change(function () {
+            Magazine.hideArticlePartial();
+        });
+
         s.addButton.on("click", function () {
-            var format = $(".mName option:selected").data("id");
-            var year = $(".mYear option:selected").text();
-            var number = $(".mNumber option:selected").text();
-            $.ajax({
-                url: '/Magazine/CreateArticlePartial',
-                dataType: 'html',
-                data: {
-                    format: format,
-                    year: parseInt(year),
-                    section: parseInt(number),
-                },
-                success: function (data) {
-                    $('.add-article').html(data);
-                    CKEDITOR.replace('editor');
-                },
-            });
+            Magazine.loadingOverlay(true);
+            Magazine.createArticlePartial($(this));
+            Magazine.loadingOverlay(false);
         });
     },
 
@@ -103,6 +97,36 @@ Magazine = {
         });
     },
 
+    createArticlePartial: function (elem) {
+        var format = $(".mName option:selected").data("id");
+        var year = $(".mYear option:selected").text();
+        var number = $(".mNumber option:selected").text();
+        $.ajax({
+            url: '/Magazine/CreateArticlePartial',
+            dataType: 'html',
+            data: {
+                format: format,
+                year: parseInt(year),
+                section: parseInt(number),
+            },
+            success: function (data) {
+                $('.add-article').html(data);
+                CKEDITOR.replace('editor', {
+                    height: 500,
+                });
+                $(".select2").select2();
+                $("#image-uploader").fileinput({
+                    language: "hu",
+                    showUpload: false,
+                });
+            },
+        });
+    },
+
+    hideArticlePartial: function () {
+        $(".add-article").html("");
+    },
+
     showAddArticleButton: function (show) {
         if (show) {
             s.addButton.css("display", "block")
@@ -111,6 +135,22 @@ Magazine = {
             s.addButton.css("display", "none")
         }
 
+    },
+
+    loadingOverlay: function (show, elem) {
+        if (elem === undefined) {
+            if (show) {
+                $.LoadingOverlay("show")
+            } else {
+                $.LoadingOverlay("hide")
+            }
+        } else {
+            if (show) {
+                elem.LoadingOverlay("show")
+            } else {
+                elem.LoadingOverlay("hide")
+            }
+        }
     },
 
 };

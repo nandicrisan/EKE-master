@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Felhasználókezelés";
 }
-
+<link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
 <section class="content-header">
     <h1>
         Felhasználók kezelése
@@ -27,6 +27,7 @@
     )
 </section>
 @section scripts{
+    <script src="~/js/MVCGrid/mvc-grid.js"></script>
     <script>
         $('.mvc-grid').mvcgrid();
     </script>

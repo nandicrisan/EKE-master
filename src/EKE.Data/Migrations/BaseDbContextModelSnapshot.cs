@@ -192,6 +192,8 @@ namespace EKE.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("ArticleId");
+
                     b.Property<int>("AuthorId");
 
                     b.Property<string>("Description");
@@ -205,6 +207,8 @@ namespace EKE.Data.Migrations
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("AuthorId");
 
@@ -383,6 +387,10 @@ namespace EKE.Data.Migrations
 
             modelBuilder.Entity("EKE.Data.Entities.Gyopar.MediaElement", b =>
                 {
+                    b.HasOne("EKE.Data.Entities.Gyopar.Article")
+                        .WithMany("MediaElement")
+                        .HasForeignKey("ArticleId");
+
                     b.HasOne("EKE.Data.Entities.Gyopar.Author", "Author")
                         .WithMany("MediaElements")
                         .HasForeignKey("AuthorId")

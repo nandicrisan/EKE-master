@@ -1,11 +1,12 @@
 ﻿@using NonFactors.Mvc.Grid;
-@model List<EKE.Data.Entities.Gyopar.Article>
+@model EKE_Admin.Web.ViewModels.MagazineVM
 
 @{
     ViewData["Title"] = "Lapok kezelése";
 }
 <link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
 <link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
+<link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -32,8 +33,14 @@
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mName" style="width: 100%;" disabled="disabled">
-                                <option selected="selected" data-id="1">Gyopár</option>
-                                <option data-id="2">Erdély</option>
+                                <option data-id="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
+                                @if (Model.MagazineCategories.Count > 1)
+                                {
+                                    @foreach (var item in Model.MagazineCategories)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
                             </select>
                         </div>
                     </div>
@@ -121,6 +128,8 @@
     <script src="~/js/MVCGrid/mvc-grid.js"></script>
     <script src="~/js/Magazine/main.js"></script>
     <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/locales/hu.js"></script>
     <script>
         $(function () {
             //Initialize Select2 Elements

@@ -5,10 +5,15 @@ using EKE_Admin.Web.ViewModels;
 using EKE_Admin.Web.ViewModels.Configuration;
 using LinqKit;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -18,20 +23,32 @@ namespace EKE_Admin.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMagazineService _magService;
-        public MagazineController(IMagazineService magazineService, IMapper mapperService)
+        private readonly IHostingEnvironment _environment;
+        public MagazineController(IMagazineService magazineService, IMapper mapperService, IHostingEnvironment environment)
         {
             _magService = magazineService;
             _mapper = mapperService;
+            _environment = environment;
         }
 
         public IActionResult Index()
         {
-            var articles = _magService.GetAllArticles();
-            if (articles.IsOk())
-                return View(articles.Data);
+            var magazineCategories = _magService.GetAllMagazineCategories();
+            if (!magazineCategories.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategories.Status, magazineCategories.StatusText);
+                return View(new MagazineVM());
+            }
 
-            TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", articles.Status, articles.StatusText);
-            return View(new List<Article>());
+            var articles = _magService.GetAllArticles();
+            if (!articles.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", articles.Status, articles.StatusText);
+                return View(new MagazineVM());
+            }
+
+            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(articles.Data);
+            return View(mapper);
         }
 
         #region Magazine
@@ -121,7 +138,7 @@ namespace EKE_Admin.Web.Controllers
                 predicate.And(x => x.Magazine.PublishYear == year);
 
             if (section != 0)
-                predicate.And(x => x.Magazine.PublishSection.Contains(String.Format("{0}",section)));
+                predicate.And(x => x.Magazine.PublishSection.Contains(String.Format("{0}", section)));
 
             var result = _magService.GetAllArticlesBy(predicate);
             if (!result.IsOk())
@@ -136,18 +153,13 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult CreateArticlePartial(int format = 0, int year = 0, int section = 0)
         {
-            var magazineCategory = _magService.GetMagazineCategoryById(format);
-
-            if (!magazineCategory.IsOk())
-            {
-                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategory.Status, magazineCategory.Message);
-                return PartialView("Partials/_AddArticle");
-            }
+            var magazineCategory = new MagazineCategory();
+            magazineCategory.Id = format;
 
             var magazine = new Magazine();
-            magazine.Category = magazineCategory.Data;
+            magazine.Category = magazineCategory;
             magazine.PublishYear = year;
-            magazine.PublishSection = String.Format("{0}",section);
+            magazine.PublishSection = String.Format("{0}", section);
 
             var model = new Article();
             model.Magazine = magazine;
@@ -156,10 +168,26 @@ namespace EKE_Admin.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddArticle(Article model)
+        public async Task<IActionResult> AddArticle(Article model)
         {
-            return null;
+
+           ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
+            var uploads = Path.Combine(_environment.WebRootPath, "Uploads");
+            foreach (var file in model.Files)
+            {
+                if (file.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+            return View();
         }
+        #endregion
+
+        #region Images
         #endregion
     }
 }

@@ -9,6 +9,8 @@
     "font-awesome": "4.7.0",
     "admin-lte": "2.3.11",
     "iCheck": "1.0.2",
-    "ckeditor": "4.6.2"
+    "ckeditor": "4.6.2",
+    "bootstrap-fileinput": "4.3.8",
+    "gasparesganga-jquery-loading-overlay": "1.5.3"
   }
 }
