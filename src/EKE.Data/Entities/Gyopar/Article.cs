@@ -16,9 +16,8 @@ namespace EKE.Data.Entities.Gyopar
         public string Subtitle { get; set; }
         [Required]
         public string Slug { get; set; }
-        public int AuthorId { get; set; }
-        [Required]
-        public Author Author { get; set; }
+        public Nullable<int> AuthorId { get; set; }
+        public virtual Author Author { get; set; }
         public string PublishedBy { get; set; }
         public string Content { get; set; }
         public int OrderNo { get; set; }
