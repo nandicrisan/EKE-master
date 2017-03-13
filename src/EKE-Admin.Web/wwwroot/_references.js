@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="js/magazine/main.js" />
+/// <reference path="js/magazinelist/main.js" />
 /// <reference path="js/mvcgrid/mvc-grid.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/admin-lte/dist/js/app.js" />

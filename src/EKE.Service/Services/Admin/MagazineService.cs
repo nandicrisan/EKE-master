@@ -2,12 +2,13 @@
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
 using EKE.Service.Utils;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace EKE.Service.Services.Admin
 {
@@ -22,7 +23,7 @@ namespace EKE.Service.Services.Admin
         Result<List<Article>> GetAllArticles();
         Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
         Result<Article> GetArticleById(int id);
-        Result<Article> Add(Article model);
+        Result<Article> Add(Article model, string userName);
         Result<Article> Update(Article model);
 
         Result<MagazineCategory> Add(MagazineCategory model);
@@ -38,12 +39,14 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<Magazine> _magazineRepo;
         private readonly IEntityBaseRepository<Article> _articleRepo;
         private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
+        private readonly IHostingEnvironment _environment;
 
-        public MagazineService(IEntityBaseRepository<Magazine> magazineRepository, IEntityBaseRepository<Article> articleRepository, IEntityBaseRepository<MagazineCategory> magazineCatRepository, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public MagazineService(IEntityBaseRepository<Magazine> magazineRepository, IEntityBaseRepository<Article> articleRepository, IEntityBaseRepository<MagazineCategory> magazineCatRepository, IHostingEnvironment environment, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _magazineRepo = magazineRepository;
             _articleRepo = articleRepository;
             _magazineCatRepo = magazineCatRepository;
+            _environment = environment;
         }
 
         #region Magazines
@@ -55,7 +58,7 @@ namespace EKE.Service.Services.Admin
 
         public Result<List<Magazine>> GetAllMagazinesIncluding()
         {
-            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles).ToList());
+            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category).ToList());
         }
 
         public Result<Magazine> GetMagazineById(int id)
@@ -67,15 +70,16 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var exists = _magazineRepo.FindBy(x => x.PublishYear == model.PublishYear && x.PublishSection == model.PublishSection);
-                if (exists.Count() > 0)
-                    return new Result<Magazine>(ResultStatus.ALREADYEXISTS, "A lapszám már létezik! Kérem ellenőrizze az adatokat!");
-
                 var category = _magazineCatRepo.GetById(model.Category.Id);
                 if (category == null)
                     return new Result<Magazine>(ResultStatus.ERROR, "Hiba a kategória lekérése során");
 
                 model.Category = category;
+
+                var exists = _magazineRepo.FindBy(x => x.PublishYear == model.PublishYear && x.PublishSection.Contains(model.PublishSection) && x.Category.Id == model.Category.Id);
+                if (exists.Count() > 0)
+                    return new Result<Magazine>(ResultStatus.ALREADYEXISTS, "A lapszám már létezik! Kérem ellenőrizze az adatokat!");
+
                 model.DateCreated = DateTime.Now;
                 model.Slug = GenerateSlug(model.Title, model.PublishYear, model.PublishSection);
                 _magazineRepo.Add(model);
@@ -130,7 +134,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncludingPred(predicate, x => x.Author).ToList();
+                var result = _articleRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Magazine).ToList();
                 return new Result<List<Article>>(result);
             }
             catch (Exception ex)
@@ -151,10 +155,54 @@ namespace EKE.Service.Services.Admin
             }
         }
 
-        public Result<Article> Add(Article model)
+        public Result<Article> Add(Article model, string userName)
         {
             try
             {
+                var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.Magazine.PublishYear, model.Magazine.PublishSection));
+                if (!Directory.Exists(uploads))
+                    Directory.CreateDirectory(uploads);
+
+                var mediaElements = new List<MediaElement>();
+                foreach (var file in model.Files)
+                {
+                    if (file.Length > 0)
+                    {
+                        using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                        {
+                            file.CopyToAsync(fileStream);
+                        }
+                    }
+                    var mediaElem = new MediaElement();
+                    mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
+                    mediaElem.Name = RandomString(10);
+                    mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                    mediaElements.Add(mediaElem);
+                }
+
+                model.MediaElement = mediaElements;
+
+                var magCat = _magazineCatRepo.GetById(model.Magazine.Category.Id);
+                if (magCat == null)
+                    return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
+
+                var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
+                if (magazine.Count() == 0)
+                {
+                    model.Magazine.Category = magCat;
+                    model.Magazine.Title = String.Format("{0} / {1}", model.Magazine.PublishYear, model.Magazine.PublishSection);
+                    model.Magazine.Slug = GenerateSlug(model.Magazine.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
+                    model.Magazine.DateCreated = DateTime.Now;
+                }
+                else
+                {
+                    model.Magazine = magazine.FirstOrDefault();
+                }
+
+                model.Slug = GenerateSlug(model.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
+                model.PublishedBy = userName;
+                model.DateCreated = DateTime.Now;
+
                 _articleRepo.Add(model);
                 SaveChanges();
                 return new Result<Article>(model);
@@ -274,6 +322,15 @@ namespace EKE.Service.Services.Admin
         {
             byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(txt);
             return System.Text.Encoding.ASCII.GetString(bytes);
+        }
+
+
+        public string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
         #endregion
     }

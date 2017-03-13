@@ -147,36 +147,18 @@
         </form>
     </div>
 
-    @(Html
-    .Grid(Model.Magazines)
-    .Build(columns =>
-    {
-        columns.Add(model => model.Category.Name).Titled("Folyóirat").MultiFilterable(true);
-        columns.Add(model => model.PublishYear).Titled("Kiadási év").MultiFilterable(false);
-        columns.Add(model => model.PublishSection).Titled("Kiadási szám").MultiFilterable(false);
-        columns.Add(model => model.Title).Titled("Cím").MultiFilterable(true);
-        columns.Add(model => model.MagazineTags).Titled("Kulcsszavak").MultiFilterable(true);
-        columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").MultiFilterable(false);
-        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(false);
-        columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").MultiFilterable(false);
-        columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
-    })
-    .MultiFilterable()
-    .Filterable()
-    .Sortable()
-    .Pageable()
-    .Empty("Üres adattár a megadott paraméterekkel!")
-    )
+    <div class="magazinelist-grid" style="min-height:250px;">
+        @Html.AjaxGrid(Url.Action("MagazineListGrid", "Magazine"))
+    </div>
 </section>
 
 @section scripts{
     <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
     <script src="~/js/MVCGrid/mvc-grid.js"></script>
+    <script src="~/js/MagazineList/main.js"></script>
     <script>
         $(function () {
-            //Initialize Select2 Elements
-            $(".select2").select2();
-            $('.mvc-grid').mvcgrid();
+            MagazineList.init()
         });
     </script>
 }

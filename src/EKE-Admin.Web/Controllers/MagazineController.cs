@@ -23,12 +23,10 @@ namespace EKE_Admin.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMagazineService _magService;
-        private readonly IHostingEnvironment _environment;
-        public MagazineController(IMagazineService magazineService, IMapper mapperService, IHostingEnvironment environment)
+        public MagazineController(IMagazineService magazineService, IMapper mapperService)
         {
             _magService = magazineService;
             _mapper = mapperService;
-            _environment = environment;
         }
 
         public IActionResult Index()
@@ -54,15 +52,21 @@ namespace EKE_Admin.Web.Controllers
                 return View(new List<Article>());
             }
 
+            MagazineListVM viewmodel = _mapper.Map<MagazineListVM>(magazineCategories.Data);
+            return View(viewmodel);
+        }
+
+        public IActionResult MagazineListGrid()
+        {
             var magazines = _magService.GetAllMagazinesIncluding();
             if (!magazines.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazines.Status, magazines.Message);
-                return View(new List<Article>());
+                return PartialView("Partials/_MagazineListGrid", new List<Magazine>());
             }
 
-            MagazineListVM viewmodel = _mapper.Map<MagazineListVM>(magazineCategories.Data).Map(magazines.Data);
-            return View(viewmodel);
+            // Only grid string query values will be visible here.
+            return PartialView("Partials/_MagazineListGrid", magazines.Data.Take(10));
         }
 
         [HttpPost]
@@ -161,22 +165,26 @@ namespace EKE_Admin.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddArticle(Article model)
+        public IActionResult AddArticle(Article model)
         {
-
-            ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
-            var uploads = Path.Combine(_environment.WebRootPath, "Uploads");
-            foreach (var file in model.Files)
+            ModelState.Remove("Slug");
+            ModelState.Remove("Magazine.Category.Name");
+            ModelState.Remove("Magazine.Title");
+            if (!ModelState.IsValid)
             {
-                if (file.Length > 0)
-                {
-                    using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-                }
+                TempData["ErrorMessage"] = "Hiba a validáció során";
+                return View("Index", new MagazineVM());
             }
-            return View();
+
+            var result = _magService.Add(model, User.Identity.Name);
+            if (!result.IsOk())
+            {
+                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return View("Index", new MagazineVM());
+            }
+            ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
+
+            return View("Index");
         }
         #endregion
 

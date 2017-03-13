@@ -2,7 +2,6 @@
 Magazine = {
 
     settings: {
-        numArticles: 5,
         mName: $(".mName"),
         mYear: $(".mYear"),
         mNumber: $(".mNumber"),
