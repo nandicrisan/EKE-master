@@ -10,6 +10,7 @@ Magazine = {
         addButton: $(".btn-bitbucket"),
         addArticleContainer: $(".add-article"),
         selectors: $(".select2"),
+        gridContainer: $(".article-grid"),
     },
 
     mvcgrid: {
@@ -42,6 +43,7 @@ Magazine = {
 
         s.selectors.change(function () {
             Magazine.hideArticlePartial();
+            Magazine.gridRequest();
         });
 
         s.addButton.on("click", function () {
@@ -56,12 +58,13 @@ Magazine = {
             elem.children().removeClass("fa-times");
             elem.children().addClass("fa-check");
             elem.parent().children(".select2").removeAttr("disabled")
-            Magazine.gridRequest();
         } else {
             elem.children().addClass("fa-times");
             elem.children().removeClass("fa-check");
             elem.parent().children(".select2").attr("disabled", "disabled")
         }
+
+        Magazine.gridRequest();
 
         if (s.mName.attr("disabled") !== "disabled" && s.mYear.attr("disabled") !== "disabled" && s.mNumber.attr("disabled") !== "disabled") {
             Magazine.showAddArticleButton(true);
@@ -87,6 +90,15 @@ Magazine = {
         }
 
         $('.mvc-grid').mvcgrid({
+            reloadStarted: function (grid) {
+                Magazine.loadingOverlay(true, s.gridContainer)
+            },
+            reloadEnded: function (grid) {
+                Magazine.loadingOverlay(false, s.gridContainer)
+            },
+            reloadFailed: function (grid, result) {
+                Magazine.loadingOverlay(false, s.gridContainer)
+            },
             requestType: 'get', // defaults to get
             reload: true,
             data: {
@@ -146,9 +158,9 @@ Magazine = {
             }
         } else {
             if (show) {
-                elem.LoadingOverlay("show")
+                elem.LoadingOverlay("show", "'" + elem + "'")
             } else {
-                elem.LoadingOverlay("hide")
+                elem.LoadingOverlay("hide", "'" + elem + "'")
             }
         }
     },

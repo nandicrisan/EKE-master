@@ -14,6 +14,7 @@ namespace EKE.Service.Services.Admin
     public interface IMagazineService : IBaseService
     {
         Result<List<Magazine>> GetAllMagazines();
+        Result<List<Magazine>> GetAllMagazinesIncluding();
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
@@ -50,6 +51,11 @@ namespace EKE.Service.Services.Admin
         public Result<List<Magazine>> GetAllMagazines()
         {
             return new Result<List<Magazine>>(_magazineRepo.GetAll().ToList());
+        }
+
+        public Result<List<Magazine>> GetAllMagazinesIncluding()
+        {
+            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles).ToList());
         }
 
         public Result<Magazine> GetMagazineById(int id)
@@ -124,7 +130,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncludingPred(predicate).ToList();
+                var result = _articleRepo.GetAllIncludingPred(predicate, x => x.Author).ToList();
                 return new Result<List<Article>>(result);
             }
             catch (Exception ex)

@@ -40,14 +40,7 @@ namespace EKE_Admin.Web.Controllers
                 return View(new MagazineVM());
             }
 
-            var articles = _magService.GetAllArticles();
-            if (!articles.IsOk())
-            {
-                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", articles.Status, articles.StatusText);
-                return View(new MagazineVM());
-            }
-
-            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(articles.Data);
+            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data);
             return View(mapper);
         }
 
@@ -61,7 +54,7 @@ namespace EKE_Admin.Web.Controllers
                 return View(new List<Article>());
             }
 
-            var magazines = _magService.GetAllMagazines();
+            var magazines = _magService.GetAllMagazinesIncluding();
             if (!magazines.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazines.Status, magazines.Message);
@@ -171,7 +164,7 @@ namespace EKE_Admin.Web.Controllers
         public async Task<IActionResult> AddArticle(Article model)
         {
 
-           ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
+            ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
             var uploads = Path.Combine(_environment.WebRootPath, "Uploads");
             foreach (var file in model.Files)
             {

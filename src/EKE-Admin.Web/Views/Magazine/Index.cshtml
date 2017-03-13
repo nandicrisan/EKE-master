@@ -119,7 +119,9 @@
     <div class="add-article">
     </div>
 
-    @Html.AjaxGrid(Url.Action("ArticleGrid", "Magazine"))
+    <div class="article-grid" style="min-height:250px;">
+        @Html.AjaxGrid(Url.Action("ArticleGrid", "Magazine"))
+    </div>
 
 </section>
 <!-- /.content -->
