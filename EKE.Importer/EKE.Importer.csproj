@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F59D54F5-8028-4A67-B9D9-C7EB303239F5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EKE.Importer</RootNamespace>
+    <AssemblyName>EKE.Importer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.0.0\lib\net45\Google.Protobuf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mysql.data.entity.EF6, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entities.6.8.3.0\lib\net45\mysql.data.entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Importer.cs" />
+    <Compile Include="ImportStatistic.cs" />
+    <Compile Include="NewDbRepo.cs" />
+    <Compile Include="NewModel\Article.cs" />
+    <Compile Include="NewModel\AspNetRole.cs" />
+    <Compile Include="NewModel\AspNetRoleClaim.cs" />
+    <Compile Include="NewModel\AspNetUser.cs" />
+    <Compile Include="NewModel\AspNetUserClaim.cs" />
+    <Compile Include="NewModel\AspNetUserLogin.cs" />
+    <Compile Include="NewModel\AspNetUserToken.cs" />
+    <Compile Include="NewModel\Author.cs" />
+    <Compile Include="NewModel\C__EFMigrationsHistory.cs" />
+    <Compile Include="NewModel\Magazine.cs" />
+    <Compile Include="NewModel\MagazineCategory.cs" />
+    <Compile Include="NewModel\MediaElement.cs" />
+    <Compile Include="NewModel\NewModels.cs" />
+    <Compile Include="NewModel\sysdiagram.cs" />
+    <Compile Include="NewModel\Tag.cs" />
+    <Compile Include="OldModels\jos_ak_profiles.cs" />
+    <Compile Include="OldModels\jos_ak_stats.cs" />
+    <Compile Include="OldModels\jos_banner.cs" />
+    <Compile Include="OldModels\jos_bannerclient.cs" />
+    <Compile Include="OldModels\jos_bannertrack.cs" />
+    <Compile Include="OldModels\jos_bfdbversions.cs" />
+    <Compile Include="OldModels\jos_categories.cs" />
+    <Compile Include="OldModels\jos_components.cs" />
+    <Compile Include="OldModels\jos_contact_details.cs" />
+    <Compile Include="OldModels\jos_content.cs" />
+    <Compile Include="OldModels\jos_content_frontpage.cs" />
+    <Compile Include="OldModels\jos_content_rating.cs" />
+    <Compile Include="OldModels\jos_core_acl_aro.cs" />
+    <Compile Include="OldModels\jos_core_acl_aro_groups.cs" />
+    <Compile Include="OldModels\jos_core_acl_aro_map.cs" />
+    <Compile Include="OldModels\jos_core_acl_aro_sections.cs" />
+    <Compile Include="OldModels\jos_core_acl_groups_aro_map.cs" />
+    <Compile Include="OldModels\jos_core_log_items.cs" />
+    <Compile Include="OldModels\jos_core_log_searches.cs" />
+    <Compile Include="OldModels\jos_em_mysqladmin_log.cs" />
+    <Compile Include="OldModels\jos_groups.cs" />
+    <Compile Include="OldModels\jos_jlord_todo.cs" />
+    <Compile Include="OldModels\jos_joomlawatch.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_blocked.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_cache.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_cc2c.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_config.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_goals.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_info.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_internal.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_ip2c.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_uri.cs" />
+    <Compile Include="OldModels\jos_joomlawatch_uri2title.cs" />
+    <Compile Include="OldModels\jos_jp_dbtf.cs" />
+    <Compile Include="OldModels\jos_jp_def.cs" />
+    <Compile Include="OldModels\jos_jp_exclusion.cs" />
+    <Compile Include="OldModels\jos_jp_extradb.cs" />
+    <Compile Include="OldModels\jos_jp_inclusion.cs" />
+    <Compile Include="OldModels\jos_jp_packvars.cs" />
+    <Compile Include="OldModels\jos_jp_sff.cs" />
+    <Compile Include="OldModels\jos_linkr_bookmarks.cs" />
+    <Compile Include="OldModels\jos_menu.cs" />
+    <Compile Include="OldModels\jos_menu_types.cs" />
+    <Compile Include="OldModels\jos_messages.cs" />
+    <Compile Include="OldModels\jos_messages_cfg.cs" />
+    <Compile Include="OldModels\jos_migration_backlinks.cs" />
+    <Compile Include="OldModels\jos_modules.cs" />
+    <Compile Include="OldModels\jos_modules_menu.cs" />
+    <Compile Include="OldModels\jos_newsfeeds.cs" />
+    <Compile Include="OldModels\jos_phocadownload.cs" />
+    <Compile Include="OldModels\jos_phocadownload_categories.cs" />
+    <Compile Include="OldModels\jos_phocadownload_licenses.cs" />
+    <Compile Include="OldModels\jos_phocadownload_sections.cs" />
+    <Compile Include="OldModels\jos_phocadownload_settings.cs" />
+    <Compile Include="OldModels\jos_phocadownload_user_stat.cs" />
+    <Compile Include="OldModels\jos_plugins.cs" />
+    <Compile Include="OldModels\jos_polls.cs" />
+    <Compile Include="OldModels\jos_poll_data.cs" />
+    <Compile Include="OldModels\jos_poll_date.cs" />
+    <Compile Include="OldModels\jos_poll_menu.cs" />
+    <Compile Include="OldModels\jos_rokdownloads.cs" />
+    <Compile Include="OldModels\jos_rokversions.cs" />
+    <Compile Include="OldModels\jos_sections.cs" />
+    <Compile Include="OldModels\jos_sefexts.cs" />
+    <Compile Include="OldModels\jos_sefexttexts.cs" />
+    <Compile Include="OldModels\jos_sefmoved.cs" />
+    <Compile Include="OldModels\jos_sefurls.cs" />
+    <Compile Include="OldModels\jos_sefurlword_xref.cs" />
+    <Compile Include="OldModels\jos_sefwords.cs" />
+    <Compile Include="OldModels\jos_session.cs" />
+    <Compile Include="OldModels\jos_stats_agents.cs" />
+    <Compile Include="OldModels\jos_tag_category_map.cs" />
+    <Compile Include="OldModels\jos_tag_hideshow.cs" />
+    <Compile Include="OldModels\jos_tag_layouts.cs" />
+    <Compile Include="OldModels\jos_tag_tags.cs" />
+    <Compile Include="OldModels\jos_templates_menu.cs" />
+    <Compile Include="OldModels\jos_users.cs" />
+    <Compile Include="OldModels\jos_weblinks.cs" />
+    <Compile Include="OldModels\jos_wf_profiles.cs" />
+    <Compile Include="OldModels\jos_xmap.cs" />
+    <Compile Include="OldModels\jos_xmap_ext.cs" />
+    <Compile Include="OldModels\jos_xmap_items.cs" />
+    <Compile Include="OldModels\jos_xmap_sitemap.cs" />
+    <Compile Include="OldModels\jos_yvcomment.cs" />
+    <Compile Include="OldModels\Models.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

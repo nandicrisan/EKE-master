@@ -9,9 +9,10 @@ using EKE.Data.Entities.Enums;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170310213137_author_can_be_null")]
+    partial class author_can_be_null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -194,7 +195,7 @@ namespace EKE.Data.Migrations
 
                     b.Property<int?>("ArticleId");
 
-                    b.Property<int?>("AuthorId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<string>("Description");
 
@@ -392,7 +393,8 @@ namespace EKE.Data.Migrations
 
                     b.HasOne("EKE.Data.Entities.Gyopar.Author", "Author")
                         .WithMany("MediaElements")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("EKE.Data.Entities.Gyopar.Magazine")
                         .WithMany("MediaElements")
