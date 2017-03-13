@@ -21,6 +21,8 @@ namespace EKE.Importer.NewModel
 
         public string Content { get; set; }
 
+        public string OldContent { get; set; }
+
         public int? MagazineId { get; set; }
 
         [Required]

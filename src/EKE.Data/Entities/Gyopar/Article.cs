@@ -20,6 +20,7 @@ namespace EKE.Data.Entities.Gyopar
         public virtual Author Author { get; set; }
         public string PublishedBy { get; set; }
         public string Content { get; set; }
+        public string OldContent { get; set; }
         public int OrderNo { get; set; }
         public virtual Magazine Magazine { get; set; }
         public virtual ICollection<ArticleTag> ArticleTag { get; set; }

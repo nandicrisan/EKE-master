@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="HtmlFormatter.cs" />
     <Compile Include="Importer.cs" />
     <Compile Include="ImportStatistic.cs" />
     <Compile Include="NewDbRepo.cs" />

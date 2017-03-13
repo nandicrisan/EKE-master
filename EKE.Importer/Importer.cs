@@ -24,7 +24,7 @@ namespace EKE.Importer
             using (var db = new OldModels.Models())
             {
                 HtmlDocument doc = new HtmlDocument();
-                var categories = db.jos_categories.Take(2).ToList();
+                var categories = db.jos_categories.ToList();
                 foreach (var categ in categories)
                 {
                     if (Constants.ToSkip.Contains(categ.id))
