@@ -19,6 +19,7 @@ namespace EKE.Service.Services.Admin
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
+        Result<Magazine> GetMagazinesBy(Expression<Func<Magazine, bool>> predicate);
 
         Result<List<Article>> GetAllArticles();
         Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
@@ -113,6 +114,19 @@ namespace EKE.Service.Services.Admin
                 return new Result<bool>(ResultStatus.ERROR, ex.Message);
             }
         }
+
+        public Result<Magazine> GetMagazinesBy(Expression<Func<Magazine, bool>> predicate)
+        {
+            try
+            {
+                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles).FirstOrDefault();
+                return new Result<Magazine>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<Magazine>(ResultStatus.ERROR, ex.Message);
+            }
+        }
         #endregion
         #endregion
 
@@ -159,28 +173,31 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.Magazine.PublishYear, model.Magazine.PublishSection));
-                if (!Directory.Exists(uploads))
-                    Directory.CreateDirectory(uploads);
-
-                var mediaElements = new List<MediaElement>();
-                foreach (var file in model.Files)
+                if (model.Files != null)
                 {
-                    if (file.Length > 0)
-                    {
-                        using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-                        {
-                            file.CopyToAsync(fileStream);
-                        }
-                    }
-                    var mediaElem = new MediaElement();
-                    mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
-                    mediaElem.Name = RandomString(10);
-                    mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
-                    mediaElements.Add(mediaElem);
-                }
+                    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.Magazine.PublishYear, model.Magazine.PublishSection));
+                    if (!Directory.Exists(uploads))
+                        Directory.CreateDirectory(uploads);
 
-                model.MediaElement = mediaElements;
+                    var mediaElements = new List<MediaElement>();
+                    foreach (var file in model.Files)
+                    {
+                        if (file.Length > 0)
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                            {
+                                file.CopyToAsync(fileStream);
+                            }
+                        }
+                        var mediaElem = new MediaElement();
+                        mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
+                        mediaElem.Name = RandomString(10);
+                        mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                        mediaElements.Add(mediaElem);
+                    }
+
+                    model.MediaElement = mediaElements;
+                }
 
                 var magCat = _magazineCatRepo.GetById(model.Magazine.Category.Id);
                 if (magCat == null)

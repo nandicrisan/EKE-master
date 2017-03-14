@@ -9,7 +9,7 @@
     ViewData["Title"] = "Log in";
     Layout = null;
 }
-<environment names="Development">
+<environment names="Development,Staging,Production">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
@@ -20,7 +20,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <img class="text-center" src="~/images/logo/eke.gif"/>
+            <img class="text-center" src="~/images/logo/eke.gif" />
             <a href="../../index2.html"><b>EKE</b>Admin</a>
         </div>
         <!-- /.login-logo -->
@@ -61,7 +61,7 @@
         <!-- /.login-box-body -->
     </div>
 
-    <environment names="Development">
+    <environment names="Development,Staging,Production">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script>
@@ -71,13 +71,13 @@
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
     </script>
 </body>
 

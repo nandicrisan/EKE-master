@@ -11,6 +11,7 @@
     "iCheck": "1.0.2",
     "ckeditor": "4.6.2",
     "bootstrap-fileinput": "4.3.8",
-    "gasparesganga-jquery-loading-overlay": "1.5.3"
+    "gasparesganga-jquery-loading-overlay": "1.5.3",
+    "jquery.unobtrusive-ajax": "3.2.4"
   }
 }

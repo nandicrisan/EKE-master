@@ -5,14 +5,13 @@
         <h3 class="box-title">Cikk szerkesztése</h3>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#responseContent" enctype="multipart/form-data">
+    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data">
         @Html.HiddenFor(x => x.Magazine.PublishSection)
         @Html.HiddenFor(x => x.Magazine.PublishYear)
         @Html.HiddenFor(x => x.Magazine.Category.Id)
         @Html.HiddenFor(x => x.Magazine.Category)
         @Html.HiddenFor(x => x.Magazine)
         <div class="box-body">
-
             <div class="col-md-9 row">
                 <div class="col-md-2">
                     <div class="form-group">
@@ -78,5 +77,4 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
-    <div id="responseContent"></div>
 </div>

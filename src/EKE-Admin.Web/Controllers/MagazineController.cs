@@ -66,7 +66,7 @@ namespace EKE_Admin.Web.Controllers
             }
 
             // Only grid string query values will be visible here.
-            return PartialView("Partials/_MagazineListGrid", magazines.Data.Take(10));
+            return PartialView("Partials/_MagazineListGrid", magazines.Data);
         }
 
         [HttpPost]
@@ -127,6 +127,7 @@ namespace EKE_Admin.Web.Controllers
         #region Article
         public IActionResult ArticleGrid(int format = 0, int year = 0, int section = 0)
         {
+            //get articles via Magazine->Category route
             var predicate = PredicateBuilder.New<Article>();
             if (format != 0)
                 predicate.And(x => x.Magazine.Category.Id == format);
@@ -167,24 +168,24 @@ namespace EKE_Admin.Web.Controllers
         [HttpPost]
         public IActionResult AddArticle(Article model)
         {
+            var message = "Sikeresen hozzáadva!";
             ModelState.Remove("Slug");
             ModelState.Remove("Magazine.Category.Name");
             ModelState.Remove("Magazine.Title");
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Hiba a validáció során";
-                return View("Index", new MagazineVM());
+                message = "Hiba a validáció során. A mezők kitöltése kötelező!";
+                return PartialView("Layout/_ErrorHandling", message);
             }
 
             var result = _magService.Add(model, User.Identity.Name);
             if (!result.IsOk())
             {
-                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
-                return View("Index", new MagazineVM());
+                message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return PartialView("Layout/_ErrorHandling", message);
             }
-            ///todo: Fill Article model, split files, save files, connect to mediaelement, save article
-
-            return View("Index");
+            
+            return PartialView("Layout/_SuccessHandling", message);
         }
         #endregion
 

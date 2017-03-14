@@ -164,4 +164,11 @@ Magazine = {
         }
     },
 
+    articleAddSuccess: function () {
+        Magazine.hideArticlePartial();
+        $('.mvc-grid').mvcgrid({
+            reload: true,
+        });
+    },
+
 };

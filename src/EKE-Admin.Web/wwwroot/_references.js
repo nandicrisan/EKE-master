@@ -9,6 +9,7 @@
 /// <reference path="lib/ckeditor/ckeditor.js" />
 /// <reference path="lib/gasparesganga-jquery-loading-overlay/src/loadingoverlay.js" />
 /// <reference path="lib/icheck/icheck.min.js" />
+/// <reference path="lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />
 /// <reference path="lib/jquery-validation/dist/jquery.validate.js" />
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />
