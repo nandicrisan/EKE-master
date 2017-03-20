@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using EKE.Data;
+using EKE.Data.Entities;
+using EKE.Data.Entities.Gyopar;
+using EKE.Data.Entities.Identity;
+using EKE.Data.Infrastructure;
+using EKE.Data.Repository;
+using EKE.Service.Services.Admin;
+using EKE_Gyopar.Web.ViewModels.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 
 namespace EKE_Gyopar.Web
@@ -34,10 +41,27 @@ namespace EKE_Gyopar.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddDbContext<BaseDbContext>(options =>
+                  options.UseSqlServer(Configuration.GetConnectionString("EKEConnectionString")));
 
-            services.AddMvc();
+            RegisterServices(services);
         }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            //Add Framework services.
+            services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<UserSeed>();
+            services.AddTransient<IArticleService, ArticleService>();
+
+            services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
+            //Add Services
+            services.AddMvc();
+            services.AddSession();
+            services.AddAutoMapper();
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
