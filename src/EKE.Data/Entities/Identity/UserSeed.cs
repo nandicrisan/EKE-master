@@ -36,6 +36,11 @@ namespace EKE.Data.Entities.Identity
                 await roleStore.CreateAsync(new IdentityRole { Name = "superadmin", NormalizedName = "superadmin" });
             }
 
+            if (!_context.Roles.Any(r => r.Name == "gyopar"))
+            {
+                await roleStore.CreateAsync(new IdentityRole { Name = "gyopar", NormalizedName = "gyopar" });
+            }
+
             if (!_context.Users.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<ApplicationUser>();

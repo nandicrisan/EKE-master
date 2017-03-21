@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
+using EKE.Data.Entities.Identity.AccountViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,11 @@ namespace EKE_Admin.Web.ViewModels.Configuration
             CreateMap<List<MagazineCategory>, MagazineVM>()
                 .ForMember(dest => dest.MagazineCategories, opt => opt.MapFrom(src => src));
 
+            CreateMap<List<ApplicationUser>, UserManagementVM>()
+                .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src));
+            CreateMap<RegisterViewModel, UserManagementVM>();
+            CreateMap<List<ApplicationUser>, UserManagementVM>()
+               .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src));
         }
     }
 }

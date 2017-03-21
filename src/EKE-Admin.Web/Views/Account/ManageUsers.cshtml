@@ -1,5 +1,5 @@
 ﻿@using NonFactors.Mvc.Grid;
-@model List<EKE.Data.Entities.ApplicationUser>
+@model EKE_Admin.Web.ViewModels.UserManagementVM
 @{
     ViewData["Title"] = "Felhasználókezelés";
 }
@@ -10,9 +10,49 @@
         <small>Admin panel</small>
     </h1>
 </section>
+
+<form asp-controller="Account" asp-action="RegisterUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <h4>Create a new account.</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="RegisterVM.Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="RegisterVM.Email" class="form-control" />
+            <span asp-validation-for="RegisterVM.Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="RegisterVM.Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="RegisterVM.Password" class="form-control" />
+            <span asp-validation-for="RegisterVM.Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="RegisterVM.ConfirmPassword" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="RegisterVM.ConfirmPassword" class="form-control" />
+            <span asp-validation-for="RegisterVM.ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        Role
+        <div class="col-md-10">
+            <input name="role" class="form-control" />
+            <span for="role" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Register</button>
+        </div>
+    </div>
+</form>
+
 <section class="content">
     @(Html
-    .Grid(Model)
+    .Grid(Model.AppUser)
     .Build(columns =>
     {
         columns.Add(model => model.Email).Titled("Email cím");

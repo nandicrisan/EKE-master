@@ -9,6 +9,9 @@ using Microsoft.Extensions.Logging;
 using EKE.Data.Entities;
 using EKE.Service.Services.Admin;
 using EKE.Data.Entities.Identity.AccountViewModels;
+using EKE_Admin.Web.ViewModels;
+using AutoMapper;
+using EKE_Admin.Web.ViewModels.Configuration;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -16,23 +19,29 @@ namespace EKE_Admin.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationUser> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationUser> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IMapper mapper)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _mapper = mapper;
         }
 
         //
@@ -460,6 +469,7 @@ namespace EKE_Admin.Web.Controllers
             return View();
         }
 
+        #region Superadmin
         /// <summary>
         /// Manage registered users
         /// </summary>
@@ -469,16 +479,51 @@ namespace EKE_Admin.Web.Controllers
         [Authorize(Roles = "superadmin")]
         public async Task<IActionResult> ManageUsers()
         {
+            var viewModel = new UserManagementVM();
             var users = _userManager.Users.ToList();
-
             foreach (var item in users)
             {
-                var roles = await _userManager.GetRolesAsync(item);
-                item.RoleAssigned = roles.Aggregate((i, j) => i + " , " + j);
+                var userRoles = await _userManager.GetRolesAsync(item);
+                item.RoleAssigned = userRoles.Aggregate((i, j) => i + " , " + j);
             }
 
-            return View(users);
+            var allRoles = _roleManager.Roles.ToList();
+            viewModel = viewModel.Map(users).Map(new RegisterViewModel()).Map(allRoles);
+            return View(viewModel);
         }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [Authorize(Roles = "superadmin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string role, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, RoleAssigned = role };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+                    // Send an email with this link
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation(3, "User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        #endregion
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
