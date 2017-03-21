@@ -2,18 +2,11 @@
 using EKE.Data.Entities.Gyopar;
 using EKE.Service.Services.Admin;
 using EKE_Admin.Web.ViewModels;
-using EKE_Admin.Web.ViewModels.Configuration;
 using LinqKit;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace EKE_Admin.Web.Controllers
 {

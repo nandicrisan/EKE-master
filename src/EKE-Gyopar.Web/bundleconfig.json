@@ -13,6 +13,7 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ],
+
     // Optionally specify minification options
     "minify": {
       "enabled": true,
@@ -20,5 +21,11 @@
     },
     // Optinally generate .map file
     "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/home.min.js",
+    "inputFiles": [
+      "wwwroot/js/magazine-search.js",
+    ]
   }
 ]

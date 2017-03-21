@@ -32,9 +32,9 @@
     "EKE.Service": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.1",
     "NonFactors.Grid.Mvc6": "1.4.0",
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3",
     "AutoMapper": "5.2.0",
-    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.2.0",
-    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"
+    "AutoMapper.Extensions.Microsoft.DependencyInjection": "1.2.0"
   },
 
   "tools": {

@@ -1,0 +1,48 @@
+﻿@*
+*@
+<div class="form-inline" style="margin:16px 0 0 16px;">
+    <div class="form-group">
+        <input type="text" id="search-keyword" class="form-control" placeholder="Kulcsszó">
+    </div>
+    <select id="search-year" class="form-control">
+        <option value="0">Évszám</option>
+        @for (int i = 1800; i <= DateTime.Now.Year; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    <select id="search-section" class="form-control">
+        <option value="0">Lapszám</option>
+        @for (int i = 0; i <= 12; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-default" onclick="Search.Search()">Keresés</button>
+</div>
+<hgroup id="search-resum" style="display:none">
+    <h2 class="lead"><strong id="result-count" class="text-danger"></strong> találat erre a kifejezésre: <strong id="search-keyword-text" class="text-danger"></strong></h2>
+</hgroup>
+<div id="search-result" class="container">
+
+</div>
+
+<div id="result-template" style="display:none;">
+    <section class="col-xs-12 col-sm-6 col-md-12">
+        <article class="search-result row">
+            <div class="col-xs-12 col-sm-12 col-md-3">
+                <a href="#" title="Lorem ipsum" class="thumbnail"><img src="http://lorempixel.com/250/140/people" alt="Gyopar" /></a>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
+                <span class="info">
+                    <span class="publish-year"></span>
+                    <span class="publish-section"></span>
+                    <span class="article-author"></span>
+                </span>
+                <h3><a href="#" title="" class="article-title"></a></h3>
+                <p class="article-content-part"></p>
+            </div>
+            <span class="clearfix borda"></span>
+        </article>
+    </section>
+</div>
