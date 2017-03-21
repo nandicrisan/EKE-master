@@ -1,0 +1,53 @@
+﻿@using NonFactors.Mvc.Grid;
+@model EKE.Data.Entities.Gyopar.Tag
+@{
+    ViewData["Title"] = "Kulcsszavak kezelése";
+}
+
+<div id="responseContent"></div>
+
+<section class="content-header">
+    <h1>
+        Kulcsszavak kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+<section class="content">
+    <div class="box box-success">
+        <form asp-controller="Magazine" asp-action="AddKeyword" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Keywords.keywordAddSuccess()" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Név</label>
+                        <input name="Name" class="form-control" type="text" placeholder="Kulcsszó">
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <label></label>
+                    <div class="row">
+                        <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </form>
+    </div>
+
+    <div class="keywords-grid" style="min-height:250px;">
+        @Html.AjaxGrid(Url.Action("KeywordGridList", "Magazine"))
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/js/MVCGrid/mvc-grid.js"></script>
+    <script src="~/js/Keywords/main.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        $(function () {
+            Keywords.init()
+        });
+    </script>
+}

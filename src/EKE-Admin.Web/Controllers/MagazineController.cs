@@ -177,12 +177,47 @@ namespace EKE_Admin.Web.Controllers
                 message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
                 return PartialView("Layout/_ErrorHandling", message);
             }
-            
+
             return PartialView("Layout/_SuccessHandling", message);
         }
         #endregion
 
         #region Images
+        #endregion
+
+        #region Keywords
+        public IActionResult KeywordList()
+        {
+            //var result = _magService.GetAllTags();
+            return View();
+        }
+
+        public IActionResult KeywordGridList()
+        {
+            var result = _magService.GetAllTags();
+            return PartialView("Partials/_KeywordGrid", result.Data);
+        }
+
+        public IActionResult AddKeyword(Tag model)
+        {
+            var result = _magService.Add(model);
+            if (result.IsOk())
+                return PartialView("Layout/_SuccessHandling", "Sikeresen hozzáadva");
+
+            return PartialView("Layout/_ErrorHandling", String.Format("Hiba a hozzáadás során ({0}:{1})", result.Status, result.Message));
+        }
+
+        [Authorize(Roles = "superadmin,gyopar")]
+        public IActionResult RemoveTag(int id)
+        {
+            //TODO: return jsonresult
+            var result = _magService.DeleteTag(id);
+            if (result.IsOk())
+                return Ok("oke");
+
+            TempData["ErrorMessage"] = "Hiba a törlés során";
+            return NotFound("hiba");
+        }
         #endregion
     }
 }

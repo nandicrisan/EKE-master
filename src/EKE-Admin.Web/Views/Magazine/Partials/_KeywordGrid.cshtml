@@ -1,0 +1,15 @@
+﻿@using NonFactors.Mvc.Grid;
+@model IEnumerable<EKE.Data.Entities.Gyopar.Tag>
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+    columns.Add(model => model.Name).Titled("Név").MultiFilterable(true);
+    columns.Add(model => $"<button onclick=\"Keywords.deleteTag({model.Id})\" class='btn btn-danger'><i class='fa fa-trash'></i></button>").Encoded(false);
+})
+    .MultiFilterable()
+    .Filterable()
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+)

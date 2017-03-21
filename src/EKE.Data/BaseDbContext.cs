@@ -5,7 +5,7 @@ using EKE.Data.Entities.Gyopar;
 
 namespace EKE.Data
 {
-    public class BaseDbContext : IdentityDbContext<ApplicationUser>
+    public class BaseDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
         {

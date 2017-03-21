@@ -33,6 +33,10 @@ namespace EKE.Service.Services.Admin
 
         Result<bool> DeleteMagazineCategory(int id);
         Result<bool> DeleteMagazine(int id);
+
+        Result<List<Tag>> GetAllTags();
+        Result<Tag> Add(Tag model);
+        Result DeleteTag(int id);
     }
 
     public class MagazineService : BaseService, IMagazineService
@@ -40,13 +44,15 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<Magazine> _magazineRepo;
         private readonly IEntityBaseRepository<Article> _articleRepo;
         private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
+        private readonly IEntityBaseRepository<Tag> _tagRepo;
         private readonly IHostingEnvironment _environment;
 
-        public MagazineService(IEntityBaseRepository<Magazine> magazineRepository, IEntityBaseRepository<Article> articleRepository, IEntityBaseRepository<MagazineCategory> magazineCatRepository, IHostingEnvironment environment, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public MagazineService(IEntityBaseRepository<Magazine> magazineRepository, IEntityBaseRepository<Article> articleRepository, IEntityBaseRepository<MagazineCategory> magazineCatRepository, IEntityBaseRepository<Tag> tagRepository, IHostingEnvironment environment, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _magazineRepo = magazineRepository;
             _articleRepo = articleRepository;
             _magazineCatRepo = magazineCatRepository;
+            _tagRepo = tagRepository;
             _environment = environment;
         }
 
@@ -348,6 +354,54 @@ namespace EKE.Service.Services.Admin
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        #endregion
+
+        #region Tags
+        public Result<List<Tag>> GetAllTags()
+        {
+            var result = _tagRepo.GetAll();
+            if (result == null)
+                return new Result<List<Tag>>(ResultStatus.NOT_FOUND);
+
+            return new Result<List<Tag>>(result.ToList());
+        }
+
+        public Result<Tag> Add(Tag model)
+        {
+            try
+            {
+                model.Name = model.Name.Trim();
+                var exists = _tagRepo.FindBy(x => x.Name == model.Name.Trim());
+                if (exists.Count() > 0)
+                    return new Result<Tag>(ResultStatus.ALREADYEXISTS, "A megadott kulcsszó már létezik!");
+
+                _tagRepo.Add(model);
+                SaveChanges();
+                return new Result<Tag>(model);
+            }
+            catch (Exception ex)
+            {
+                return new Result<Tag>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result DeleteTag(int id)
+        {
+            try
+            {
+                var result = _tagRepo.GetById(id);
+                if (result == null)
+                    return new Result(ResultStatus.NOT_FOUND);
+
+                _tagRepo.Delete(result);
+                SaveChanges();
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
         }
         #endregion
     }

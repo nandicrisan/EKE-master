@@ -19,7 +19,7 @@ namespace EKE_Admin.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationUser> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
@@ -28,7 +28,7 @@ namespace EKE_Admin.Web.Controllers
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationUser> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
@@ -484,7 +484,8 @@ namespace EKE_Admin.Web.Controllers
             foreach (var item in users)
             {
                 var userRoles = await _userManager.GetRolesAsync(item);
-                item.RoleAssigned = userRoles.Aggregate((i, j) => i + " , " + j);
+                if (userRoles.Count() > 0)
+                    item.RoleAssigned = userRoles.Aggregate((i, j) => i + " , " + j);
             }
 
             var allRoles = _roleManager.Roles.ToList();
@@ -497,30 +498,78 @@ namespace EKE_Admin.Web.Controllers
         [HttpPost]
         [Authorize(Roles = "superadmin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string role, string returnUrl = null)
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string[] roles, string returnUrl = null)
         {
+            //TODO: AJAX CALL RETURN PARTIAL IF SUCCESS
             ViewData["ReturnUrl"] = returnUrl;
+
+            var exists = true;
+            foreach (var item in roles)
+            {
+                exists = await _roleManager.RoleExistsAsync(item);
+                if (!exists)
+                {
+                    TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során!");
+                    return RedirectToAction("ManageUsers");
+                }
+            }
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, RoleAssigned = role };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+
+                foreach (var item in roles)
+                {
+                    await _userManager.AddToRoleAsync(user, item);
+                }
+
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("ManageUsers");
                 }
+                TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során!");
                 AddErrors(result);
+                return RedirectToAction("ManageUsers");
+            }
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("ManageUsers");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "superadmin")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            //TODO: return jsonresult
+            if (ModelState.IsValid)
+            {
+                if (id == null)
+                {
+                    TempData["ErrorMessage"] = string.Format("Hiba a törlés során!");
+                    return RedirectToAction("ManageUsers");
+                }
+
+                var user = await _userManager.FindByIdAsync(id);
+                var logins = user.Logins;
+                char separator = ',';
+                if (user.RoleAssigned != null)
+                {
+                    var rolesForUser = user.RoleAssigned.Split(separator);
+                    foreach (var item in rolesForUser)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, item);
+                    }
+                }
+
+                foreach (var login in logins.ToList())
+                {
+                    await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+                }
+
+                await _userManager.DeleteAsync(user);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("ManageUsers");
         }
         #endregion
 

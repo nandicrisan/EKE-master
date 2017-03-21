@@ -34,7 +34,7 @@ namespace EKE_Admin.Web.ViewModels.Configuration
             CreateMap<List<ApplicationUser>, UserManagementVM>()
                 .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src));
             CreateMap<RegisterViewModel, UserManagementVM>();
-            CreateMap<List<ApplicationUser>, UserManagementVM>()
+            CreateMap<List<ApplicationRole>, UserManagementVM>()
                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src));
         }
     }

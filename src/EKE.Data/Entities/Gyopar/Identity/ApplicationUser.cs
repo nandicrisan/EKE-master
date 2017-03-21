@@ -17,4 +17,9 @@ namespace EKE.Data.Entities
         //    return userIdentity;
         //}
     }
+
+    public class ApplicationRole : IdentityRole
+    {
+
+    }
 }

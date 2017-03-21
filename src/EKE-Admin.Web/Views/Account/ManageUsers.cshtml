@@ -3,7 +3,11 @@
 @{
     ViewData["Title"] = "Felhasználókezelés";
 }
+<link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
 <link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
+
+@Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+
 <section class="content-header">
     <h1>
         Felhasználók kezelése
@@ -11,44 +15,52 @@
     </h1>
 </section>
 
-<form asp-controller="Account" asp-action="RegisterUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <h4>Create a new account.</h4>
-    <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="RegisterVM.Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="RegisterVM.Email" class="form-control" />
-            <span asp-validation-for="RegisterVM.Email" class="text-danger"></span>
-        </div>
+<section class="content">
+    <div class="box box-success">
+        <form asp-controller="Account" asp-action="RegisterUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="box-body">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Email cím</label>
+                        <input name="Email" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Jelszó</label>
+                        <input name="Password" type="password" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Jelszó megerõsítése</label>
+                        <input name="ConfirmPassword" type="password" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Szerepek</label>
+                        <select class="form-control select2" name="roles" multiple="multiple" data-placeholder="Jogok kiválasztása" style="width: 100%;">
+                            @foreach (var item in Model.Roles)
+                            {
+                                <option>@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div class="row">
+                            <button type="submit" class="btn btn-default pull-right">Regisztrálás</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="RegisterVM.Password" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="RegisterVM.Password" class="form-control" />
-            <span asp-validation-for="RegisterVM.Password" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="RegisterVM.ConfirmPassword" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="RegisterVM.ConfirmPassword" class="form-control" />
-            <span asp-validation-for="RegisterVM.ConfirmPassword" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        Role
-        <div class="col-md-10">
-            <input name="role" class="form-control" />
-            <span for="role" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Register</button>
-        </div>
-    </div>
-</form>
+</section>
 
 <section class="content">
     @(Html
@@ -58,17 +70,21 @@
         columns.Add(model => model.Email).Titled("Email cím");
         columns.Add(model => model.UserName).Titled("Felhasználónév");
         columns.Add(model => model.RoleAssigned).Titled("Típus");
-        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-primary'><i class='fa fa-pencil'></i></button>").Encoded(false);
-        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-danger'><i class='fa fa-trash'></i></button>").Encoded(false);
+        //columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-primary'><i class='fa fa-pencil'></i></button>").Encoded(false);
+        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-danger delete-user'><i class='fa fa-trash'></i></button>").Encoded(false);
     })
     .Filterable()
     .Sortable()
     .Pageable()
     )
 </section>
+
 @section scripts{
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
     <script src="~/js/MVCGrid/mvc-grid.js"></script>
+    <script src="~/js/UserManagement/main.js"></script>
     <script>
-        $('.mvc-grid').mvcgrid();
+        UserManagement.init();
     </script>
 }

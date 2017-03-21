@@ -11,6 +11,6 @@ namespace EKE_Admin.Web.ViewModels
     {
         public List<ApplicationUser> AppUser { get; set; }
         public RegisterViewModel RegisterVM { get; set; }
-        public List<ApplicationUser> Roles { get; set; }
+        public List<ApplicationRole> Roles { get; set; }
     }
 }

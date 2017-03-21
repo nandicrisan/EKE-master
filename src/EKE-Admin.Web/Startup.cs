@@ -8,6 +8,7 @@ using EKE.Data.Repository;
 using EKE.Service.Services.Admin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -52,7 +53,7 @@ namespace EKE_Admin.Web
         private void registerServices(IServiceCollection services)
         {
             //Add Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<BaseDbContext>()
                 .AddDefaultTokenProviders();
             //Add Framework services.
@@ -66,6 +67,8 @@ namespace EKE_Admin.Web
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
             services.AddTransient<IEntityBaseRepository<MagazineCategory>, EntityBaseRepository<MagazineCategory>>();
+            services.AddTransient<IEntityBaseRepository<Tag>, EntityBaseRepository<Tag>>();
+
             //Add Services
             services.AddMvc();
             services.AddSession();
