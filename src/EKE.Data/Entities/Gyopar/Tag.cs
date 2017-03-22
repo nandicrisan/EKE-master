@@ -9,6 +9,6 @@ namespace EKE.Data.Entities.Gyopar
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<ArticleTag> ArticleTags { get; set; }
-        public ICollection<MagazineTag> MagazinTags { get; set; }
+        public virtual ICollection<MagazineTag> MagazineTags { get; set; }
     }
 }

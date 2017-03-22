@@ -2,6 +2,7 @@
 using EKE.Data.Entities.Gyopar;
 using EKE.Service.Services.Admin;
 using EKE_Admin.Web.ViewModels;
+using EKE_Admin.Web.ViewModels.Configuration;
 using LinqKit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,14 @@ namespace EKE_Admin.Web.Controllers
                 return View(new MagazineVM());
             }
 
-            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data);
+            var tags = _magService.GetAllTags();
+            if (!tags.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
+                return View(new List<Article>());
+            }
+
+            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags);
             return View(mapper);
         }
 
@@ -45,7 +53,14 @@ namespace EKE_Admin.Web.Controllers
                 return View(new List<Article>());
             }
 
-            MagazineListVM viewmodel = _mapper.Map<MagazineListVM>(magazineCategories.Data);
+            var tags = _magService.GetAllTags();
+            if (!tags.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
+                return View(new List<Article>());
+            }
+
+            MagazineListVM viewmodel = _mapper.Map<MagazineListVM>(magazineCategories.Data).Map(tags.Data);
             return View(viewmodel);
         }
 

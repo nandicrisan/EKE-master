@@ -25,11 +25,15 @@ namespace EKE_Admin.Web.ViewModels.Configuration
                 .ForMember(dest => dest.Magazines, opt => opt.MapFrom(src => src));
             CreateMap<List<MagazineCategory>, MagazineListVM>()
                 .ForMember(dest => dest.MagazineCategories, opt => opt.MapFrom(src => src));
+            CreateMap<List<Tag>, MagazineListVM>()
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src));
 
             CreateMap<List<Article>, MagazineVM>()
                 .ForMember(dest => dest.Articles, opt => opt.MapFrom(src => src));
             CreateMap<List<MagazineCategory>, MagazineVM>()
                 .ForMember(dest => dest.MagazineCategories, opt => opt.MapFrom(src => src));
+            CreateMap<List<Tag>, MagazineVM>()
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src));
 
             CreateMap<List<ApplicationUser>, UserManagementVM>()
                 .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src));

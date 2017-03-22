@@ -119,13 +119,10 @@
                     <div class="form-group">
                         <label>Kulcsszavak</label>
                         <select name="MagazineTags" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
-                            <option>Alabama</option>
-                            <option>Alaska</option>
-                            <option>California</option>
-                            <option>Delaware</option>
-                            <option>Tennessee</option>
-                            <option>Texas</option>
-                            <option>Washington</option>
+                            @foreach (var item in Model.Tags)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
                 </div>

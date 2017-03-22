@@ -34,7 +34,7 @@ namespace EKE.Data
 
             modelBuilder.Entity<MagazineTag>()
                 .HasOne(pt => pt.Tag)
-                .WithMany(t => t.MagazinTags)
+                .WithMany(t => t.MagazineTags)
                 .HasForeignKey(pt => pt.TagId);
 
             //Article to tag relationship

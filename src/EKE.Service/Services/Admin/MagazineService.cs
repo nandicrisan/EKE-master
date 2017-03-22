@@ -360,11 +360,17 @@ namespace EKE.Service.Services.Admin
         #region Tags
         public Result<List<Tag>> GetAllTags()
         {
-            var result = _tagRepo.GetAll();
-            if (result == null)
-                return new Result<List<Tag>>(ResultStatus.NOT_FOUND);
-
-            return new Result<List<Tag>>(result.ToList());
+            try
+            {
+                var result = _tagRepo.GetAll();
+                if (result == null)
+                    return new Result<List<Tag>>(ResultStatus.NOT_FOUND);
+                return new Result<List<Tag>>(result.ToList());
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Tag>>(ResultStatus.EXCEPTION, ex.Message);
+            }
         }
 
         public Result<Tag> Add(Tag model)
