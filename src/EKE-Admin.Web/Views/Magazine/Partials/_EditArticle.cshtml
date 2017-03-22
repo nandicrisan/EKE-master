@@ -1,0 +1,79 @@
+﻿@model EKE_Admin.Web.ViewModels.ArticleVM
+<section class="content edit-magazines">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Cikk szerkesztése</h3>
+        </div><!-- /.box-header -->
+        <!-- form start -->
+        <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data">
+            @Html.HiddenFor(x => x.Article.Magazine.PublishSection)
+            @Html.HiddenFor(x => x.Article.Magazine.PublishYear)
+            @Html.HiddenFor(x => x.Article.Magazine.Category.Id)
+            @Html.HiddenFor(x => x.Article.Magazine.Category)
+            @Html.HiddenFor(x => x.Article.Magazine)
+            @Html.HiddenFor(x => x.Article.Id)
+            <div class="box-body">
+                <div class="col-md-9 row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Cím</label>
+                            <input asp-for="Article.Title" class="form-control" placeholder="Cím" type="text">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Alcím</label>
+                            <input asp-for="Article.Subtitle" class="form-control" placeholder="Alcím" type="text" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Szerzõ</label>
+                            <input asp-for="Article.Author.Name" class="form-control" placeholder="Szerzõ" type="text">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Kulcsszavak</label>
+                            <select name="Article.ArticleTags" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
+                                @foreach (var item in Model.Tags)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>Sorrend</label>
+                            <input asp-for="Article.OrderNo" class="form-control" type="number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Tartalom</label>
+                            <textarea asp-for="Article.Content" class="form-control" id="editor2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Képek feltöltése</label>
+                        <input id="image-uploader" asp-for="Article.Files" type="file" multiple>
+                    </div>
+                </div>
+
+            </div><!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</section>

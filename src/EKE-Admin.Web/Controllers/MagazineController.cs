@@ -39,7 +39,7 @@ namespace EKE_Admin.Web.Controllers
                 return View(new List<Article>());
             }
 
-            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags);
+            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags.Data);
             return View(mapper);
         }
 
@@ -159,6 +159,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult CreateArticlePartial(int format = 0, int year = 0, int section = 0)
         {
+            //TODO: solve error handling
             var magazineCategory = new MagazineCategory();
             magazineCategory.Id = format;
 
@@ -169,24 +170,36 @@ namespace EKE_Admin.Web.Controllers
 
             var model = new Article();
             model.Magazine = magazine;
+
+            var tags = _magService.GetAllTags();
+            if (!tags.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
+                return PartialView("Partials/_AddArticle");
+            }
+
+            var articleVM = new ArticleVM();
+            articleVM.Article = model;
+            articleVM.Tags = tags.Data;
             // Only grid string query values will be visible here.
-            return PartialView("Partials/_AddArticle", model);
+            return PartialView("Partials/_AddArticle", articleVM);
         }
 
         [HttpPost]
-        public IActionResult AddArticle(Article model)
+        public IActionResult AddArticle(ArticleVM model)
         {
+            //TODO: attach tags to the article
             var message = "Sikeresen hozzáadva!";
-            ModelState.Remove("Slug");
-            ModelState.Remove("Magazine.Category.Name");
-            ModelState.Remove("Magazine.Title");
+            ModelState.Remove("Article.Slug");
+            ModelState.Remove("Article.Magazine.Category.Name");
+            ModelState.Remove("Article.Magazine.Title");
             if (!ModelState.IsValid)
             {
                 message = "Hiba a validáció során. A mezők kitöltése kötelező!";
                 return PartialView("Layout/_ErrorHandling", message);
             }
 
-            var result = _magService.Add(model, User.Identity.Name);
+            var result = _magService.Add(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
                 message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
@@ -194,6 +207,32 @@ namespace EKE_Admin.Web.Controllers
             }
 
             return PartialView("Layout/_SuccessHandling", message);
+        }
+
+        public IActionResult DeleteArticle(int id)
+        {
+            var magazines = _magService.DeleteArticle(id);
+            if (magazines.IsOk())
+                return PartialView("Layout/_SuccessHandling", "Sikeresen törölve");
+
+            return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", magazines.Status, magazines.Message));
+        }
+
+        public IActionResult EditArticle(int id)
+        {
+            var article = _magService.GetArticleById(id);
+            if (!article.IsOk())
+                return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", article.Status, article.Message));
+
+            var tags = _magService.GetAllTags();
+            if (!tags.IsOk())
+                return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", tags.Status, tags.Message));
+
+            var articleVM = new ArticleVM();
+            articleVM.Article = article.Data;
+            articleVM.Tags = tags.Data;
+
+            return PartialView("Partials/_EditArticle", articleVM);
         }
         #endregion
 

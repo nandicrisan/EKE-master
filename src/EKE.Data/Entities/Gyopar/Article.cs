@@ -27,5 +27,7 @@ namespace EKE.Data.Entities.Gyopar
         public virtual ICollection<MediaElement> MediaElement { get; set; }
         [NotMapped]
         public List<IFormFile> Files { get; set; }
+        [NotMapped]
+        public string[] ArticleTags { get; set; }
     }
 }

@@ -19,7 +19,13 @@ Magazine = {
     init: function () {
         s = this.settings;
         g = this.mvcgrid;
+        this.initPage();
         this.bindUIActions();
+    },
+
+    initPage: function () {
+        $(".select2").select2();
+        $('.mvc-grid').mvcgrid();
     },
 
     bindUIActions: function () {
@@ -171,4 +177,20 @@ Magazine = {
         });
     },
 
+    removeArticleSuccess: function () {
+        $('.mvc-grid').mvcgrid({
+            reload: true,
+        });
+    },
+
+    editArticleSuccess: function () {
+        CKEDITOR.replace('editor2', {
+            height: 400,
+        });
+        $(".select2").select2();
+        $("#image-uploader").fileinput({
+            language: "hu",
+            showUpload: false,
+        });
+    }
 };

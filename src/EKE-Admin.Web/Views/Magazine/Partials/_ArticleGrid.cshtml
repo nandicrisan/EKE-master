@@ -12,6 +12,26 @@
         //columns.Add(model => model.Content.Substring(0, 100)).Titled("Tartalom").MultiFilterable(false);
         columns.Add(model => model.Magazine.Title).Titled("Folyóirat").MultiFilterable(true);
         columns.Add(model => model.OrderNo).Titled("Sorrend").MultiFilterable(true);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteArticle", "Magazine", new { id = model.Id },
+            new
+            {
+                @class = "btn btn-default",
+                data_ajax = "true",
+                data_ajax_method = "GET",
+                data_ajax_mode = "replace",
+                data_ajax_update = "#responseContent",
+                data_ajax_success = "Magazine.removeArticleSuccess()",
+            })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+        columns.Add(model => Html.ActionLink("Szerkesztés", "EditArticle", "Magazine", new { id = model.Id },
+            new
+            {
+                @class = "btn btn-default",
+                data_ajax = "true",
+                data_ajax_method = "GET",
+                data_ajax_mode = "replace",
+                data_ajax_update = "#responseContent",
+                data_ajax_success = "Magazine.editArticleSuccess()",
+            })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
     })
     .MultiFilterable()
     .Filterable()

@@ -26,6 +26,7 @@ namespace EKE.Service.Services.Admin
         Result<Article> GetArticleById(int id);
         Result<Article> Add(Article model, string userName);
         Result<Article> Update(Article model);
+        Result DeleteArticle(int id);
 
         Result<MagazineCategory> Add(MagazineCategory model);
         Result<List<MagazineCategory>> GetAllMagazineCategories();
@@ -45,14 +46,23 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<Article> _articleRepo;
         private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
         private readonly IEntityBaseRepository<Tag> _tagRepo;
+        private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
         private readonly IHostingEnvironment _environment;
 
-        public MagazineService(IEntityBaseRepository<Magazine> magazineRepository, IEntityBaseRepository<Article> articleRepository, IEntityBaseRepository<MagazineCategory> magazineCatRepository, IEntityBaseRepository<Tag> tagRepository, IHostingEnvironment environment, IUnitOfWork unitOfWork) : base(unitOfWork)
+        public MagazineService(
+            IEntityBaseRepository<Magazine> magazineRepository,
+            IEntityBaseRepository<Article> articleRepository,
+            IEntityBaseRepository<MagazineCategory> magazineCatRepository,
+            IEntityBaseRepository<Tag> tagRepository,
+            IEntityBaseRepository<MediaElement> mediaElementRepository,
+            IHostingEnvironment environment,
+            IUnitOfWork unitOfWork) : base(unitOfWork)
         {
             _magazineRepo = magazineRepository;
             _articleRepo = articleRepository;
             _magazineCatRepo = magazineCatRepository;
             _tagRepo = tagRepository;
+            _mediaElementRepo = mediaElementRepository;
             _environment = environment;
         }
 
@@ -226,6 +236,11 @@ namespace EKE.Service.Services.Admin
                 model.PublishedBy = userName;
                 model.DateCreated = DateTime.Now;
 
+                //foreach (var item in model.ArticleTags)
+                //{
+                //    var tag = _tagRepo.GetById(Convert.ToInt32(item));
+                //}
+
                 _articleRepo.Add(model);
                 SaveChanges();
                 return new Result<Article>(model);
@@ -250,6 +265,25 @@ namespace EKE.Service.Services.Admin
                 return new Result<Article>(ResultStatus.ERROR, ex.Message);
             }
 
+        }
+
+        public Result DeleteArticle(int id)
+        {
+            try
+            {
+                var article = _articleRepo.GetByIdIncluding(id, x => x.MediaElement);
+                foreach (var item in article.MediaElement)
+                {
+                    _mediaElementRepo.Delete(item);
+                }
+                _articleRepo.Delete(article);
+                SaveChanges();
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
         }
         #endregion
         #endregion
