@@ -498,20 +498,14 @@ namespace EKE_Admin.Web.Controllers
         [HttpPost]
         [Authorize(Roles = "superadmin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string[] roles, string returnUrl = null)
+        public async Task<IActionResult> RegisterUser(RegisterViewModel model, string[] roles)
         {
             //TODO: AJAX CALL RETURN PARTIAL IF SUCCESS
-            ViewData["ReturnUrl"] = returnUrl;
-
-            var exists = true;
             foreach (var item in roles)
             {
-                exists = await _roleManager.RoleExistsAsync(item);
+                var exists = await _roleManager.RoleExistsAsync(item);
                 if (!exists)
-                {
-                    TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során!");
-                    return RedirectToAction("ManageUsers");
-                }
+                    return PartialView("Layout/_ErrorHandling", "Hiba a törlés során. Nem létező szerepkör!");
             }
             if (ModelState.IsValid)
             {
@@ -526,14 +520,13 @@ namespace EKE_Admin.Web.Controllers
                     }
 
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction("ManageUsers");
+                    return PartialView("Layout/_SuccessHandling", "Felhasználó sikeresen létrehozva!");
                 }
-                TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során! {0}", result.Errors.FirstOrDefault().Description);
                 AddErrors(result);
-                return RedirectToAction("ManageUsers");
+                return PartialView("Layout/_SuccessHandling", "Felhasználó sikeresen létrehozva!");
             }
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("ManageUsers");
+            return PartialView("Layout/_ErrorHandling", "Mezõk kitöltése kötelező!");
         }
 
         [HttpPost]
@@ -544,10 +537,7 @@ namespace EKE_Admin.Web.Controllers
             if (ModelState.IsValid)
             {
                 if (id == null)
-                {
-                    TempData["ErrorMessage"] = string.Format("Hiba a törlés során!");
-                    return RedirectToAction("ManageUsers");
-                }
+                    return PartialView("Layout/_ErrorHandling", "Hiba a törlés során. Nem létező felhasználó!");
 
                 var user = await _userManager.FindByIdAsync(id);
                 var logins = user.Logins;
@@ -569,7 +559,7 @@ namespace EKE_Admin.Web.Controllers
                 await _userManager.DeleteAsync(user);
             }
 
-            return RedirectToAction("ManageUsers");
+            return PartialView("Layout/_SuccessHandling", "Sikeresen törölve!");
         }
         #endregion
 

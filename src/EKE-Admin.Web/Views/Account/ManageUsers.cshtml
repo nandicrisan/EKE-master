@@ -7,6 +7,7 @@
 <link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
 
 @Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+<div id="responseContent"></div>
 
 <section class="content-header">
     <h1>
@@ -17,7 +18,7 @@
 
 <section class="content">
     <div class="box box-success">
-        <form asp-controller="Account" asp-action="RegisterUser" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+        <form asp-controller="Account" asp-action="RegisterUser" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="UserManagement.reloadMvcGrid()" data-ajax-begin="UserManagement.loadingOverlay()" enctype="multipart/form-data">
             <div class="box-body">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="col-sm-2">
@@ -70,8 +71,16 @@
         columns.Add(model => model.Email).Titled("Email cím");
         columns.Add(model => model.UserName).Titled("Felhasználónév");
         columns.Add(model => model.RoleAssigned).Titled("Típus");
-        //columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-primary'><i class='fa fa-pencil'></i></button>").Encoded(false);
-        columns.Add(model => $"<button data-id=\"{model.Id}\" class='btn btn-danger delete-user'><i class='fa fa-trash'></i></button>").Encoded(false);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteConfirmed", "Account", new { id = model.Id },
+            new
+            {
+                @class = "btn btn-primary",
+                data_ajax = "true",
+                data_ajax_method = "POST",
+                data_ajax_mode = "replace",
+                data_ajax_update = "#responseContent",
+                data_ajax_success = "UserManagement.reloadMvcGrid()",
+            })).Titled("Opciók").Encoded(false);
     })
     .Filterable()
     .Sortable()

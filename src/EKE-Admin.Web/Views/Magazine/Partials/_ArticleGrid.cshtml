@@ -21,7 +21,7 @@
                 data_ajax_mode = "replace",
                 data_ajax_update = "#responseContent",
                 data_ajax_success = "Magazine.removeArticleSuccess()",
-            })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+            })).Titled("Opciók").Encoded(false);
         columns.Add(model => Html.ActionLink("Szerkesztés", "EditArticle", "Magazine", new { id = model.Id },
             new
             {
@@ -31,7 +31,7 @@
                 data_ajax_mode = "replace",
                 data_ajax_update = "#responseContent",
                 data_ajax_success = "Magazine.editArticleSuccess()",
-            })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+            })).Titled("Opciók").Encoded(false);
     })
     .MultiFilterable()
     .Filterable()

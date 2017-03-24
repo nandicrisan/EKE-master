@@ -3,7 +3,6 @@ UserManagement = {
 
     settings: {
         gridContainer: $(".usermanagemet-grid"),
-        deleteUser: $(".delete-user"),
     },
 
     mvcgrid: {
@@ -23,13 +22,10 @@ UserManagement = {
     },
 
     bindUIActions: function () {
-        s.deleteUser.on("click", function () {
-            UserManagement.deleteUser($(this).data("id"));
-        });
     },
 
     initMvcGrid: function () {
-        $('.mvc-grid').mvcgrid({
+        g.grid.mvcgrid({
             reloadStarted: function (grid) {
                 UserManagement.loadingOverlay(true, s.gridContainer)
             },
@@ -58,20 +54,10 @@ UserManagement = {
         }
     },
 
-    deleteUser: function (id) {
-        $.ajax({
-            url: '/Account/DeleteConfirmed/',
-            dataType: 'html',
-            data: {
-                id: id,
-            },
-            method:'post',
-            success: function (data) {
-                $('.mvc-grid').mvcgrid({
-                    reload: true,
-                });
-            },
+    reloadMvcGrid: function() {
+        g.grid.mvcgrid({
+            reload: true
         });
     },
-
+        
 };
