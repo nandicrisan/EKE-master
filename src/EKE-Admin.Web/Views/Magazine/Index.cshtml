@@ -39,7 +39,7 @@
                                 <option data-id="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
                                 @if (Model.MagazineCategories.Count > 1)
                                 {
-                                    @foreach (var item in Model.MagazineCategories)
+                                    foreach (var item in Model.MagazineCategories)
                                     {
                                         <option value="@item.Id">@item.Name</option>
                                     }

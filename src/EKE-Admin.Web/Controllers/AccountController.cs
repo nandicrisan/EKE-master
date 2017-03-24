@@ -518,17 +518,17 @@ namespace EKE_Admin.Web.Controllers
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                foreach (var item in roles)
-                {
-                    await _userManager.AddToRoleAsync(user, item);
-                }
-
                 if (result.Succeeded)
                 {
+                    foreach (var item in roles)
+                    {
+                        await _userManager.AddToRoleAsync(user, item);
+                    }
+
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToAction("ManageUsers");
                 }
-                TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során!");
+                TempData["ErrorMessage"] = string.Format("Hiba a létrehozás során! {0}", result.Errors.FirstOrDefault().Description);
                 AddErrors(result);
                 return RedirectToAction("ManageUsers");
             }

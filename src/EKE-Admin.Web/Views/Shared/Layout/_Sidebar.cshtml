@@ -21,39 +21,16 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="header">SzuperAdmin navigáció</li>
+            @if (User.IsInRole("superadmin"))
+            {
+                @Html.Partial("Layout/Sidebar/_Superadmin")
+            }
 
-            <li class="active">
-                <a asp-action="Index" asp-controller="Home">
-                    <i class="fa fa-th"></i> <span>Áttekintés</span>
-                </a>
-            </li>
-            <li class="">
-                <a asp-action="ManageUsers" asp-controller="Account">
-                    <i class="fa fa-user"></i> <span>Felhasználókezelés</span>
-                </a>
-            </li>
-
-            <li class="header">EKE - Gyopár</li>
-            <li class="">
-                <a asp-controller="Magazine" asp-action="MagazineList">
-                    <i class="fa fa-list"></i> <span>Lapok kezelése</span>
-                </a>
-            </li>
-            <li class="">
-                <a asp-controller="Magazine" asp-action="Index">
-                    <i class="fa fa-newspaper-o"></i> <span>Cikkek kezelése</span>
-                </a>
-            </li>
-            <li class="">
-                <a asp-controller="Magazine" asp-action="KeywordList">
-                    <i class="fa fa-tag"></i> <span>Kulcsszavak kevezéles</span>
-                </a>
-            </li>
-
-            <li class="header">EKE - Eszköztár</li>
-            <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Google Analytics</span></a></li>
-            <li><a href="#"><i class="fa fa-envelope text-red"></i> <span>Mailrendszer</span></a></li>
+            @if (User.IsInRole("superadmin") || User.IsInRole("gyopar"))
+            {
+                @Html.Partial("Layout/Sidebar/_Gyopar")
+                @Html.Partial("Layout/Sidebar/_Tools")
+            }
         </ul>
     </section>
     <!-- /.sidebar -->

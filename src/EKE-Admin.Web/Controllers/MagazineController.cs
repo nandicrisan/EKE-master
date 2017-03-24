@@ -36,7 +36,7 @@ namespace EKE_Admin.Web.Controllers
             if (!tags.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
-                return View(new List<Article>());
+                return View(new MagazineVM());
             }
 
             var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags.Data);
@@ -50,14 +50,14 @@ namespace EKE_Admin.Web.Controllers
             if (!magazineCategories.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategories.Status, magazineCategories.Message);
-                return View(new List<Article>());
+                return View(new MagazineListVM());
             }
 
             var tags = _magService.GetAllTags();
             if (!tags.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
-                return View(new List<Article>());
+                return View(new MagazineListVM());
             }
 
             MagazineListVM viewmodel = _mapper.Map<MagazineListVM>(magazineCategories.Data).Map(tags.Data);
@@ -261,7 +261,6 @@ namespace EKE_Admin.Web.Controllers
             return PartialView("Layout/_ErrorHandling", String.Format("Hiba a hozzáadás során ({0}:{1})", result.Status, result.Message));
         }
 
-        [Authorize(Roles = "superadmin,gyopar")]
         public IActionResult RemoveTag(int id)
         {
             //TODO: return jsonresult

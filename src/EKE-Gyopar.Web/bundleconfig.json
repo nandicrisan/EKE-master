@@ -25,7 +25,7 @@
   {
     "outputFileName": "wwwroot/js/home.min.js",
     "inputFiles": [
-      "wwwroot/js/magazine-search.js",
+      "wwwroot/js/magazine-search.js"
     ]
   }
 ]
