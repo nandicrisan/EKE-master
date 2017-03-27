@@ -505,10 +505,13 @@ namespace EKE_Admin.Web.Controllers
             {
                 var exists = await _roleManager.RoleExistsAsync(item);
                 if (!exists)
-                    return PartialView("Layout/_ErrorHandling", "Hiba a törlés során. Nem létező szerepkör!");
+                    return PartialView("Layout/_ErrorHandling", "Hiba a validáció során. Nem létező szerepkör!");
             }
             if (ModelState.IsValid)
             {
+                if (roles.Count(x => x.Contains("superadmin")) > 0)
+                    roles = new[] { "superadmin" };
+
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -519,10 +522,8 @@ namespace EKE_Admin.Web.Controllers
                         await _userManager.AddToRoleAsync(user, item);
                     }
 
-                    _logger.LogInformation(3, "User created a new account with password.");
                     return PartialView("Layout/_SuccessHandling", "Felhasználó sikeresen létrehozva!");
                 }
-                AddErrors(result);
                 return PartialView("Layout/_SuccessHandling", "Felhasználó sikeresen létrehozva!");
             }
             // If we got this far, something failed, redisplay form
@@ -533,7 +534,6 @@ namespace EKE_Admin.Web.Controllers
         [Authorize(Roles = "superadmin")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            //TODO: return jsonresult
             if (ModelState.IsValid)
             {
                 if (id == null)

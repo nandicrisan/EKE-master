@@ -19,6 +19,7 @@ Keywords = {
     },
 
     initPage: function () {
+        Keywords.sideBarActive(".f5");
     },
 
     bindUIActions: function () {
@@ -74,4 +75,9 @@ Keywords = {
             },
         });
     },
+
+    sideBarActive: function (elem) {
+        $(".active").removeClass("active");
+        $("" + elem + "").addClass("active");
+    }
 };

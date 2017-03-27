@@ -3,6 +3,7 @@
     public enum MediaTypesEnum
     {
         Undefined = 0,
-        Image = 1
+        Image = 1,
+        Pdf = 2
     }
 }

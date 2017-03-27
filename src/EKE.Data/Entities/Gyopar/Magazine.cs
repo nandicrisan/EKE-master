@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace EKE.Data.Entities.Gyopar
 {
@@ -22,5 +24,7 @@ namespace EKE.Data.Entities.Gyopar
         public ICollection<Article> Articles { get; set; }
         public ICollection<MagazineTag> MagazineTags { get; set; }
         public virtual ICollection<MediaElement> MediaElements { get; set; }
+        [NotMapped]
+        public IFormFile Files { get; set; }
     }
 }

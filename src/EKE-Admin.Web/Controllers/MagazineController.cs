@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -78,7 +79,7 @@ namespace EKE_Admin.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMagazine(Magazine model)
+        public IActionResult AddMagazine(Magazine model, IFormFile Files)
         {
             ModelState.Remove("Category.Name");
             if (!ModelState.IsValid)
@@ -159,7 +160,6 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult CreateArticlePartial(int format = 0, int year = 0, int section = 0)
         {
-            //TODO: solve error handling
             var magazineCategory = new MagazineCategory();
             magazineCategory.Id = format;
 
@@ -173,10 +173,7 @@ namespace EKE_Admin.Web.Controllers
 
             var tags = _magService.GetAllTags();
             if (!tags.IsOk())
-            {
-                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
-                return PartialView("Partials/_AddArticle");
-            }
+                return PartialView("Layout/_ErrorHandling", string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message));
 
             var articleVM = new ArticleVM();
             articleVM.Article = model;

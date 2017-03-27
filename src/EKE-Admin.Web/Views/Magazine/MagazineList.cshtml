@@ -5,6 +5,7 @@
 }
 <link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
 <link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
+<link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
 
 @Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
 
@@ -91,7 +92,7 @@
                     <label>Cím*</label>
                     <input name="Title" class="form-control" type="text" placeholder="Cím">
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <div class="form-group">
                         <label>Évszám*</label>
                         <select class="form-control select2" name="PublishYear" style="width: 100%;">
@@ -126,12 +127,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1" style="display: none;">
                     <div class="form-group">
                         <label>Hozzáadta</label>
                         <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" readonly>
                     </div>
                 </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>PDF</label>
+                        <input id="pdf-uploader" name="Files" type="file" data-show-preview="false">
+                    </div>
+                </div>
+
                 <div class="col-sm-1">
                     <div class="form-group">
                         <label></label>
@@ -153,9 +161,12 @@
     <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
     <script src="~/js/MVCGrid/mvc-grid.js"></script>
     <script src="~/js/MagazineList/main.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/locales/hu.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
     <script>
         $(function () {
-            MagazineList.init()
+            MagazineList.init();
         });
     </script>
 }

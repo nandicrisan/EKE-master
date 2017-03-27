@@ -26,6 +26,8 @@ Magazine = {
     initPage: function () {
         $(".select2").select2();
         $('.mvc-grid').mvcgrid();
+
+        Magazine.sideBarActive(".f4");
     },
 
     bindUIActions: function () {
@@ -135,6 +137,7 @@ Magazine = {
                 $("#image-uploader").fileinput({
                     language: "hu",
                     showUpload: false,
+                    uploadAsync:false
                 });
             },
         });
@@ -190,7 +193,12 @@ Magazine = {
         $(".select2").select2();
         $("#image-uploader").fileinput({
             language: "hu",
-            showUpload: false,
+            showUpload: false
         });
-    }
+    },
+
+    sideBarActive: function (elem) {
+        $(".active").removeClass("active");
+        $("" + elem + "").addClass("active");
+    },
 };

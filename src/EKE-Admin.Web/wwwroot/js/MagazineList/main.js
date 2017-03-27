@@ -19,6 +19,13 @@ MagazineList = {
 
     initPage: function () {
         $(".select2").select2();
+        MagazineList.sideBarActive(".f3");
+
+        $("#pdf-uploader").fileinput({
+            language: "hu",
+            showUpload: false,
+            allowedFileExtensions: ["pdf"]
+        });
     },
 
     bindUIActions: function () {
@@ -53,6 +60,11 @@ MagazineList = {
                 elem.LoadingOverlay("hide", "'" + elem + "'")
             }
         }
+    },
+
+    sideBarActive: function (elem) {
+        $(".active").removeClass("active");
+        $("" + elem + "").addClass("active");
     },
 
 };

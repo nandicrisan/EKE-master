@@ -19,6 +19,7 @@ UserManagement = {
 
     initPage: function () {
         $(".select2").select2();
+        UserManagement.sideBarActive(".f2");
     },
 
     bindUIActions: function () {
@@ -59,5 +60,10 @@ UserManagement = {
             reload: true
         });
     },
-        
+
+    sideBarActive: function (elem) {
+        $(".active").removeClass("active");
+        $(""+elem+"").addClass("active");
+    }
+
 };
