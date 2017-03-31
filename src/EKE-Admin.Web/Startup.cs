@@ -37,7 +37,7 @@ namespace EKE_Admin.Web
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        private static IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -46,11 +46,11 @@ namespace EKE_Admin.Web
             services.AddDbContext<BaseDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("EKEConnectionString")));
 
-            registerServices(services);
-            setupServices(services);
+            RegisterServices(services);
+            SetupServices(services);
         }
 
-        private void registerServices(IServiceCollection services)
+        private static void RegisterServices(IServiceCollection services)
         {
             //Add Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -77,7 +77,7 @@ namespace EKE_Admin.Web
             services.AddAutoMapper();
         }
 
-        private void setupServices(IServiceCollection services)
+        private static void SetupServices(IServiceCollection services)
         {
             services.Configure<IdentityOptions>(options =>
             {

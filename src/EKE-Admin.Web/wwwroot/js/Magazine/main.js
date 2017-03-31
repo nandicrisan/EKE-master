@@ -121,7 +121,7 @@ Magazine = {
         var year = $(".mYear option:selected").text();
         var number = $(".mNumber option:selected").text();
         $.ajax({
-            url: '/Magazine/CreateArticlePartial',
+            url: location.href + '/CreateArticlePartial',
             dataType: 'html',
             data: {
                 format: format,
@@ -137,7 +137,7 @@ Magazine = {
                 $("#image-uploader").fileinput({
                     language: "hu",
                     showUpload: false,
-                    uploadAsync:false
+                    uploadAsync: false
                 });
             },
         });
