@@ -38,6 +38,8 @@ namespace EKE.Service.Services.Admin
         Result<List<Tag>> GetAllTags();
         Result<Tag> Add(Tag model);
         Result DeleteTag(int id);
+
+        Result<List<Author>> GetAllAuthors();
     }
 
     public class MagazineService : BaseService, IMagazineService
@@ -47,6 +49,7 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
         private readonly IEntityBaseRepository<Tag> _tagRepo;
         private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
+        private readonly IEntityBaseRepository<Author> _authorRepo;
         private readonly IHostingEnvironment _environment;
 
         public MagazineService(
@@ -55,6 +58,7 @@ namespace EKE.Service.Services.Admin
             IEntityBaseRepository<MagazineCategory> magazineCatRepository,
             IEntityBaseRepository<Tag> tagRepository,
             IEntityBaseRepository<MediaElement> mediaElementRepository,
+            IEntityBaseRepository<Author> authorRepository,
             IHostingEnvironment environment,
             IUnitOfWork unitOfWork) : base(unitOfWork)
         {
@@ -63,6 +67,7 @@ namespace EKE.Service.Services.Admin
             _magazineCatRepo = magazineCatRepository;
             _tagRepo = tagRepository;
             _mediaElementRepo = mediaElementRepository;
+            _authorRepo = authorRepository;
             _environment = environment;
         }
 
@@ -201,11 +206,14 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                return new Result<Article>(_articleRepo.GetById(id));
+                var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag);
+                if (result == null)
+                    return new Result<Article>(ResultStatus.NOT_FOUND);
+                return new Result<Article>(result);
             }
             catch (Exception ex)
             {
-                return new Result<Article>(ResultStatus.ERROR, ex.Message);
+                return new Result<Article>(ResultStatus.EXCEPTION, ex.Message);
             }
         }
 
@@ -244,7 +252,7 @@ namespace EKE.Service.Services.Admin
                     return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
 
                 var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
-                if (magazine.Count() == 0)
+                if (!magazine.Any())
                 {
                     model.Magazine.Category = magCat;
                     model.Magazine.Title = String.Format("{0} / {1}", model.Magazine.PublishYear, model.Magazine.PublishSection);
@@ -256,6 +264,16 @@ namespace EKE.Service.Services.Admin
                     model.Magazine = magazine.FirstOrDefault();
                 }
 
+                var author = new Author();
+                if (model.Author.Id == 0)
+                {
+                    author = new Author { Name = model.Author.Name };
+                }
+                else
+                {
+                    author = _authorRepo.GetById(model.Author.Id);
+                }
+                model.Author = author;
                 model.Slug = GenerateSlug(model.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
                 model.PublishedBy = userName;
                 model.DateCreated = DateTime.Now;
@@ -465,6 +483,25 @@ namespace EKE.Service.Services.Admin
             catch (Exception ex)
             {
                 return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Author
+        public Result<List<Author>> GetAllAuthors()
+        {
+            try
+            {
+                var result = _authorRepo.GetAll();
+                if (result == null)
+                    return new Result<List<Author>>(ResultStatus.NOT_FOUND);
+                return new Result<List<Author>>(result.ToList());
+
+            }
+            catch (Exception e)
+            {
+                return new Result<List<Author>>(ResultStatus.EXCEPTION, e.Message);
             }
         }
         #endregion

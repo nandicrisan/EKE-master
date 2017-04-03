@@ -5,7 +5,7 @@
         <h3 class="box-title">Cikk szerkesztése</h3>
     </div><!-- /.box-header -->
     <!-- form start -->
-    <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" asp-controller="Magazine" asp-action="AddArticle"> @*asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data"*@
         @Html.HiddenFor(x => x.Article.Magazine.PublishSection)
         @Html.HiddenFor(x => x.Article.Magazine.PublishYear)
         @Html.HiddenFor(x => x.Article.Magazine.Category.Id)
@@ -31,14 +31,19 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Szerzõ</label>
-                        <input asp-for="Article.Author.Name" class="form-control" placeholder="Szerzõ" type="text">
+                        <select asp-for="Article.Author.Id" class="form-control select2" data-placeholder="Szerző" style="width: 100%;">
+                            @foreach (var item in Model.Authors)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-md-2">
                     <div class="form-group">
                         <label>Kulcsszavak</label>
-                        <select name="Article.ArticleTags" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
+                        <select asp-for="Article.ArticleTags" class="form-control select2" multiple="multiple" data-placeholder="Kulcsszavak kiválsztása" style="width: 100%;">
                             @foreach (var item in Model.Tags)
                             {
                                 <option value="@item.Id">@item.Name</option>
@@ -65,7 +70,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label>Képek feltöltése</label>
-                    <input class="file" id="image-uploader" asp-for="Article.Files" type="file" multiple>
+                    <input id="image-uploader" asp-for="Article.Files" type="file" multiple>
                 </div>
             </div>
 

@@ -21,6 +21,7 @@
                 data_ajax_mode = "replace",
                 data_ajax_update = "#responseContent",
                 data_ajax_success = "Magazine.removeArticleSuccess()",
+                data_ajax_begin = "Magazine.loadingOverlay(false, s.gridContainer)",
             })).Titled("Opciók").Encoded(false);
         columns.Add(model => Html.ActionLink("Szerkesztés", "EditArticle", "Magazine", new { id = model.Id },
             new
@@ -31,6 +32,7 @@
                 data_ajax_mode = "replace",
                 data_ajax_update = "#responseContent",
                 data_ajax_success = "Magazine.editArticleSuccess()",
+                data_ajax_begin = "Magazine.loadingOverlay(false, s.gridContainer)",
             })).Titled("Opciók").Encoded(false);
     })
     .MultiFilterable()

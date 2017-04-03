@@ -40,6 +40,13 @@ namespace EKE_Admin.Web.ViewModels.Configuration
             CreateMap<RegisterViewModel, UserManagementVM>();
             CreateMap<List<ApplicationRole>, UserManagementVM>()
                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src));
+
+            CreateMap<Article, ArticleVM>()
+                .ForMember(dest => dest.Article, opt => opt.MapFrom(src => src));
+            CreateMap<List<Tag>, ArticleVM>()
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src));
+            CreateMap<List<Author>, ArticleVM>()
+                .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src));
         }
     }
 }

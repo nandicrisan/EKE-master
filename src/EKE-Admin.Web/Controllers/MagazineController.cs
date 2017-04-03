@@ -175,11 +175,13 @@ namespace EKE_Admin.Web.Controllers
             if (!tags.IsOk())
                 return PartialView("Layout/_ErrorHandling", string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message));
 
-            var articleVM = new ArticleVM();
-            articleVM.Article = model;
-            articleVM.Tags = tags.Data;
+            var authors = _magService.GetAllAuthors();
+            if (!authors.IsOk())
+                return PartialView("Layout/_ErrorHandling", string.Format("Hiba a lekérés során ({0} : {1})", authors.Status, authors.Message));
+
+            var mapper = _mapper.Map<ArticleVM>(model).Map(tags.Data).Map(authors.Data);
             // Only grid string query values will be visible here.
-            return PartialView("Partials/_AddArticle", articleVM);
+            return PartialView("Partials/_AddArticle", mapper);
         }
 
         [HttpPost]
@@ -192,18 +194,18 @@ namespace EKE_Admin.Web.Controllers
             ModelState.Remove("Article.Magazine.Title");
             if (!ModelState.IsValid)
             {
-                message = "Hiba a validáció során. A mezők kitöltése kötelező!";
-                return PartialView("Layout/_ErrorHandling", message);
+                TempData["ErrorMessage"] = "Hiba a validáció során. A mezők kitöltése kötelező!";
+                return RedirectToAction("Index");
             }
 
             var result = _magService.Add(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
-                message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
-                return PartialView("Layout/_ErrorHandling", message);
+                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return RedirectToAction("Index");
             }
 
-            return PartialView("Layout/_SuccessHandling", message);
+            return RedirectToAction("Index");
         }
 
         public IActionResult DeleteArticle(int id)

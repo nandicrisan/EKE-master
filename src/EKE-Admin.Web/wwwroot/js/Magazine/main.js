@@ -137,7 +137,6 @@ Magazine = {
                 $("#image-uploader").fileinput({
                     language: "hu",
                     showUpload: false,
-                    uploadAsync: false
                 });
             },
         });
@@ -193,7 +192,7 @@ Magazine = {
         $(".select2").select2();
         $("#image-uploader").fileinput({
             language: "hu",
-            showUpload: false
+            showUpload: false,
         });
     },
 

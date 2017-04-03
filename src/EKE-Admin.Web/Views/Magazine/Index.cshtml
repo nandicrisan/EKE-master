@@ -8,6 +8,8 @@
 <link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
 <link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
 
+@Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+
 <div id="responseContent"></div>
 
 <!-- Content Header (Page header) -->

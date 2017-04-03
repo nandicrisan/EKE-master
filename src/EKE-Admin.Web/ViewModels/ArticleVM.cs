@@ -10,5 +10,6 @@ namespace EKE_Admin.Web.ViewModels
     {
         public Article Article { get; set; }
         public List<Tag> Tags { get; set; }
+        public List<Author> Authors { get; set; }
     }
 }
