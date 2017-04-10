@@ -38,7 +38,7 @@
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mName" style="width: 100%;" disabled="disabled">
-                                <option data-id="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
+                                <option value="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
                                 @if (Model.MagazineCategories.Count > 1)
                                 {
                                     foreach (var item in Model.MagazineCategories)
@@ -61,7 +61,7 @@
                                 <option selected="selected">1800</option>
                                 @for (int i = 1801; i <= DateTime.Now.Year; i++)
                                 {
-                                    <option>@i</option>
+                                    <option value="@i">@i</option>
                                 }
                             </select>
                         </div>
@@ -78,7 +78,7 @@
                                 <option selected="selected">1</option>
                                 @for (int i = 2; i <= 6; i++)
                                 {
-                                    <option>@i</option>
+                                    <option value="@i">@i</option>
                                 }
                             </select>
                         </div>
