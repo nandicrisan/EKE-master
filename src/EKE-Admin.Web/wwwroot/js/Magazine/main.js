@@ -31,18 +31,6 @@ Magazine = {
     },
 
     bindUIActions: function () {
-        s.mName.change(function () {
-            Magazine.getMYears($(this).data("id"));
-        });
-
-        s.mYear.change(function () {
-
-        });
-
-        s.mNumber.change(function () {
-
-        });
-
         s.filter.on("click", function () {
             Magazine.hideArticlePartial();
             Magazine.tickFilters($(this));
@@ -83,7 +71,7 @@ Magazine = {
     gridRequest: function () {
         var format;
         if (s.mName.attr("disabled") !== "disabled") {
-            format = $(".mName option:selected").data("id");
+            format = $(".mName option:selected").val();
         }
 
         var year;
@@ -109,7 +97,7 @@ Magazine = {
             requestType: 'get', // defaults to get
             reload: true,
             data: {
-                format: format,
+                format: parseInt(format),
                 year: parseInt(year),
                 section: parseInt(number),
             }
@@ -117,7 +105,7 @@ Magazine = {
     },
 
     createArticlePartial: function (elem) {
-        var format = $(".mName option:selected").data("id");
+        var format = $(".mName option:selected").val();
         var year = $(".mYear option:selected").text();
         var number = $(".mNumber option:selected").text();
         $.ajax({
