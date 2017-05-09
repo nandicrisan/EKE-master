@@ -192,6 +192,7 @@ namespace EKE_Admin.Web.Controllers
             ModelState.Remove("Article.Slug");
             ModelState.Remove("Article.Magazine.Category.Name");
             ModelState.Remove("Article.Magazine.Title");
+            ModelState.Remove("Article.Author.Name");
             if (!ModelState.IsValid)
             {
                 TempData["ErrorMessage"] = "Hiba a validáció során. A mezők kitöltése kötelező!";

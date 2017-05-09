@@ -28,6 +28,7 @@ Magazine = {
         $('.mvc-grid').mvcgrid();
 
         Magazine.sideBarActive(".f4");
+        Magazine.setLocalStorageElements();
     },
 
     bindUIActions: function () {
@@ -76,12 +77,12 @@ Magazine = {
 
         var year;
         if (s.mYear.attr("disabled") !== "disabled") {
-            year = $(".mYear option:selected").text();
+            year = $(".mYear option:selected").val();
         }
 
         var number;
         if (s.mNumber.attr("disabled") !== "disabled") {
-            number = $(".mNumber option:selected").text();
+            number = $(".mNumber option:selected").val();
         }
 
         $('.mvc-grid').mvcgrid({
@@ -106,8 +107,8 @@ Magazine = {
 
     createArticlePartial: function (elem) {
         var format = $(".mName option:selected").val();
-        var year = $(".mYear option:selected").text();
-        var number = $(".mNumber option:selected").text();
+        var year = $(".mYear option:selected").val();
+        var number = $(".mNumber option:selected").val();
         $.ajax({
             url: location.href + '/CreateArticlePartial',
             dataType: 'html',
@@ -126,6 +127,10 @@ Magazine = {
                     language: "hu",
                     showUpload: false,
                 });
+
+                window.localStorage.setItem("MFormat", format);
+                window.localStorage.setItem("MYear", year);
+                window.localStorage.setItem("MNumber", number);
             },
         });
     },
@@ -136,10 +141,10 @@ Magazine = {
 
     showAddArticleButton: function (show) {
         if (show) {
-            s.addButton.css("display", "block")
+            s.addButton.css("display", "block");
         }
         else {
-            s.addButton.css("display", "none")
+            s.addButton.css("display", "none");
         }
 
     },
@@ -188,4 +193,25 @@ Magazine = {
         $(".active").removeClass("active");
         $("" + elem + "").addClass("active");
     },
+
+    setLocalStorageElements: function () {
+        var format = window.localStorage.getItem("MFormat");
+        var number = window.localStorage.getItem("MNumber");
+        var year = window.localStorage.getItem("MYear");
+
+        if (format != null && number != null && year != null) {
+            $('.select2').removeAttr("disabled");
+
+            $('.fa-times').addClass('fa-check');
+            $('.fa-check').removeClass('fa-times');
+
+            Magazine.showAddArticleButton(true);
+
+            $('.mName').val(parseInt(format)).trigger('change');
+            $('.mYear').val(parseInt(year)).trigger('change');
+            $('.mNumber').val(parseInt(number)).trigger('change');
+
+            Magazine.gridRequest();
+        }
+    }
 };
