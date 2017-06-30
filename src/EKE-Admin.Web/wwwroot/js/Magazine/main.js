@@ -113,7 +113,7 @@ Magazine = {
             url: location.href + '/CreateArticlePartial',
             dataType: 'html',
             data: {
-                format: parseInt(format),
+                format: format,
                 year: parseInt(year),
                 section: parseInt(number),
             },

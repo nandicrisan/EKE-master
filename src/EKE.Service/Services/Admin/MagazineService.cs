@@ -335,7 +335,11 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                return new Result<List<MagazineCategory>>(_magazineCatRepo.GetAll().ToList());
+                var magazineCategories = _magazineCatRepo.GetAllIncluding(x => x.Magazines).ToList();
+                if (magazineCategories.Count == 0)
+                    return new Result<List<MagazineCategory>>(ResultStatus.NOT_FOUND);
+
+                return new Result<List<MagazineCategory>>(magazineCategories);
             }
             catch (Exception ex)
             {
