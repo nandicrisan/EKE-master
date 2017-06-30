@@ -67,9 +67,7 @@ namespace EKE_Gyopar.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
+            //loggerFactory.AddDebug();
 
             if (env.IsDevelopment())
             {
@@ -80,8 +78,6 @@ namespace EKE_Gyopar.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 

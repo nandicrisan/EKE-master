@@ -1,120 +1,442 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Főoldal";
 }
 
-@Html.Partial("_MagazineSearch")
+@*@Html.Partial("_MagazineSearch")*@
 
-@section scripts {
-    <environment names="Development">
-        <script src="~/js/magazine-search.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/js/home.min.js" asp-append-version="true"></script>
-    </environment>
-}
+<div class="content-wrap">
 
-@*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        Learn how to build ASP.NET apps that can run anywhere.
-                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                            Learn More
-                        </a>
-                    </p>
+    <div class="container clearfix">
+
+        <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-my-house"></i></a>
                 </div>
-            </div>
-            <div class="item">
-                <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        There are powerful new features in Visual Studio for building modern web apps.
-                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                            Learn More
-                        </a>
-                    </p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                            Learn More
-                        </a>
-                    </p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-                <div class="carousel-caption" role="option">
-                    <p>
-                        Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                            Learn More
-                        </a>
-                    </p>
-                </div>
+                <h3 class="t400">Hassle Free</h3>
+                <p>Canvas provides support for Native HTML5 Videos that can be added to a Full Width Background.</p>
             </div>
         </div>
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+
+        <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-hammer"></i></a>
+                </div>
+                <h3 class="t400">Well Constructed</h3>
+                <p>Display your Content attractively using Parallax Sections that have unlimited customizable areas.</p>
+            </div>
+        </div>
+
+        <div class="col_one_third col_last">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-garage"></i></a>
+                </div>
+                <h3 class="t400">Free Utilites</h3>
+                <p>You have complete easy control on each &amp; every element that provides endless customization possibilities.</p>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-rent"></i></a>
+                </div>
+                <h3 class="t400">Flexible Rentals</h3>
+                <p>Canvas provides support for Native HTML5 Videos that can be added to a Full Width Background.</p>
+            </div>
+        </div>
+
+        <div class="col_one_third">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-credit"></i></a>
+                </div>
+                <h3 class="t400">Easy Financing</h3>
+                <p>Display your Content attractively using Parallax Sections that have unlimited customizable areas.</p>
+            </div>
+        </div>
+
+        <div class="col_one_third col_last">
+            <div class="feature-box fbox-plain">
+                <div class="fbox-icon">
+                    <a href="#"><i class="icon-realestate-doc"></i></a>
+                </div>
+                <h3 class="t400">Solid Paperwork</h3>
+                <p>You have complete easy control on each &amp; every element that provides endless customization possibilities.</p>
+            </div>
+        </div>
+
+        <div class="clear"></div><div class="line topmargin-sm bottommargin-lg"></div>
+
+        <div style="position: relative;">
+            <div class="heading-block nobottomborder">
+                <h3>Featured Properties</h3>
+            </div>
+
+            <a href="#" class="button button-small button-rounded button-border button-border-thin t500 nomargin" style="position: absolute; top: 7px; right: 0;">Check All</a>
+
+            <div class="real-estate owl-carousel image-carousel carousel-widget bottommargin-lg" data-margin="10" data-nav="true" data-loop="true" data-pagi="false" data-items-xxs="1" data-items-xs="1" data-items-sm="2" data-items-md="3" data-items-lg="3">
+
+                <div class="oc-item">
+                    <div class="real-estate-item">
+                        <div class="real-estate-item-image">
+                            <div class="label label-danger bgcolor-2">For Sale</div>
+                            <a href="#">
+                                <img src="demos/real-estate/images/items/1.jpg" alt="Image 1">
+                            </a>
+                            <div class="real-estate-item-price">
+                                $1.2m<span>Leasehold</span>
+                            </div>
+                            <div class="real-estate-item-info clearfix">
+                                <a href="#"><i class="icon-line-stack-2"></i></a>
+                                <a href="#"><i class="icon-line-heart"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="real-estate-item-desc">
+                            <h3><a href="#">3 Bedroom Villa</a></h3>
+                            <span>Seminyak Area</span>
+
+                            <a href="#" class="real-estate-item-link"><i class="icon-info"></i></a>
+
+                            <div class="line" style="margin-top: 15px; margin-bottom: 15px;"></div>
+
+                            <div class="real-estate-item-features t500 font-primary clearfix">
+                                <div class="col-md-4 col-xs-6 nopadding">Beds: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Baths: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Area: <span class="color">150 sqm</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Pool: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Internet: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Cleaning: <span class="text-danger"><i class="icon-minus-sign-alt"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="real-estate-item">
+                        <div class="real-estate-item-image">
+                            <div class="label label-success">Hot Deal</div>
+                            <a href="#">
+                                <img src="demos/real-estate/images/items/2.jpg" alt="Image 2">
+                            </a>
+                            <div class="real-estate-item-price">
+                                $200,000<span>bi-annually</span>
+                            </div>
+                            <div class="real-estate-item-info clearfix">
+                                <a href="#"><i class="icon-line-stack-2"></i></a>
+                                <a href="#"><i class="icon-line-heart"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="real-estate-item-desc">
+                            <h3><a href="#">3 Bedroom Villa</a></h3>
+                            <span>Seminyak Area</span>
+
+                            <a href="#" class="real-estate-item-link"><i class="icon-info"></i></a>
+
+                            <div class="line" style="margin-top: 15px; margin-bottom: 15px;"></div>
+
+                            <div class="real-estate-item-features t500 clearfix">
+                                <div class="col-md-4 col-xs-6 nopadding">Beds: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Baths: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Area: <span class="color">150 sqm</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Pool: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Internet: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Cleaning: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oc-item">
+                    <div class="real-estate-item">
+                        <div class="real-estate-item-image">
+                            <div class="label label-danger">Long Term Rental</div>
+                            <a href="#">
+                                <img src="demos/real-estate/images/items/4.jpg" alt="Image 3">
+                            </a>
+                            <div class="real-estate-item-price">
+                                $1600<span>per month</span>
+                            </div>
+                            <div class="real-estate-item-info clearfix">
+                                <a href="#"><i class="icon-line-stack-2"></i></a>
+                                <a href="#"><i class="icon-line-heart"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="real-estate-item-desc">
+                            <h3><a href="#">3 Bedroom Villa</a></h3>
+                            <span>Seminyak Area</span>
+
+                            <a href="#" class="real-estate-item-link"><i class="icon-info"></i></a>
+
+                            <div class="line" style="margin-top: 15px; margin-bottom: 15px;"></div>
+
+                            <div class="real-estate-item-features t500 clearfix">
+                                <div class="col-md-4 col-xs-6 nopadding">Beds: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Baths: <span class="color">3</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Area: <span class="color">150 sqm</span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Pool: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Internet: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                                <div class="col-md-4 col-xs-6 nopadding">Cleaning: <span class="text-success"><i class="icon-check-sign"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <div class="promo promo-dark promo-flat bottommargin-lg">
+            <h3 class="t400 ls1">Special Offers on Villa Long Term Rentals &amp; Lease Agreements</h3>
+            <a href="#" class="button button-dark button-large button-rounded">Contact Now</a>
+        </div>
+
+        <div class="row real-estate-properties clearfix">
+
+            <div class="col-md-7">
+                <a href="#" style="background: url('demos/real-estate/images/cities/4.jpg') no-repeat bottom center; background-size: cover;">
+                    <div class="vertical-middle dark center">
+                        <div class="heading-block nomargin noborder">
+                            <h3 class="capitalize t500">California</h3>
+                            <span style="margin-top: 5px; font-size: 17px;">23 Properties</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-5">
+                <a href="#" style="background: url('demos/real-estate/images/cities/2.jpg') no-repeat center center; background-size: cover;">
+                    <div class="vertical-middle dark center">
+                        <div class="heading-block nomargin noborder">
+                            <h3 class="capitalize t500">New York</h3>
+                            <span style="margin-top: 5px; font-size: 17px;">12 Properties</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="#" style="background: url('demos/real-estate/images/cities/3.jpg') no-repeat center center; background-size: cover;">
+                    <div class="vertical-middle dark center">
+                        <div class="heading-block nomargin noborder">
+                            <h3 class="capitalize t500">San Francisco</h3>
+                            <span style="margin-top: 5px; font-size: 17px;">8 Properties</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="#" style="background: url('demos/real-estate/images/cities/1.jpg') no-repeat center center; background-size: cover;">
+                    <div class="vertical-middle dark center">
+                        <div class="heading-block nomargin noborder">
+                            <h3 class="capitalize t500">Texas</h3>
+                            <span style="margin-top: 5px; font-size: 17px;">31 Properties</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="#" style="background: url('demos/real-estate/images/cities/5.jpg') no-repeat center center; background-size: cover;">
+                    <div class="vertical-middle dark center">
+                        <div class="heading-block nomargin noborder">
+                            <h3 class="capitalize t500">New Orleans</h3>
+                            <span style="margin-top: 5px; font-size: 17px;">19 Properties</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
-            <h2>Application uses</h2>
-            <ul>
-                <li>Sample pages using ASP.NET Core MVC</li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=518004">Bower</a> for managing client-side libraries</li>
-                <li>Theming using <a href="http://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-            </ul>
+    <div class="row norightmargin topmargin bottommargin-lg common-height">
+        <div id="headquarters-map" class="col-md-5 gmap hidden-xs"></div>
+        <div class="col-md-3" style="background-color: #E5E5E5;">
+            <div style="padding: 40px;">
+                <h4 class="font-body t600 ls1">Our Headquarters</h4>
+
+                <div style="font-size: 15px; line-height: 1.7;">
+                    <address style="line-height: 1.7;">
+                        <strong>North America:</strong><br>
+                        795 Folsom Ave, Suite 600<br>
+                        San Francisco, CA 94107.<br><br>
+                        <abbr title="Phone Number"><strong>Phone:</strong></abbr> (91) 8547 632521<br>
+                        <abbr title="Email Address"><strong>Email:</strong></abbr> real-estate@canvas.com
+                    </address>
+
+                    <div class="clear topmargin-sm"></div>
+
+                    <h4 class="font-body t500" style="font-size: 17px; margin-bottom: 10px;">Working Hours:</h4>
+
+                    <abbr title="Mondays to Fridays"><strong>Mon-Fri:</strong></abbr> 10AM to 6PM<br>
+                    <abbr title="Saturday"><strong>Saturday:</strong></abbr> 11AM to 3PM<br>
+                    <abbr title="Sunday"><strong>Sunday:</strong></abbr> Closed
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <h2>How to</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=699562">Add an appsetting in config and access it in app.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699318">Add client packages using Bower.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-            </ul>
+        <div class="col-md-4 bgcolor">
+            <div class="col-padding">
+                <div class="quick-contact-widget dark clearfix">
+
+                    <h3 class="capitalize ls1 t400">Get a Quick Quote</h3>
+
+                    <div class="quick-contact-form-result"></div>
+
+                    <form id="quick-contact-form" name="quick-contact-form" action="include/quickcontact.php" method="post" class="quick-contact-form nobottommargin">
+
+                        <div class="form-process"></div>
+
+                        <input type="text" class="required sm-form-control input-block-level not-dark" id="quick-contact-form-name" name="quick-contact-form-name" value="" placeholder="Full Name" />
+
+                        <input type="email" class="required sm-form-control email input-block-level not-dark" id="quick-contact-form-email" name="quick-contact-form-email" value="" placeholder="Email Address" />
+
+                        <input type="text" class="required sm-form-control input-block-level not-dark" id="quick-contact-form-phone" name="quick-contact-form-phone" value="" placeholder="Phone Number (+1-555-2221)" />
+
+                        <textarea class="required sm-form-control input-block-level not-dark short-textarea" id="quick-contact-form-message" name="quick-contact-form-message" rows="5" cols="30" placeholder="What are you Looking for? (Ex: Villa on the Beach)"></textarea>
+
+                        <input type="text" class="hidden" id="quick-contact-form-botcheck" name="quick-contact-form-botcheck" value="" />
+
+                        <button type="submit" id="quick-contact-form-submit" name="quick-contact-form-submit" class="button button-small button-rounded button-light button-white nomargin" value="submit">Send Email</button>
+
+                    </form>
+
+                </div>
+            </div>
         </div>
-        <div class="col-md-3">
-            <h2>Overview</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-            </ul>
+    </div>
+
+    <div class="container clear-bottommargin clearfix">
+
+        <div class="col_two_third">
+
+            <div class="tabs tabs-justify tabs-tb tabs-alt nobottommargin clearfix" id="realestate-tabs" data-active="2">
+
+                <ul class="tab-nav clearfix">
+                    <li><a href="#realestate-tab-1">Why Us?</a></li>
+                    <li><a href="#realestate-tab-2">Properties</a></li>
+                    <li><a href="#realestate-tab-3">Legal</a></li>
+                </ul>
+
+                <div class="tab-container">
+
+                    <div class="tab-content clearfix" id="realestate-tab-1">
+                        <p>
+                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
+                            <div class="col_one_fourth nobottommargin center">
+                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="964" data-refresh-interval="50" data-speed="2000"></span></div>
+                                <h5>Floors Built</h5>
+                            </div>
+
+                            <div class="col_one_fourth nobottommargin center">
+                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="8514" data-refresh-interval="50" data-speed="2500"></span></div>
+                                <h5>Employees</h5>
+                            </div>
+
+                            <div class="col_one_fourth nobottommargin center">
+                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="458" data-refresh-interval="50" data-speed="3500"></span></div>
+                                <h5>Happy Clients</h5>
+                            </div>
+
+                            <div class="col_one_fourth nobottommargin center col_last">
+                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="14" data-to="159" data-refresh-interval="15" data-speed="2700"></span></div>
+                                <h5>Cities Served</h5>
+                            </div>
+                    </div>
+                    <div class="tab-content clearfix" id="realestate-tab-2">
+                        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <ul class="iconlist nobottommargin">
+                                    <li><i class="icon-ok"></i> 100% Assurance</li>
+                                    <li><i class="icon-ok"></i> Hard Working</li>
+                                    <li><i class="icon-ok"></i> Trustworthy</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                <ul class="iconlist nobottommargin">
+                                    <li><i class="icon-ok"></i> Intelligent</li>
+                                    <li><i class="icon-ok"></i> Always Curious</li>
+                                    <li><i class="icon-ok"></i> Perfectionists</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-4">
+                                <ul class="iconlist nobottommargin">
+                                    <li><i class="icon-ok"></i> Friendly &amp; Helpful</li>
+                                    <li><i class="icon-ok"></i> Accomodating Nature</li>
+                                    <li><i class="icon-ok"></i> Available 24x7</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content clearfix" id="realestate-tab-3">
+
+                        <div class="clear-bottommargin-sm">
+                            <div class="row clearfix">
+                                <div class="col-sm-7 bottommargin-sm">
+                                    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
+                                    <div class="clear-bottommargin-sm">
+                                        <div class="row clearfix">
+                                            <div class="col-sm-6 bottommargin-sm">
+                                                <address>
+                                                    <strong>Headquarters:</strong><br>
+                                                    795 Folsom Ave, Suite 600<br>
+                                                    San Francisco, CA 94107<br>
+                                                </address>
+                                            </div>
+                                            <div class="col-sm-6 bottommargin-sm">
+                                                <abbr title="Phone Number"><strong>Phone:</strong></abbr> (91) 8547 632521<br>
+                                                <abbr title="Fax"><strong>Fax:</strong></abbr> (91) 11 4752 1433<br>
+                                                <abbr title="Email Address"><strong>Email:</strong></abbr> info@canvas.com
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 bottommargin-sm">
+                                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=-37.814107,144.963280&zoom=12&markers=-37.814107,144.963280&size=300x180" alt="Google Map" class="img-thumbnail">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div class="col-md-3">
-            <h2>Run & Deploy</h2>
-            <ul>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-                <li><a href="http://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
+
+        <div class="col_one_third col_last">
+
+            <h4 class="center">Top Builders</h4>
+
+            <ul class="clients-grid grid-2 nobottommargin clearfix">
+                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/1.png" alt="Clients"></a></li>
+                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/2.png" alt="Clients"></a></li>
+                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/3.png" alt="Clients"></a></li>
+                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/4.png" alt="Clients"></a></li>
             </ul>
+
         </div>
-    </div>*@
+
+        <div class="clear"></div>
+
+    </div>
+
+</div>
+
+@section scripts {
+    <environment names="Development,Staging,Production">
+        @*<script src="~/js/magazine-search.js" asp-append-version="true"></script>*@
+
+        <script src="~/js/pages/main.js" asp-append-version="true"></script>
+        <script type="text/javascript">
+            Main.initIndex();
+        </script>
+    </environment>
+}
