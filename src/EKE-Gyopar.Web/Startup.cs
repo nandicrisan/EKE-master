@@ -54,8 +54,14 @@ namespace EKE_Gyopar.Web
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<UserSeed>();
             services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<IMagazineService, MagazineService>();
 
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
+            services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
+            services.AddTransient<IEntityBaseRepository<MagazineCategory>, EntityBaseRepository<MagazineCategory>>();
+            services.AddTransient<IEntityBaseRepository<Tag>, EntityBaseRepository<Tag>>();
+            services.AddTransient<IEntityBaseRepository<MediaElement>, EntityBaseRepository<MediaElement>>();
+            services.AddTransient<IEntityBaseRepository<Author>, EntityBaseRepository<Author>>();
             //Add Services
             services.AddMvc();
             services.AddSession();

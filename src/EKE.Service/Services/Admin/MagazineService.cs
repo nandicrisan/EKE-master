@@ -16,6 +16,7 @@ namespace EKE.Service.Services.Admin
     {
         Result<List<Magazine>> GetAllMagazines();
         Result<List<Magazine>> GetAllMagazinesIncluding();
+        Result<List<Magazine>> GetLastMagazines(int count);
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
@@ -81,6 +82,18 @@ namespace EKE.Service.Services.Admin
         public Result<List<Magazine>> GetAllMagazinesIncluding()
         {
             return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category).ToList());
+        }
+
+        public Result<List<Magazine>> GetLastMagazines(int count)
+        {
+            try
+            {
+                return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category).OrderByDescending(x=>x.DateCreated).Take(3).ToList());
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Magazine>>(ResultStatus.EXCEPTION, ex.Message);
+            }
         }
 
         public Result<Magazine> GetMagazineById(int id)

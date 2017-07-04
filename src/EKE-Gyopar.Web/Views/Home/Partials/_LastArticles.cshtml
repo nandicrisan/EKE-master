@@ -1,0 +1,29 @@
+﻿@using EKE.Data.Entities.Gyopar
+@model List<Article>
+<section>
+    <div class="heading-block">
+        <h3>Válogatott cikkek</h3>
+    </div>
+    
+    <div id="overlayArticle">
+        <i class="fa fa-spinner fa-spin spin-normal"></i>
+    </div>
+    @if (Model != null)
+    {
+        foreach (var article in Model)
+        {
+            <div class="col_one_third">
+                <div class="feature-box fbox-plain">
+                    <div class="fbox-icon">
+                        <a href="#"><i class="icon-realestate-doc"></i></a>
+                    </div>
+                    <h3 class="t400">@article.Title</h3>
+                    <p class="overflow-text">@Html.Raw(article.Content)</p>
+                </div>
+            </div>
+        }
+    }
+
+    <div class="clear"></div>
+    <div class="line topmargin-sm bottommargin-lg"></div>
+</section>

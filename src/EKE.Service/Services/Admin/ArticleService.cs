@@ -15,6 +15,7 @@ namespace EKE.Service.Services.Admin
     public interface IArticleService : IBaseService
     {
         Result<List<Article>> Get(ArticleSearch model);
+        Result<List<Article>> GetSelected();
         Result<int> Count(ArticleSearch filter);
     }
 
@@ -79,6 +80,19 @@ namespace EKE.Service.Services.Admin
             if (!string.IsNullOrEmpty(filter.PublishSection) && filter.PublishSection != "0")
                 predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSection));
             return predicate;
+        }
+
+        public Result<List<Article>> GetSelected()
+        {
+            try
+            {
+                var result = _articleRepo.GetAllIncluding(p => p.Magazine, p => p.Author).OrderByDescending(x => x.DateCreated).Take(6).ToList();
+                return new Result<List<Article>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Article>>(ResultStatus.EXCEPTION, ex.Message);
+            }
         }
     }
 }

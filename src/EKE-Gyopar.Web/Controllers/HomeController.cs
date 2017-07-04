@@ -15,9 +15,11 @@ namespace EKE_Gyopar.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IArticleService _articleService;
-        public HomeController(IMapper mapper, IArticleService articleService)
+        private readonly IMagazineService _magazineService;
+        public HomeController(IMapper mapper, IArticleService articleService, IMagazineService magazineService)
         {
             _articleService = articleService;
+            _magazineService = magazineService;
             _mapper = mapper;
         }
         public IActionResult Index()
@@ -49,18 +51,31 @@ namespace EKE_Gyopar.Web.Controllers
         public IActionResult SearchMagazine(ArticleSearch filter)
         {
             var res = _articleService.Get(filter);
-            if(!res.IsOk())
+            if (!res.IsOk())
                 return StatusCode((int)res.Status, res.Message);
-            List<ArticleSerchItemVM> vmList =  Mapper.Map<List<Article>, List<ArticleSerchItemVM>>(res.Data);
-            var serachResult = new ArticleSerchResultVM
-            {
-                Result = vmList
-            };
+            List<ArticleSerchItemVM> vmList = Mapper.Map<List<Article>, List<ArticleSerchItemVM>>(res.Data);
+            var serachResult = new ArticleSerchResultVM { Result = vmList };
             //Get result count
             var count = _articleService.Count(filter);
             if (count.IsOk())
                 serachResult.FoundItem = count.Data;
             return Json(serachResult);
+        }
+
+        [HttpGet]
+        public IActionResult GetLastMagazines()
+        {
+            var res = _magazineService.GetLastMagazines(3);
+            if (!res.IsOk()) return StatusCode((int)res.Status, res.Message);
+            return PartialView("Partials/_LastMagazines", res.Data);
+        }
+
+        [HttpGet]
+        public IActionResult GetSelectedArticles()
+        {
+            var res = _articleService.GetSelected();
+            if (!res.IsOk()) return StatusCode((int)res.Status, res.Message);
+            return PartialView("Partials/_LastArticles", res.Data);
         }
     }
 }
