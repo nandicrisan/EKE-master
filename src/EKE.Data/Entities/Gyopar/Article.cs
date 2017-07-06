@@ -22,6 +22,7 @@ namespace EKE.Data.Entities.Gyopar
         public string Content { get; set; }
         public string OldContent { get; set; }
         public int OrderNo { get; set; }
+        public bool Selected { get; set; }
         public virtual Magazine Magazine { get; set; }
         public virtual ICollection<ArticleTag> ArticleTag { get; set; }
         public virtual ICollection<MediaElement> MediaElement { get; set; }

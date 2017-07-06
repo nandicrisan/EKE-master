@@ -19,7 +19,8 @@
     "Microsoft.Extensions.Logging": "1.1.2",
     "Microsoft.Extensions.Logging.Console": "1.1.2",
     "BundlerMinifier.Core": "2.4.337",
-    "Microsoft.ApplicationInsights.AspNetCore": "2.1.0"
+    "Microsoft.ApplicationInsights.AspNetCore": "2.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.1"
   },
 
   "tools": {

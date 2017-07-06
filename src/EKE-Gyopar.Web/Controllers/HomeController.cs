@@ -65,7 +65,7 @@ namespace EKE_Gyopar.Web.Controllers
         [HttpGet]
         public IActionResult GetLastMagazines()
         {
-            var res = _magazineService.GetLastMagazines(3);
+            var res = _magazineService.GetLastMagazines(10);
             if (!res.IsOk()) return StatusCode((int)res.Status, res.Message);
             return PartialView("Partials/_LastMagazines", res.Data);
         }
@@ -75,7 +75,7 @@ namespace EKE_Gyopar.Web.Controllers
         {
             var res = _articleService.GetSelected();
             if (!res.IsOk()) return StatusCode((int)res.Status, res.Message);
-            return PartialView("Partials/_LastArticles", res.Data);
+            return PartialView("Partials/_SelectedArticles", res.Data);
         }
     }
 }

@@ -84,9 +84,11 @@ Main = {
         $.ajax({
             url: localStorage.siteRoot + "/Home/GetLastMagazines",
             success: function (data) {
-                
                 p.magazine.html(data);
-                
+                SEMICOLON.widget.carousel();
+                $("#overlayMagazine").css("display", "none");
+                p.magazine.css("display", "none");
+                p.magazine.fadeIn(3000);
             }
         });
 

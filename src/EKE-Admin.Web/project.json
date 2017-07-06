@@ -25,7 +25,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.1.2",
     "Microsoft.TypeScript.Compiler": "2.4.1",
     "Microsoft.TypeScript.MSBuild": "2.4.1",
-    "Microsoft.ApplicationInsights.AspNetCore": "2.1.0"
+    "Microsoft.ApplicationInsights.AspNetCore": "2.1.0",
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.1"
   },
 
   "tools": {

@@ -13,7 +13,7 @@
     max-height: 120px;
 }
 
-#overlayArticle {
+#overlayArticle, #overlayMagazine {
     min-height: 400px;
     width: 100%;
     height: 100%;
@@ -22,7 +22,7 @@
     border-radius: 35px;
 }
 
-    #overlayArticle i {
+    #overlayArticle i, #overlayMagazine i {
         display: table-cell;
         vertical-align: middle;
         text-align: center;

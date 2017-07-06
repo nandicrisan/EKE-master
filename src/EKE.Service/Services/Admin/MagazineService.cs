@@ -88,7 +88,9 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category).OrderByDescending(x=>x.DateCreated).Take(3).ToList());
+                var result = _magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category, x => x.MediaElements).OrderByDescending(x => x.DateCreated).Take(count).ToList();
+                CheckMediaElements(result);
+                return new Result<List<Magazine>>(result);
             }
             catch (Exception ex)
             {
@@ -519,6 +521,25 @@ namespace EKE.Service.Services.Admin
             catch (Exception e)
             {
                 return new Result<List<Author>>(ResultStatus.EXCEPTION, e.Message);
+            }
+        }
+        #endregion
+
+        #region Private
+        private void CheckMediaElements(List<Magazine> magazines)
+        {
+            foreach (var magazine in magazines)
+            {
+                if (magazine.MediaElements.Count == 0)
+                {
+                    var mediaElement = new MediaElement()
+                    {
+                        Description = "Borito",
+                        Name = "Template borito",
+                        OriginalName = "images/components/template_borito.jpg",
+                    };
+                    magazine.MediaElements.Add(mediaElement);
+                }
             }
         }
         #endregion
