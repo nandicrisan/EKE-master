@@ -3,63 +3,70 @@
         <div class="vertical-middle" style="z-index: 2;">
             <div class="container clearfix">
                 <div class="tabs advanced-real-estate-tabs clearfix">
-
                     <ul class="tab-nav clearfix">
                         <li><a href="#tab-properties">Keresési paraméterek</a></li>
                     </ul>
-
                     <div class="tab-container">
-
                         <div class="tab-content clearfix" id="tab-properties">
-                            <form action="#" method="post" class="nobottommargin">
-                                <div class="row">
-                                    <div class="col-md-2 col-sm-12 bottommargin-sm">
-                                        <label for="" style="display:block;">Típus</label>
-                                        <input class="bt-switch" type="checkbox" checked data-on-text="Cikk" data-off-text="Lapszám" data-on-color="themecolor" data-off-color="themecolor">
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-xs-12 bottommargin-sm">
-                                        <label for="">Évszám</label>
-                                        <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;">
-                                            @for (int i = 1800; i <= DateTime.Now.Year; i++)
-                                            {
-                                                <option value="@i">@i</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2 col-sm-6 col-xs-12 bottommargin-sm">
-                                        <label for="">Lapszám</label>
-                                        <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;">
-                                            @for (int i = 1; i <= 12; i++)
-                                            {
-                                                <option value="@i">@i</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6 bottommargin-sm">
-                                        <label for="">Kulcsszavak</label>
-                                        <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;">
-                                            <option value="teszt">teszt</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6 bottommargin-sm">
-                                        <label for="">Egyéb</label>
-                                        <input class="form-control" type="text" style="width:100%; line-height: 30px;"/>
-                                    </div>
-                                    <div class="clear"></div>
-                                    <div class="col-md-4 col-sm-6 col-xs-12">
-                                        <label for="" style="margin-bottom: 20px !important;">Év skála</label>
-                                        <input class="price-range-slider" />
-                                    </div>
-                                    <div class="clear visible-xs bottommargin-sm"></div>
-                                    <div class="col-md-4 col-md-offset-1 col-sm-6 col-xs-12">
-                                        <label for="" style="margin-bottom: 20px !important;">Hónap skála</label>
-                                        <input class="area-range-slider" />
-                                    </div>
-                                    <div class="col-md-offset-1 col-md-2 col-sm-12 clearfix">
-                                        <button class="button button-3d button-rounded btn-block nomargin" style="margin-top: 35px !important;">Search</button>
-                                    </div>
+                            <div class="row nobottommargin">
+                                <div class="col-md-2 col-sm-12 bottommargin-sm">
+                                    <label for="" style="display:block;">Típus</label>
+                                    <input class="bt-switch" type="checkbox" checked data-on-text="Cikk" data-off-text="Lapszám" data-on-color="themecolor" data-off-color="themecolor" id="objectType">
                                 </div>
-                            </form>
+                                <div class="col-md-2 col-sm-6 col-xs-12 bottommargin-sm">
+                                    <label for="">Évszám</label>
+                                    <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;" id="yearSelected">
+                                        @for (int i = 1892; i <= 1917; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+
+                                        @for (int i = 1930; i <= 1946; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+
+                                        <option value="1948">1948</option>
+
+                                        @for (int i = 1991; i <= DateTime.Now.Year; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-sm-6 col-xs-12 bottommargin-sm">
+                                    <label for="">Lapszám</label>
+                                    <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;" id="magazineSelected">
+                                        @for (int i = 1; i <= 12; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-6 bottommargin-sm">
+                                    <label for="">Kulcsszavak</label>
+                                    <select class="selectpicker form-control" multiple data-size="6" data-live-search="true" data-placeholder="Összes" style="width:100%; line-height: 30px;" id="tagsSelected">
+                                        <option value="teszt">teszt</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-6 bottommargin-sm">
+                                    <label for="">Egyéb</label>
+                                    <input class="form-control" type="text" style="width:100%; line-height: 30px;" id="otherText" />
+                                </div>
+                                <div class="clear"></div>
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <label for="" style="margin-bottom: 20px !important;">Év skála</label>
+                                    <input class="price-range-slider" id="yearRange" />
+                                </div>
+                                <div class="clear visible-xs bottommargin-sm"></div>
+                                <div class="col-md-4 col-md-offset-1 col-sm-6 col-xs-12">
+                                    <label for="" style="margin-bottom: 20px !important;">Hónap skála</label>
+                                    <input class="area-range-slider" id="magazineRange" />
+                                </div>
+                                <div class="col-md-offset-1 col-md-2 col-sm-12 clearfix">
+                                    <button type="button" class="button button-3d button-rounded btn-block nomargin searchBtn" id="load" style="margin-top: 35px !important;" onclick="Main.searchMethod()" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Keresés...">Keresés</button>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

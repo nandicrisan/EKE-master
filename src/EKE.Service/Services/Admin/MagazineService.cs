@@ -26,7 +26,7 @@ namespace EKE.Service.Services.Admin
         Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
         Result<Article> GetArticleById(int id);
         Result<Article> Add(Article model, string userName);
-        Result<Article> Update(Article model);
+        Result<Article> Update(Article model, string username);
         Result DeleteArticle(int id);
 
         Result<MagazineCategory> Add(MagazineCategory model);
@@ -221,7 +221,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag);
+                var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category);
                 if (result == null)
                     return new Result<Article>(ResultStatus.NOT_FOUND);
                 return new Result<Article>(result);
@@ -309,10 +309,70 @@ namespace EKE.Service.Services.Admin
 
         }
 
-        public Result<Article> Update(Article model)
+        public Result<Article> Update(Article model, string username)
         {
             try
             {
+                if (model.Files != null)
+                {
+                    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.Magazine.PublishYear, model.Magazine.PublishSection));
+                    if (!Directory.Exists(uploads))
+                        Directory.CreateDirectory(uploads);
+
+                    var mediaElements = new List<MediaElement>();
+                    foreach (var file in model.Files)
+                    {
+                        if (file.Length > 0)
+                        {
+                            using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                            {
+                                file.CopyToAsync(fileStream);
+                            }
+                        }
+                        var mediaElem = new MediaElement();
+                        mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
+                        mediaElem.Name = RandomString(10);
+                        mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                        mediaElements.Add(mediaElem);
+                    }
+
+                    model.MediaElement = mediaElements;
+                }
+
+                var magCat = _magazineCatRepo.GetById(model.Magazine.Category.Id);
+                if (magCat == null)
+                    return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
+
+                var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
+                if (!magazine.Any())
+                {
+                    model.Magazine.Category = magCat;
+                    model.Magazine.Title = String.Format("{0} / {1}", model.Magazine.PublishYear, model.Magazine.PublishSection);
+                    model.Magazine.Slug = GenerateSlug(model.Magazine.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
+                    model.Magazine.DateCreated = DateTime.Now;
+                }
+                else
+                {
+                    model.Magazine = magazine.FirstOrDefault();
+                }
+
+                var author = new Author();
+                if (model.Author.Id == 0)
+                {
+                    author = new Author { Name = model.Author.Name };
+                }
+                else
+                {
+                    author = _authorRepo.GetById(model.Author.Id);
+                }
+                model.Author = author;
+                model.PublishedBy = username;
+
+                //foreach (var item in model.ArticleTags)
+                //{
+                //    var tag = _tagRepo.GetById(Convert.ToInt32(item));
+                //}
+
                 _articleRepo.Update(model);
                 SaveChanges();
                 return new Result<Article>(model);

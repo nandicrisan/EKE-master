@@ -11,7 +11,14 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
     max-height: 120px;
+    line-height: 1.8;
+    margin: 8px 0 0 0;
+    color: #999;
 }
+
+    .overflow-text p {
+        margin: 0;
+    }
 
 #overlayArticle, #overlayMagazine {
     min-height: 400px;
@@ -32,4 +39,20 @@
     font-size: 35px;
     height: 35px;
     width: 35px;
+}
+
+.entry-title {
+    position: relative;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    min-height: 55px;
+    max-height: 55px;
+    line-height: 1;
+    margin: 8px 0 0 0;
+    color: #999;
+    width: 100%;
 }

@@ -5,13 +5,16 @@
             <h3 class="box-title">Cikk szerkesztése</h3>
         </div><!-- /.box-header -->
         <!-- form start -->
-        <form asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data">
+        <form asp-controller="Magazine" asp-action="UpdateArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data">
             @Html.HiddenFor(x => x.Article.Magazine.PublishSection)
             @Html.HiddenFor(x => x.Article.Magazine.PublishYear)
             @Html.HiddenFor(x => x.Article.Magazine.Category.Id)
             @Html.HiddenFor(x => x.Article.Magazine.Category)
             @Html.HiddenFor(x => x.Article.Magazine)
             @Html.HiddenFor(x => x.Article.Id)
+            @Html.HiddenFor(x => x.Article.AuthorId)
+            @Html.HiddenFor(x => x.Article.Author.Id)
+            @Html.HiddenFor(x => x.Article.Author.Name)
             <div class="box-body">
                 <div class="col-md-9 row">
                     <div class="col-md-2">
@@ -51,6 +54,13 @@
                         <div class="form-group">
                             <label>Sorrend</label>
                             <input asp-for="Article.OrderNo" class="form-control" type="number" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label>Kiválasztott</label>
+                            <input asp-for="Article.Selected"  type="checkbox" />
                         </div>
                     </div>
 

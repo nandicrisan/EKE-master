@@ -2,14 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace EKE.Data
 {
     public class BaseDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
-        {
-        }
+        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options){}
 
         #region Entities
         DbSet<Article> Articles { get; set; }
@@ -23,6 +25,8 @@ namespace EKE.Data
         //Model configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //Magazin to tag relationship
             modelBuilder.Entity<MagazineTag>()
            .HasKey(t => new { t.MagazinId, t.TagId });
@@ -50,7 +54,6 @@ namespace EKE.Data
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.ArticleTags)
                 .HasForeignKey(pt => pt.TagId);
-            base.OnModelCreating(modelBuilder);
         }
 
         public virtual void Commit()

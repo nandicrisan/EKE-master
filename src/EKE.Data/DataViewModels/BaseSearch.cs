@@ -29,7 +29,7 @@
         public BaseSearch()
         {
             Page = 1;
-            Display = 10;
+            Display = 8;
         }
     }
 }

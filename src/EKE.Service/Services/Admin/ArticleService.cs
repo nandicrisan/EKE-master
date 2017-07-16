@@ -75,10 +75,36 @@ namespace EKE.Service.Services.Admin
                 predicate = predicate.And(p => p.ArticleTag.Any(q => q.Tag.Name.Contains(filter.Keyword)) || p.Author.Name.ToLower().Contains(filter.Keyword) ||
                  p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
             }
-            if (filter.PublishYear != 0)
-                predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishYear == filter.PublishYear);
-            if (!string.IsNullOrEmpty(filter.PublishSection) && filter.PublishSection != "0")
-                predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSection));
+
+            //if (filter.RangeTypeYear)
+            //{
+            //    predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishYear >= Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
+            //}
+            //else
+            //{
+            //    if (filter.PublishYearRange.Count > 0)
+            //    {
+            //        //foreach (var item in filter.PublishYearRange)
+            //        //{
+            //        predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishYear == Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
+            //        //}
+            //    }
+            //}
+
+            //if (filter.RangeTypeSection)
+            //{
+            //    predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
+            //}
+            //else
+            //{
+            //    if (filter.PublishSectionRange.Count > 0)
+            //    {
+            //        //foreach (var item in filter.PublishSectionRange)
+            //        //{
+            //        predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
+            //        //}
+            //    }
+            //}
             return predicate;
         }
 

@@ -4,7 +4,7 @@
     <div class="heading-block">
         <h3>Válogatott cikkek</h3>
     </div>
-    
+
     <div id="overlayArticle">
         <i class="fa fa-spinner fa-spin spin-normal"></i>
     </div>
@@ -18,7 +18,7 @@
                         <a href="#"><i class="icon-realestate-doc"></i></a>
                     </div>
                     <h3 class="t400">@article.Title</h3>
-                    <p class="overflow-text">@Html.Raw(article.Content)</p>
+                    <div class="overflow-text">@Html.Raw(article.Content)</div>
                 </div>
             </div>
         }

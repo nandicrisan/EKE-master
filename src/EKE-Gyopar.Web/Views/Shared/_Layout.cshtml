@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Erdélyi Gyopár | @ViewData["Title"]</title>
-
+    <link rel="shortcut icon" type="image/png" href="~/images/logo/eke.ico">
     <environment names="Development,Staging,Production">
         <link href="https://fonts.googleapis.com/css?family=Lora:400,400i|Roboto:300,400,500,700|Rubik:400,600" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -39,6 +39,10 @@
 
 </head>
 <body class="stretched side-push-panel">
+    <script type="text/javascript">
+                localStorage.setItem("siteRoot", "@Url.Action("", null, null, "http")")
+    </script>
+
     @Html.Partial("Partials/_SidePanel")
 
     <div id="wrapper" class="clearfix">
@@ -46,9 +50,6 @@
         @Html.Partial("Partials/_Header")
         @Html.Partial("Partials/_Slider")
         <section id="content">
-            <script type="text/javascript">
-                localStorage.setItem("siteRoot", "@Url.Action("", null, null, "http")")
-            </script>
             @RenderBody()
         </section>
         <hr />

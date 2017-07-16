@@ -41,7 +41,7 @@ namespace EKE_Gyopar.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<BaseDbContext>(options =>
+            services.AddDbContext<EKE.Data.BaseDbContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("EKEConnectionString")));
 
             RegisterServices(services);

@@ -48,18 +48,18 @@ namespace EKE_Gyopar.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult SearchMagazine(ArticleSearch filter)
+        public IActionResult Search(ArticleSearch filter)
         {
             var res = _articleService.Get(filter);
             if (!res.IsOk())
                 return StatusCode((int)res.Status, res.Message);
             List<ArticleSerchItemVM> vmList = Mapper.Map<List<Article>, List<ArticleSerchItemVM>>(res.Data);
-            var serachResult = new ArticleSerchResultVM { Result = vmList };
+            var searchResult = new ArticleSerchResultVM { Result = vmList };
             //Get result count
             var count = _articleService.Count(filter);
             if (count.IsOk())
-                serachResult.FoundItem = count.Data;
-            return Json(serachResult);
+                searchResult.FoundItem = count.Data;
+            return PartialView("Partials/_SearchResult", searchResult);
         }
 
         [HttpGet]

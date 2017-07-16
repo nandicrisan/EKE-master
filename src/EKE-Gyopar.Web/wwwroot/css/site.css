@@ -313,7 +313,7 @@ small {
     clear: both;
     position: relative;
     width: 100%;
-    margin: 60px 0;
+    margin: 25px 0;
     border-top: 1px solid #EEE;
 }
 
@@ -5894,13 +5894,15 @@ body.device-touch.device-xxs .portfolio-notitle .portfolio-overlay {
 
 .entry {
     position: relative;
-    margin: 0 0 50px;
-    padding: 0 0 50px;
+    margin: 0 0 20px;
+    padding: 0 0 10px;
     border-bottom: 2px solid #F5F5F5;
 }
 
 .entry-image {
-    margin-bottom: 30px;
+    margin-bottom: 5px;
+    padding: 10px;
+    background: #254B32;
 }
 
     .entry-image,
@@ -5948,9 +5950,9 @@ body.device-touch.device-xxs .portfolio-notitle .portfolio-overlay {
 
 .entry-meta li {
     float: left;
-    font-size: 13px;
-    line-height: 14px;
-    margin: 0 10px 15px 0;
+    font-size: 12px;
+    line-height: 5px;
+    margin: 10px 3px 5px 0;
     color: #999;
     font-family: 'Crete Round', serif;
     font-style: italic;
@@ -6449,7 +6451,7 @@ body:not(.device-touch) .entry-link {
 .more-link {
     display: inline-block;
     border-bottom: 1px solid #1ABC9C;
-    padding: 0 2px;
+    padding: 20px 25px 0px 0px;
     font-family: 'Crete Round', serif;
     font-style: italic;
 }
@@ -6599,7 +6601,7 @@ body:not(.device-touch) .entry-link {
 }
 
 .post-navigation + .line {
-    margin: 40px 0 50px;
+    margin: 20px 0 20px;
 }
 
 
@@ -11300,7 +11302,7 @@ ul.tab-nav:not(.tab-nav-lg) {
     }
 
         ul.tab-nav:not(.tab-nav-lg) li:first-child {
-            margin-left: 15px;
+            margin-left: 0px;
             border-left: 1px solid #DDD;
         }
 
@@ -14580,7 +14582,7 @@ button.toast-close-button {
 
 .widget {
     position: relative;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
     .widget p {
@@ -14588,7 +14590,7 @@ button.toast-close-button {
     }
 
 .sidebar-widgets-wrap .widget {
-    padding-top: 50px;
+    padding-top: 20px;
     border-top: 1px solid #EEE;
 }
 

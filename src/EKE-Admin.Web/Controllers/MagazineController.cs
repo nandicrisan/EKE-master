@@ -209,6 +209,31 @@ namespace EKE_Admin.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public IActionResult UpdateArticle(ArticleVM model)
+        {
+            //TODO: attach tags to the article
+            var message = "Sikeresen hozzáadva!";
+            ModelState.Remove("Article.Slug");
+            ModelState.Remove("Article.Magazine.Category.Name");
+            ModelState.Remove("Article.Magazine.Title");
+            ModelState.Remove("Article.Author.Name");
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Hiba a validáció során. A mezők kitöltése kötelező!";
+                return RedirectToAction("Index", model);
+            }
+
+            var result = _magService.Update(model.Article, User.Identity.Name);
+            if (!result.IsOk())
+            {
+                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return RedirectToAction("Index", model);
+            }
+
+            return RedirectToAction("Index", model);
+        }
+
         public IActionResult DeleteArticle(int id)
         {
             var magazines = _magService.DeleteArticle(id);
