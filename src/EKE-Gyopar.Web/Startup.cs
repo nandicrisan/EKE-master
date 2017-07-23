@@ -85,7 +85,11 @@ namespace EKE_Gyopar.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = context =>
+                context.Context.Response.Headers.Add("Cache-Control", "public, max-age=2592000")
+            });
 
             app.UseMvc(routes =>
             {

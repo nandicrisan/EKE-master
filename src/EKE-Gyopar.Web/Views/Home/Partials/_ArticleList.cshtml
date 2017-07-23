@@ -34,25 +34,33 @@
         </div>
         <div class="col-md-8 articleListSelection">
             <div class="panel-group" id="accordion">
-                @for (int i = 0; i < Model.Articles.Count; i++)
+                @if (Model.Articles.Count > 0)
                 {
+                    for (int i = 0; i < Model.Articles.Count; i++)
+                    {
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_@i">
-                                    @Model.Articles.ElementAt(i).Title
-                                </a>
-                                <a onclick="Main.searchArticle('@Model.Articles.ElementAt(i).Slug')" href="javascript:void(0);" class="more-link no-padding pull-right">Tovább</a>
-                            </h4>
-                        </div>
-                        <div id="collapse_@i" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                @Html.Raw(Model.Articles.ElementAt(i).Content)
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_@i">
+                                        @Model.Articles.ElementAt(i).Title
+                                    </a>
+                                    <a onclick="Main.searchArticle('@Model.Articles.ElementAt(i).Slug')" href="javascript:void(0);" class="more-link no-padding pull-right">Tovább</a>
+                                </h4>
+                            </div>
+                            <div id="collapse_@i" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    @Html.Raw(Model.Articles.ElementAt(i).Content)
+                                </div>
                             </div>
                         </div>
-                    </div>
-
+                    }
+                }
+                else
+                {
+                    <p>
+                        Nincs elérhető tartalom!
+                    </p>
                 }
             </div>
         </div>
