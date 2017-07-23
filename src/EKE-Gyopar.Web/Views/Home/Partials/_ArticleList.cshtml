@@ -1,0 +1,60 @@
+﻿@model EKE.Data.Entities.Gyopar.Magazine
+@{ }
+
+
+
+@if (Model != null)
+{
+    <div class="row bottommargin-sm">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-default" aria-label="Vissza" onclick="Main.backToMagazines()">
+                <span aria-hidden="true"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
+            </button>
+            <button type="button" class="btn btn-default" aria-label="Teljes képernyő" onclick="Main.changeImageState($(this))">
+                <span aria-hidden="true"><i class="fa fa-arrows-alt" aria-hidden="true"></i></span>
+            </button>
+            <button type="button" class="btn btn-default" aria-label="Szöveg méret nagyítás" onclick="Main.changeFontSize(true)">
+                <span aria-hidden="true"><i class="fa fa-plus" aria-hidden="true"></i></span>
+            </button>
+            <button type="button" class="btn btn-default" aria-label="Szöveg méret csökkentés" onclick="Main.changeFontSize(false)">
+                <span aria-hidden="true"><i class="fa fa-minus" aria-hidden="true"></i></span>
+            </button>
+            <strong>Bepillantó: </strong> Gyors olvasáshoz kattints a címre
+        </div>
+    </div>
+
+    <div id="posts" class="post-grid grid-container clearfix" data-layout="fitRows">
+        <div class="entry clearfix imageState">
+            <div class="entry-image">
+                <img class="image_fade" src="~/images/components/template_borito.jpg" alt="Standard Post with Image">
+            </div>
+            <div class="entry-title min-height-25">
+                <h2><a href="blog-single.html"> @Model.Title </a></h2>
+            </div>
+        </div>
+        <div class="col-md-8 articleListSelection">
+            <div class="panel-group" id="accordion">
+                @for (int i = 0; i < Model.Articles.Count; i++)
+                {
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_@i">
+                                    @Model.Articles.ElementAt(i).Title
+                                </a>
+                                <a onclick="Main.searchArticle('@Model.Articles.ElementAt(i).Slug')" href="javascript:void(0);" class="more-link no-padding pull-right">Tovább</a>
+                            </h4>
+                        </div>
+                        <div id="collapse_@i" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                @Html.Raw(Model.Articles.ElementAt(i).Content)
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+}

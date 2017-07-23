@@ -708,7 +708,7 @@ var SEMICOLON = SEMICOLON || {};
 				outClass : animationOut,
 				inDuration : Number(durationIn),
 				outDuration : Number(durationOut),
-				linkElement : '#primary-menu ul li a:not([target="_blank"]):not([href*="#"]):not([data-lightbox]):not([href^="mailto"]):not([href^="tel"]):not([href^="sms"]):not([href^="call"])',
+                linkElement: '#primary-menu ul li a:not([target="_blank"]):not([href*="#"]):not([data-lightbox]):not([href^="mailto"]):not([href^="tel"]):not([href^="sms"]):not([href^="call"]):not([href*="javascript:void(0);"])',
 				loading : true,
 				loadingParentElement : 'body',
 				loadingClass : 'css3-spinner',

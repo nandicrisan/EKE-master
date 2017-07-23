@@ -17,6 +17,8 @@ namespace EKE.Service.Services.Admin
         Result<List<Magazine>> GetAllMagazines();
         Result<List<Magazine>> GetAllMagazinesIncluding();
         Result<List<Magazine>> GetLastMagazines(int count);
+        Result<List<Magazine>> GetAllMagazinesBy(Expression<Func<Magazine, bool>> predicate);
+
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
@@ -24,6 +26,7 @@ namespace EKE.Service.Services.Admin
 
         Result<List<Article>> GetAllArticles();
         Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
+        Result<Article> GetArticleBySlug(string slug);
         Result<Article> GetArticleById(int id);
         Result<Article> Add(Article model, string userName);
         Result<Article> Update(Article model, string username);
@@ -98,9 +101,22 @@ namespace EKE.Service.Services.Admin
             }
         }
 
+        public Result<List<Magazine>> GetAllMagazinesBy(Expression<Func<Magazine, bool>> predicate)
+        {
+            try
+            {
+                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles).ToList();
+                return new Result<List<Magazine>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Magazine>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
         public Result<Magazine> GetMagazineById(int id)
         {
-            return new Result<Magazine>(_magazineRepo.GetById(id));
+            return new Result<Magazine>(_magazineRepo.GetByIdIncluding(id, x => x.Articles));
         }
 
         public Result<Magazine> Add(Magazine model)
@@ -222,6 +238,21 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category);
+                if (result == null)
+                    return new Result<Article>(ResultStatus.NOT_FOUND);
+                return new Result<Article>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<Article>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result<Article> GetArticleBySlug(string slug)
+        {
+            try
+            {
+                var result = _articleRepo.GetAllIncludingPred(x => x.Slug == slug, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category).FirstOrDefault();
                 if (result == null)
                     return new Result<Article>(ResultStatus.NOT_FOUND);
                 return new Result<Article>(result);

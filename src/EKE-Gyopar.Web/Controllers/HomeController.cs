@@ -63,6 +63,16 @@ namespace EKE_Gyopar.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult SearchByMagazineYear(string year)
+        {
+            var result = _magazineService.GetAllMagazinesBy(x => x.PublishYear == Convert.ToInt32(year));
+            if (result.IsOk())
+                return PartialView("Partials/_FoundMagazines", result.Data.OrderBy(x => x.PublishSection).ToList());
+
+            return StatusCode((int)result.Status, result.Message);
+        }
+
+        [HttpGet]
         public IActionResult GetLastMagazines()
         {
             var res = _magazineService.GetLastMagazines(10);
@@ -77,5 +87,26 @@ namespace EKE_Gyopar.Web.Controllers
             if (!res.IsOk()) return StatusCode((int)res.Status, res.Message);
             return PartialView("Partials/_SelectedArticles", res.Data);
         }
+
+        [HttpGet]
+        public IActionResult SearchMagazineById(string magId)
+        {
+            var result = _magazineService.GetMagazineById(Convert.ToInt32(magId));
+            if (result.IsOk())
+                return PartialView("Partials/_ArticleList", result.Data);
+
+            return StatusCode((int)result.Status, result.Message);
+        }
+
+        [HttpGet]
+        public IActionResult SearchArticleById(string slug)
+        {
+            var result = _magazineService.GetArticleBySlug(slug);
+            if (result.IsOk())
+                return PartialView("Partials/_Article", result.Data);
+
+            return StatusCode((int)result.Status, result.Message);
+        }
+
     }
 }

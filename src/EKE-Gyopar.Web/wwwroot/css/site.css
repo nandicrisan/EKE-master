@@ -4228,7 +4228,7 @@ body.stretched .container-fullwidth .breadcrumb {
 
 .content-wrap {
     position: relative;
-    padding: 80px 0;
+    padding: 20px 0;
 }
 
 #content .container {
@@ -13558,7 +13558,7 @@ input[type=checkbox]:not(:checked) + label.error {
 -----------------------------------------------------------------*/
 
 .heading-block {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
     .heading-block h1,
