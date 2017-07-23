@@ -165,6 +165,8 @@ namespace EKE.Data.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
+                    b.Property<int>("OrderNo");
+
                     b.Property<string>("PublishSection")
                         .IsRequired();
 

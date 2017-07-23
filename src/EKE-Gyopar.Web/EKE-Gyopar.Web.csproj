@@ -42,4 +42,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\Uploads\covers\" />
+  </ItemGroup>
+
 </Project>

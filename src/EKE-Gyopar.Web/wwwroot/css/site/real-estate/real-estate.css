@@ -79,7 +79,7 @@
 		width: 210px;
 		border-radius: 3px;
 		border: 0;
-		background-color: #254B32;
+		background-color: #2D522D;
 	}
 
 	#primary-menu ul ul li:not(:first-child) { border-top: 1px dotted rgba(255,255,255,0.1) !important; }
@@ -98,7 +98,7 @@
 	.dark #primary-menu:not(.not-dark) ul ul,
 	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content,
 	#primary-menu.dark ul ul,
-	#primary-menu.dark ul li .mega-menu-content { background-color: #254B32; }
+	#primary-menu.dark ul li .mega-menu-content { background-color: #2D522D; }
 
 	.dark #primary-menu:not(.not-dark) ul ul li > a,
 	#primary-menu.dark ul ul li > a { color: #CCC !important; }
@@ -134,7 +134,7 @@
 .dark #header:not(.transparent-header),
 #header.dark:not(.transparent-header),
 #header.dark.sticky-header.transparent-header #header-wrap:not(.not-dark),
-#footer.dark { background-color: #254B32; }
+#footer.dark { background-color: #2D522D; }
 
 .dark #header:not(.transparent-header),
 #header.dark:not(.transparent-header) { border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -181,7 +181,7 @@
 	color: #FFF;
 	height: 42px;
 	line-height: 42px;
-	background-color: #254B32;
+	background-color: #2D522D;
 	font-size: 15px;
 	font-weight: 600;
 	font-family: 'Rubik', sans-serif;
@@ -195,7 +195,7 @@
 	background-color: #C0B480;
 }
 
-.advanced-real-estate-tabs ul.tab-nav li.ui-tabs-active a .label-warning { background-color: #254B32; }
+.advanced-real-estate-tabs ul.tab-nav li.ui-tabs-active a .label-warning { background-color: #2D522D; }
 
 .advanced-real-estate-tabs ul.tab-nav li .label { margin-left: 5px; }
 
@@ -250,7 +250,7 @@
 	border-color: #C0B480;
 }
 
-.promo.promo-flat a.button:hover { color: #254B32; }
+.promo.promo-flat a.button:hover { color: #2D522D; }
 
 
 /* ----------------------------------------------------------------
@@ -260,7 +260,7 @@
 .owl-carousel .owl-nav [class*=owl-] {
 	border-color: transparent;
 	color: #FFF;
-	background-color: #254B32;
+	background-color: #2D522D;
 }
 
 .owl-carousel.real-estate .owl-nav [class*=owl-]:hover { background-color: #C0B480 !important; }
@@ -420,7 +420,7 @@
 
 .real-estate-item-link:hover {
 	border-color: transparent;
-	background-color: #254B32;
+	background-color: #2D522D;
 	color: #FFF;
 }
 
@@ -525,7 +525,7 @@ body.side-panel-open #side-panel {
 
 
 #gotoTop {
-	background-color: #254B32;
+	background-color: #2D522D;
 	border-radius: 50%;
 }
 

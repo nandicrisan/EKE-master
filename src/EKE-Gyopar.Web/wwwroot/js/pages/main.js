@@ -1,6 +1,13 @@
 ﻿var s, p, searchV, t
 
 Main = {
+    months: [
+        "Január", "Február", "Március",
+        "Április", "Május", "Június",
+        "Július", "Augusztus", "Szeptember",
+        "Október", "November", "December"
+    ],
+
     partials: {
         article: $(".selectedArticles"),
         magazine: $(".lastMagazines"),
@@ -63,7 +70,7 @@ Main = {
                     p.searchpartial.fadeIn();
                     p.searchpartial.html(data);
                     $("body, html").animate({
-                        scrollTop: $($("#posts")).offset().top - 100
+                        scrollTop: $($("#posts")).offset().top - 200
                     }, 600);
 
                     _elem.find("div").css("display", "initial");
@@ -91,12 +98,10 @@ Main = {
         $(".area-range-slider").ionRangeSlider({
             type: "string",
             grid: true,
-            values: [
-                "Január", "Február", "Március",
-                "Április", "Május", "Június",
-                "Július", "Augusztus", "Szeptember",
-                "Október", "November", "December"
-            ]
+            values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            prettify: function (num) {
+                return Main.months[num-1];
+            }
         });
         jQuery(".bt-switch").bootstrapSwitch();
 
@@ -126,7 +131,7 @@ Main = {
                 streetViewControl: false,
                 overviewMapControl: false
             },
-            styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "color": "#C0B480" }, { "lightness": 60 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#254B32" }, { "visibility": "on" }] }]
+            styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "color": "#C0B480" }, { "lightness": 60 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#2D522D" }, { "visibility": "on" }] }]
         });
 
         s.searchButton.on('click', function () {
@@ -239,6 +244,9 @@ Main = {
             success: function (data) {
                 p.articleModal.css("display", "none");
                 p.articleList.html(data);
+                $("body, html").animate({
+                    scrollTop: p.articleList.offset().top - 100
+                }, 600);
             }
         });
     },
@@ -283,6 +291,7 @@ Main = {
             },
             traditional: true,
             success: function (data) {
+                p.searchpartial.css("display", "none");
                 p.articleModal.html(data);
                 Main.initFacebook();
                 SEMICOLON.widget.flickrFeed();

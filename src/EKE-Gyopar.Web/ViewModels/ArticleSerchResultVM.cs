@@ -14,7 +14,7 @@ namespace EKE_Gyopar.Web.ViewModels
         public string Title { get; set; }
         public string PublishedBy { get; set; }
         public int PublishYear { get; set; }
-        public int PublishSection { get; set; }
+        public string PublishSection { get; set; }
         public string AuthorName { get; set; }
     }
 }

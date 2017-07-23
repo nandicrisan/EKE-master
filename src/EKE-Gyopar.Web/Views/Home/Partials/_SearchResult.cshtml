@@ -10,20 +10,20 @@
     <div id="posts" class="post-grid grid-container clearfix" data-layout="fitRows">
         @foreach (var item in Model.Result)
         {
-            <div class="entry clearfix">
+            <div class="entry clearfix cursor-pointer" onclick="Main.searchArticle('@item.Slug')">
                 <div class="entry-title">
-                    <h2><a href="blog-single.html">@item.Title</a></h2>
+                    <h2><a href="javascript:void(0);">@item.Title</a></h2>
                 </div>
                 <ul class="entry-meta clearfix">
                     <li><i class="icon-calendar3"></i> @item.PublishYear </li>
-                    <li><a href="blog-single.html#comments"><i class="icon-news"></i> @item.PublishSection </a></li>
-                    <li><a href="#"><i class="icon-pencil2"></i> @item.AuthorName </a></li>
+                    <li><a href="javascript:void(0);"><i class="icon-news"></i> @item.PublishSection </a></li>
+                    <li><a href="javascript:void(0);"><i class="icon-pencil2"></i> @item.AuthorName </a></li>
                 </ul>
                 <div class="entry-content">
                     <div class="overflow-text">
                         @Html.Raw(item.Content)
                     </div>
-                    <a href="blog-single.html" class="more-link">Tovább</a>
+                    <a href="javascript:void(0);" class="more-link">Tovább</a>
                 </div>
             </div>
         }

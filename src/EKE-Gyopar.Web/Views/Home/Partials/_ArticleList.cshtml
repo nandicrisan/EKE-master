@@ -26,7 +26,7 @@
     <div id="posts" class="post-grid grid-container clearfix" data-layout="fitRows">
         <div class="entry clearfix imageState">
             <div class="entry-image">
-                <img class="image_fade" src="~/images/components/template_borito.jpg" alt="Standard Post with Image">
+                <img class="image_fade" src="@Model.MediaElements.FirstOrDefault().OriginalName" alt="Standard Post with Image">
             </div>
             <div class="entry-title min-height-25">
                 <h2><a href="blog-single.html"> @Model.Title </a></h2>

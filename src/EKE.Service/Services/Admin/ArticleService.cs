@@ -32,8 +32,8 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var predicate = GetSearchPredicate(filter);
-                var result = _articleRepo.FindByIncluding(predicate, GetSortedFunction(filter), filter.OrderDirection, filter.Page, filter.Display, p => p.Magazine, p => p.Author).ToList();
-                return new Result<List<Article>>(result);
+                var result = _articleRepo.FindByIncluding(predicate, GetSortedFunction(filter), filter.OrderDirection, filter.Page, filter.Display, p => p.Magazine, p => p.Author);
+                return new Result<List<Article>>(result.Distinct().ToList());
             }
             catch (Exception ex)
             {
@@ -76,35 +76,36 @@ namespace EKE.Service.Services.Admin
                  p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
             }
 
-            //if (filter.RangeTypeYear)
-            //{
-            //    predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishYear >= Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
-            //}
-            //else
-            //{
-            //    if (filter.PublishYearRange.Count > 0)
-            //    {
-            //        //foreach (var item in filter.PublishYearRange)
-            //        //{
-            //        predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishYear == Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
-            //        //}
-            //    }
-            //}
+            predicate = predicate.And(p => p.Magazine != null);
+            if (filter.RangeTypeYear)
+            {
+                predicate = predicate.And(p => p.Magazine.PublishYear >= Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
+            }
+            else
+            {
+                if (filter.PublishYearRange.Count > 0)
+                {
+                    foreach (var item in filter.PublishYearRange)
+                    {
+                        predicate = predicate.And(p => p.Magazine.PublishYear == Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
+                    }
+                }
+            }
 
-            //if (filter.RangeTypeSection)
-            //{
-            //    predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
-            //}
-            //else
-            //{
-            //    if (filter.PublishSectionRange.Count > 0)
-            //    {
-            //        //foreach (var item in filter.PublishSectionRange)
-            //        //{
-            //        predicate = predicate.And(p => p.Magazine != null && p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
-            //        //}
-            //    }
-            //}
+            if (filter.RangeTypeSection)
+            {
+                predicate = predicate.And(p => p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
+            }
+            else
+            {
+                if (filter.PublishSectionRange.Count > 0)
+                {
+                    foreach (var item in filter.PublishSectionRange)
+                    {
+                        predicate = predicate.And(p => p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
+                    }
+                }
+            }
             return predicate;
         }
 

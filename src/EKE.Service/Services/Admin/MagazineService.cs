@@ -105,7 +105,8 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles).ToList();
+                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles, x => x.MediaElements).ToList();
+                CheckMediaElements(result);
                 return new Result<List<Magazine>>(result);
             }
             catch (Exception ex)
@@ -116,7 +117,16 @@ namespace EKE.Service.Services.Admin
 
         public Result<Magazine> GetMagazineById(int id)
         {
-            return new Result<Magazine>(_magazineRepo.GetByIdIncluding(id, x => x.Articles));
+            try
+            {
+                var result = _magazineRepo.GetByIdIncluding(id, x => x.Articles, x => x.MediaElements);
+                CheckMediaElements(result);
+                return new Result<Magazine>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<Magazine>(ResultStatus.ERROR, ex.Message);
+            }
         }
 
         public Result<Magazine> Add(Magazine model)
@@ -238,8 +248,7 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category);
-                if (result == null)
-                    return new Result<Article>(ResultStatus.NOT_FOUND);
+                if (result == null) return new Result<Article>(ResultStatus.NOT_FOUND);
                 return new Result<Article>(result);
             }
             catch (Exception ex)
@@ -253,8 +262,7 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var result = _articleRepo.GetAllIncludingPred(x => x.Slug == slug, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category).FirstOrDefault();
-                if (result == null)
-                    return new Result<Article>(ResultStatus.NOT_FOUND);
+                if (result == null) return new Result<Article>(ResultStatus.NOT_FOUND);
                 return new Result<Article>(result);
             }
             catch (Exception ex)
@@ -619,7 +627,27 @@ namespace EKE.Service.Services.Admin
         #region Private
         private void CheckMediaElements(List<Magazine> magazines)
         {
-            foreach (var magazine in magazines)
+            if (magazines.Count > 0)
+            {
+                foreach (var magazine in magazines)
+                {
+                    if (magazine.MediaElements.Count == 0)
+                    {
+                        var mediaElement = new MediaElement()
+                        {
+                            Description = "Borito",
+                            Name = "Template borito",
+                            OriginalName = "images/components/template_borito.jpg",
+                        };
+                        magazine.MediaElements.Add(mediaElement);
+                    }
+                }
+            }
+        }
+
+        private void CheckMediaElements(Magazine magazine)
+        {
+            if (magazine != null)
             {
                 if (magazine.MediaElements.Count == 0)
                 {
@@ -632,7 +660,7 @@ namespace EKE.Service.Services.Admin
                     magazine.MediaElements.Add(mediaElement);
                 }
             }
+            #endregion
         }
-        #endregion
     }
 }

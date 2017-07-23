@@ -4,12 +4,16 @@
 
 @if (Model != null)
 {
+    <div class="heading-block">
+        <h3>Keresési eredmények</h3>
+    </div>
+
     <div id="posts" class="post-grid grid-container clearfix" data-layout="fitRows">
         @foreach (var item in Model)
         {
-            <div class="entry clearfix" onclick="Main.findMagazine(@item.Id)">
-                <div class="entry-image">
-                    <div><img class="image_fade" src="~/images/components/template_borito.jpg" alt="Standard Post with Image"></div>
+            <div class="entry clearfix max-height-435 cursor-pointer" onclick="Main.findMagazine(@item.Id)">
+                <div class="entry-image loading-background">
+                    <div><img class="image_fade img-responsive" src="@item.MediaElements.FirstOrDefault().OriginalName" alt="Standard Post with Image"></div>
                 </div>
                 <div class="entry-title min-height-25">
                     <h2> @item.Title </h2>

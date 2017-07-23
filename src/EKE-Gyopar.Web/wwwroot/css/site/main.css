@@ -27,6 +27,7 @@
     display: table;
     background: rgba(0, 0, 0, 0.03);
     border-radius: 35px;
+    margin-bottom: 25px;
 }
 
     #overlayArticle i, #overlayMagazine i, #articleListMagazine i {
@@ -102,3 +103,16 @@
     .breadcrumb2 > .active {
         color: #777;
     }
+
+.max-height-435 {
+    max-height: 435px;
+}
+
+.loading-background {
+    background-repeat: no-repeat;
+    background-image: url(../../images/spinner.gif);
+    background-blend-mode: color-burn;
+    background-clip: padding-box;
+    background-position: 50%;
+    background-size: 75px;
+}

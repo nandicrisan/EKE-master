@@ -12,10 +12,10 @@
     {
         foreach (var article in Model)
         {
-            <div class="col-md-4 col-sm-6 col-xs-12 bottommargin-sm">
+            <div class="col-md-4 col-sm-6 col-xs-12 bottommargin-sm cursor-pointer" onclick="Main.searchArticle('@article.Slug')">
                 <div class="feature-box fbox-plain">
                     <div class="fbox-icon">
-                        <a href="#"><i class="icon-realestate-doc"></i></a>
+                        <a href="javascript:void(0);"><i class="icon-realestate-doc"></i></a>
                     </div>
                     <h3 class="t400">@article.Title</h3>
                     <div class="overflow-text">@Html.Raw(article.Content)</div>
