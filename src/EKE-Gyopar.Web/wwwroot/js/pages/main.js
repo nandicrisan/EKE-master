@@ -100,39 +100,40 @@ Main = {
             grid: true,
             values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
             prettify: function (num) {
-                return Main.months[num-1];
+                return Main.months[num - 1];
             }
         });
         jQuery(".bt-switch").bootstrapSwitch();
 
-
-        // Google Map
-        jQuery('#headquarters-map').gMap({
-            address: 'Cluj-Napoca, Romania',
-            maptype: 'SATELLITE',
-            zoom: 14,
-            markers: [
-                {
-                    address: "Cluj-Napoca, Romania",
-                    html: "Cluj-Napoca, Romania",
-                    icon: {
-                        image: "images/icons/map-icon-red.png",
-                        iconsize: [32, 36],
-                        iconanchor: [14, 44]
+        setTimeout(function () {
+            // Google Map
+            jQuery('#headquarters-map').gMap({
+                address: 'Strada Memorandumului 4, Cluj-Napoca 400000',
+                mapTypeId: 'satellite',
+                zoom: 16,
+                markers: [
+                    {
+                        address: "Strada Memorandumului 4, Cluj-Napoca 400000",
+                        html: "Cluj-Napoca, Romania",
+                        icon: {
+                            image: "images/icons/map-icon-red.png",
+                            iconsize: [32, 36],
+                            iconanchor: [14, 44]
+                        }
                     }
-                }
-            ],
-            doubleclickzoom: false,
-            controls: {
-                panControl: false,
-                zoomControl: false,
-                mapTypeControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                overviewMapControl: false
-            },
-            styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "color": "#C0B480" }, { "lightness": 60 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#2D522D" }, { "visibility": "on" }] }]
-        });
+                ],
+                doubleclickzoom: false,
+                controls: {
+                    panControl: true,
+                    zoomControl: true,
+                    mapTypeControl: true,
+                    scaleControl: true,
+                    streetViewControl: true,
+                    overviewMapControl: true
+                },
+                styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "color": "#C0B480" }, { "lightness": 60 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#2D522D" }, { "visibility": "on" }] }]
+            });
+        }, 3000);
 
         s.searchButton.on('click', function () {
             var $this = $(this);

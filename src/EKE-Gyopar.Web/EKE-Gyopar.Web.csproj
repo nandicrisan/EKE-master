@@ -12,6 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\images\Uploads\egyebek\01 Bakancs jo.jpg" />
+    <Content Include="wwwroot\images\Uploads\egyebek\02 Memoriajatek jo.jpg" />
+    <Content Include="wwwroot\images\Uploads\egyebek\03 Falinaptar jo.jpg" />
+    <Content Include="wwwroot\images\Uploads\egyebek\04 Gyoparka jo.jpg" />
+    <Content Include="wwwroot\images\Uploads\egyebek\05 EKE 120 jo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>

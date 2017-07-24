@@ -249,7 +249,10 @@
                                 <a href="#" class="btn btn-default btn-flat">Profil</a>
                             </div>
                             <div class="pull-right">
-                                <a asp-action="LogOff" asp-controller="Account" class="btn btn-default btn-flat">Kilépés</a>
+                                <form asp-action="LogOff" asp-controller="Account" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-default btn-flat" type="submit">Kilépés</button>
+                                </form>
                             </div>
                         </li>
                     </ul>

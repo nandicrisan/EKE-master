@@ -29,61 +29,7 @@
 
         @Html.Partial("Partials/_AdsPanel")
 
-        <div class="row real-estate-properties clearfix">
-
-            <div class="col-md-7">
-                <a href="#" style="background: url('demos/real-estate/images/cities/4.jpg') no-repeat bottom center; background-size: cover;">
-                    <div class="vertical-middle dark center">
-                        <div class="heading-block nomargin noborder">
-                            <h3 class="capitalize t500">California</h3>
-                            <span style="margin-top: 5px; font-size: 17px;">23 Properties</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-5">
-                <a href="#" style="background: url('demos/real-estate/images/cities/2.jpg') no-repeat center center; background-size: cover;">
-                    <div class="vertical-middle dark center">
-                        <div class="heading-block nomargin noborder">
-                            <h3 class="capitalize t500">New York</h3>
-                            <span style="margin-top: 5px; font-size: 17px;">12 Properties</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-4">
-                <a href="#" style="background: url('demos/real-estate/images/cities/3.jpg') no-repeat center center; background-size: cover;">
-                    <div class="vertical-middle dark center">
-                        <div class="heading-block nomargin noborder">
-                            <h3 class="capitalize t500">San Francisco</h3>
-                            <span style="margin-top: 5px; font-size: 17px;">8 Properties</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" style="background: url('demos/real-estate/images/cities/1.jpg') no-repeat center center; background-size: cover;">
-                    <div class="vertical-middle dark center">
-                        <div class="heading-block nomargin noborder">
-                            <h3 class="capitalize t500">Texas</h3>
-                            <span style="margin-top: 5px; font-size: 17px;">31 Properties</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="#" style="background: url('demos/real-estate/images/cities/5.jpg') no-repeat center center; background-size: cover;">
-                    <div class="vertical-middle dark center">
-                        <div class="heading-block nomargin noborder">
-                            <h3 class="capitalize t500">New Orleans</h3>
-                            <span style="margin-top: 5px; font-size: 17px;">19 Properties</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
+        @Html.Partial("Partials/_OtherMagazines")
 
     </div>
 
@@ -91,7 +37,7 @@
         <div id="headquarters-map" class="col-md-5 gmap hidden-xs"></div>
         <div class="col-md-3" style="background-color: #E5E5E5;">
             <div style="padding: 40px;">
-                <h4 class="font-body t600 ls1">Our Headquarters</h4>
+                <h4 class="font-body t600 ls1">Elérhetőségek</h4>
 
                 <div style="font-size: 15px; line-height: 1.7;">
                     <address style="line-height: 1.7;">
@@ -115,123 +61,7 @@
         @Html.Partial("Partials/_Order")
     </div>
 
-    <div class="container clear-bottommargin clearfix">
-
-        <div class="col_two_third">
-
-            <div class="tabs tabs-justify tabs-tb tabs-alt nobottommargin clearfix" id="realestate-tabs" data-active="2">
-
-                <ul class="tab-nav clearfix">
-                    <li><a href="#realestate-tab-1">Why Us?</a></li>
-                    <li><a href="#realestate-tab-2">Properties</a></li>
-                    <li><a href="#realestate-tab-3">Legal</a></li>
-                </ul>
-
-                <div class="tab-container">
-
-                    <div class="tab-content clearfix" id="realestate-tab-1">
-                        <p>
-                            Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.
-                            <div class="col_one_fourth nobottommargin center">
-                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="964" data-refresh-interval="50" data-speed="2000"></span></div>
-                                <h5>Floors Built</h5>
-                            </div>
-
-                            <div class="col_one_fourth nobottommargin center">
-                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="8514" data-refresh-interval="50" data-speed="2500"></span></div>
-                                <h5>Employees</h5>
-                            </div>
-
-                            <div class="col_one_fourth nobottommargin center">
-                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="100" data-to="458" data-refresh-interval="50" data-speed="3500"></span></div>
-                                <h5>Happy Clients</h5>
-                            </div>
-
-                            <div class="col_one_fourth nobottommargin center col_last">
-                                <div class="counter ls1 t600" style="color: #D2D2D2;"><span data-from="14" data-to="159" data-refresh-interval="15" data-speed="2700"></span></div>
-                                <h5>Cities Served</h5>
-                            </div>
-                    </div>
-                    <div class="tab-content clearfix" id="realestate-tab-2">
-                        <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-                        <div class="row clearfix">
-                            <div class="col-sm-4">
-                                <ul class="iconlist nobottommargin">
-                                    <li><i class="icon-ok"></i> 100% Assurance</li>
-                                    <li><i class="icon-ok"></i> Hard Working</li>
-                                    <li><i class="icon-ok"></i> Trustworthy</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-4">
-                                <ul class="iconlist nobottommargin">
-                                    <li><i class="icon-ok"></i> Intelligent</li>
-                                    <li><i class="icon-ok"></i> Always Curious</li>
-                                    <li><i class="icon-ok"></i> Perfectionists</li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-4">
-                                <ul class="iconlist nobottommargin">
-                                    <li><i class="icon-ok"></i> Friendly &amp; Helpful</li>
-                                    <li><i class="icon-ok"></i> Accomodating Nature</li>
-                                    <li><i class="icon-ok"></i> Available 24x7</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-content clearfix" id="realestate-tab-3">
-
-                        <div class="clear-bottommargin-sm">
-                            <div class="row clearfix">
-                                <div class="col-sm-7 bottommargin-sm">
-                                    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
-                                    <div class="clear-bottommargin-sm">
-                                        <div class="row clearfix">
-                                            <div class="col-sm-6 bottommargin-sm">
-                                                <address>
-                                                    <strong>Headquarters:</strong><br>
-                                                    795 Folsom Ave, Suite 600<br>
-                                                    San Francisco, CA 94107<br>
-                                                </address>
-                                            </div>
-                                            <div class="col-sm-6 bottommargin-sm">
-                                                <abbr title="Phone Number"><strong>Phone:</strong></abbr> (91) 8547 632521<br>
-                                                <abbr title="Fax"><strong>Fax:</strong></abbr> (91) 11 4752 1433<br>
-                                                <abbr title="Email Address"><strong>Email:</strong></abbr> info@canvas.com
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-5 bottommargin-sm">
-                                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=-37.814107,144.963280&zoom=12&markers=-37.814107,144.963280&size=300x180" alt="Google Map" class="img-thumbnail">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col_one_third col_last">
-
-            <h4 class="center">Top Builders</h4>
-
-            <ul class="clients-grid grid-2 nobottommargin clearfix">
-                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/1.png" alt="Clients"></a></li>
-                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/2.png" alt="Clients"></a></li>
-                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/3.png" alt="Clients"></a></li>
-                <li style="padding: 20px;"><a href="#" style="opacity: 0.9"><img src="demos/real-estate/images/builders/4.png" alt="Clients"></a></li>
-            </ul>
-
-        </div>
-
-        <div class="clear"></div>
-
-    </div>
-
+    @Html.Partial("Partials/_Tabs")
 </div>
 
 @section scripts {
