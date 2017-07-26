@@ -6137,6 +6137,7 @@ body:not(.device-touch) .entry-link {
         float: left;
         width: 264px;
         margin-right: 28px;
+        max-height: 302px;
     }
 
     .post-grid .entry-image img {

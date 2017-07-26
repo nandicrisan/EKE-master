@@ -12,11 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\images\Uploads\egyebek\01 Bakancs jo.jpg" />
+    <Content Include="wwwroot\images\bckgrnd\honlapra1.jpg" />
+    <Content Include="wwwroot\images\bckgrnd\honlapra2.jpg" />
+    <Content Include="wwwroot\images\bckgrnd\honlapra3.jpg" />
+    <Content Include="wwwroot\images\components\EGY_borito_H.jpg" />
+    <Content Include="wwwroot\images\sprite-skin-nice.png" />
+    <Content Include="wwwroot\images\Uploads\egyebek\01 Bakancs H.jpg" />
     <Content Include="wwwroot\images\Uploads\egyebek\02 Memoriajatek jo.jpg" />
     <Content Include="wwwroot\images\Uploads\egyebek\03 Falinaptar jo.jpg" />
     <Content Include="wwwroot\images\Uploads\egyebek\04 Gyoparka jo.jpg" />
-    <Content Include="wwwroot\images\Uploads\egyebek\05 EKE 120 jo.jpg" />
+    <Content Include="wwwroot\js\components\pagination.js" />
   </ItemGroup>
 
   <ItemGroup>

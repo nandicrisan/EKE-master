@@ -14,6 +14,7 @@ Main = {
         searchpartial: $(".searchResults"),
         articleList: $(".articleList"),
         articleModal: $(".article"),
+        paginationResults: $(".paginationResults")
     },
 
     settings: {
@@ -32,10 +33,13 @@ Main = {
 
         magazineYearSelector: $(".magazineYearSelector"),
         foundMagazineElem: $(".foundMagazineElem"),
+
+        tabs: $("#realestate-tabs"),
     },
 
     templates: {
         loader: "<div id='articleListMagazine'><i class='fa fa-spinner fa-spin spin-normal'></i></div>",
+        searchLoader: "<div id='searchLoader'><i class='fa fa-spinner fa-spin spin-normal'></i></div>",
     },
 
     init: function () {
@@ -175,8 +179,14 @@ Main = {
         });
     },
 
-    searchMethod: function () {
+    searchMethod: function (page) {
         var searchFilter = {};
+
+        searchFilter.Page = 1
+        if (page != undefined) {
+            searchFilter.Page = page
+        }
+
         searchFilter.RangeTypeYear = true;
         searchFilter.RangeTypeSection = true;
 
@@ -213,6 +223,7 @@ Main = {
                 Keyword: searchFilter.Text,
                 RangeTypeYear: searchFilter.RangeTypeYear,
                 RangeTypeSection: searchFilter.RangeTypeSection,
+                Page: searchFilter.Page
             },
             traditional: true,
             success: function (data) {
@@ -222,6 +233,11 @@ Main = {
                 p.searchpartial.fadeIn();
                 p.searchpartial.html(data);
                 s.searchButton.button("reset");
+
+                if (page == undefined) {
+                    Main.initPagination();
+                }
+
                 $("body, html").animate({
                     scrollTop: $($("#posts")).offset().top - 250
                 }, 600);
@@ -229,9 +245,21 @@ Main = {
         });
     },
 
+    initPagination: function () {
+        $('#pagination-search').twbsPagination({
+            totalPages: Math.ceil(parseInt($(".foundItems").text(), 10) / 8),
+            visiblePages: 5,
+            onPageClick: function (event, page) {
+                p.searchpartial.children("#posts").html(t.searchLoader);
+                Main.searchMethod(page);
+            }
+        });
+    },
+
     findMagazine: function (id) {
         p.articleModal.css("display", "none");
         p.searchpartial.css("display", "none");
+        p.paginationResults.html("");
         p.articleList.html(t.loader);
         p.articleList.fadeIn();
         $.ajax({
@@ -293,6 +321,7 @@ Main = {
             traditional: true,
             success: function (data) {
                 p.searchpartial.css("display", "none");
+                p.paginationResults.html("");
                 p.articleModal.html(data);
                 Main.initFacebook();
                 SEMICOLON.widget.flickrFeed();
@@ -309,4 +338,18 @@ Main = {
         p.articleModal.fadeOut();
         p.articleList.fadeIn();
     },
+
+    takeMeTo: function (number) {
+        if (number == 4) {
+            $("body, html").animate({
+                scrollTop: $(".contact").offset().top - 100
+            }, 600);
+        } else {
+            $("body, html").animate({
+                scrollTop: searchV.tabs.offset().top - 100
+            }, 600);
+
+            $(".tab_" + number).click();
+        }
+    }
 };

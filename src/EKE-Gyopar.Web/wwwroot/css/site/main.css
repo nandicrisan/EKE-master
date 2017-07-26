@@ -20,7 +20,7 @@
         margin: 0;
     }
 
-#overlayArticle, #overlayMagazine, #articleListMagazine {
+#overlayArticle, #overlayMagazine, #articleListMagazine, #searchLoader {
     min-height: 400px;
     width: 100%;
     height: 100%;
@@ -30,7 +30,11 @@
     margin-bottom: 25px;
 }
 
-    #overlayArticle i, #overlayMagazine i, #articleListMagazine i {
+#searchLoader {
+    min-height: 575px;
+}
+
+    #overlayArticle i, #overlayMagazine i, #articleListMagazine i, #searchLoader i {
         display: table-cell;
         vertical-align: middle;
         text-align: center;
@@ -50,8 +54,8 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    min-height: 55px;
-    max-height: 55px;
+    min-height: 53px;
+    max-height: 53px;
     line-height: 1;
     margin: 8px 0 0 0;
     color: #999;
@@ -115,4 +119,12 @@
     background-clip: padding-box;
     background-position: 50%;
     background-size: 75px;
+}
+
+.clients-grid.no-grid li {
+    width: 100%;
+}
+
+.pagination {
+    padding: 0px 0px 20px 0px;
 }

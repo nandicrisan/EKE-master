@@ -637,7 +637,7 @@ namespace EKE.Service.Services.Admin
                         {
                             Description = "Borito",
                             Name = "Template borito",
-                            OriginalName = "images/components/template_borito.jpg",
+                            OriginalName = "images/components/EGY_borito_H.jpg",
                         };
                         magazine.MediaElements.Add(mediaElement);
                     }
