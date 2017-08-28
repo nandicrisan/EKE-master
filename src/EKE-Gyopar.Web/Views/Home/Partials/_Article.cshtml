@@ -14,7 +14,7 @@
     <div class="postcontent nobottommargin clearfix">
 
         <div class="single-post nobottommargin articleListed">
-            <div class="entry clearfix">
+            <div class="entry clearfix padding-article">
                 <div class="entry-title max-height-n">
                     <h2>@Model.Title</h2>
                     @if (Model.Subtitle != null || !String.IsNullOrEmpty(Model.Subtitle))
@@ -29,13 +29,10 @@
                         <li><a href="#"><i class="icon-user"></i> @Model.Author.Name </a></li>
                     }
                     <li><i class="icon-folder-open"></i> <a href="#">@Model.Magazine.PublishYear </a>, <a href="#">@Model.Magazine.PublishSection</a></li>
-                    <li><a href="#"><i class="icon-camera-retro"></i></a></li>
+                    @*<li><a href="#"><i class="icon-camera-retro"></i></a></li>*@
                 </ul>
-                <div class="entry-image">
-                    <a href="#"><img src="images/blog/full/1.jpg" alt="Blog Single"></a>
-                </div>
                 <div class="entry-content notopmargin">
-                    @Html.Raw(Model.Content)
+                    @Html.Raw(Model.OldContent)
                     <div class="tagcloud clearfix bottommargin">
                         @if (Model.ArticleTags != null)
                         {
@@ -83,5 +80,5 @@
             <div class="line"></div>
         </div>
     </div>
-    @Html.Partial("Partials/_ArticleSidebar")
+    @Html.Partial("Partials/_ArticleSidebar", Model)
 </div>

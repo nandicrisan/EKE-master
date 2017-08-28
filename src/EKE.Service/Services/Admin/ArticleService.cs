@@ -113,7 +113,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncluding(p => p.Magazine, p => p.Author).OrderByDescending(x => x.DateCreated).Take(6).ToList();
+                var result = _articleRepo.GetAllIncludingPred(x=>x.Selected ,p => p.Magazine, p => p.Author).OrderByDescending(x => x.DateCreated).Take(6).ToList();
                 return new Result<List<Article>>(result);
             }
             catch (Exception ex)

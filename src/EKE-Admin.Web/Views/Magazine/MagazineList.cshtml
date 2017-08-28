@@ -73,14 +73,14 @@
     <div class="box box-success">
         <form asp-action="AddMagazine" asp-controller="Magazine" method="post">
             <div class="box-body">
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <div class="form-group">
                         <label>Kiadvány*</label>
                         <select class="form-control select2" name="Category.Id" style="width: 100%;">
                             <option value="@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Id : 0)" selected="selected">@(Model.MagazineCategories.Count > 0 ? Model.MagazineCategories.FirstOrDefault().Name : "-")</option>
                             @if (Model.MagazineCategories.Count > 1)
                             {
-                                foreach (var item in Model.MagazineCategories)
+                                foreach (var item in Model.MagazineCategories.Skip(1))
                                 {
                                     <option value="@item.Id">@item.Name</option>
                                 }
@@ -135,11 +135,17 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label>PDF</label>
-                        <input id="pdf-uploader" name="Files" type="file" data-show-preview="false">
+                        <label>Yumpu link</label>
+                        @*<input id="pdf-uploader" name="Files" type="file" data-show-preview="false">*@
+                        <input name="YumpuKey" class="form-control" type="text" data-show-preview="false">
                     </div>
                 </div>
-
+                <div class="col-sm-1">
+                    <label>Látható</label>
+                    <div class="form-group">
+                        <input name="Visible" type="checkbox" value="true" checked="checked">
+                    </div>
+                </div>
                 <div class="col-sm-1">
                     <div class="form-group">
                         <label></label>

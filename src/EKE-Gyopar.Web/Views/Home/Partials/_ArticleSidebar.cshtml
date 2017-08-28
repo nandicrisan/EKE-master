@@ -1,4 +1,5 @@
-﻿<div class="sidebar nobottommargin col_last clearfix">
+﻿@model EKE.Data.Entities.Gyopar.Article
+<div class="sidebar nobottommargin col_last clearfix">
     <div class="sidebar-widgets-wrap">
 
         <div id="fb-root"></div>
@@ -9,24 +10,26 @@
             <div id="flickr-widget" class="flickr-feed masonry-thumbs" data-id="11611663@N00" data-count="16" data-type="group" data-lightbox="gallery"></div>
         </div>
 
-        <div class="widget clearfix">
+        @if (Model.ArticleTags != null)
+        {
+            <div class="widget clearfix">
 
-            <h4>Kulcsszavak</h4>
-            <div class="tagcloud">
-                <a href="#">general</a>
-                <a href="#">videos</a>
-                <a href="#">music</a>
-                <a href="#">media</a>
-                <a href="#">photography</a>
-                <a href="#">parallax</a>
-                <a href="#">ecommerce</a>
-                <a href="#">terms</a>
-                <a href="#">coupons</a>
-                <a href="#">modern</a>
+                <h4>Kulcsszavak</h4>
+                <div class="tagcloud">
+                    <a href="#">general</a>
+                    <a href="#">videos</a>
+                    <a href="#">music</a>
+                    <a href="#">media</a>
+                    <a href="#">photography</a>
+                    <a href="#">parallax</a>
+                    <a href="#">ecommerce</a>
+                    <a href="#">terms</a>
+                    <a href="#">coupons</a>
+                    <a href="#">modern</a>
+                </div>
+
             </div>
-
-        </div>
-
+        }
     </div>
 
 </div><!-- .sidebar end -->

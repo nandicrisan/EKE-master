@@ -27,5 +27,7 @@ namespace EKE.Data.Entities.Gyopar
         [NotMapped]
         public IFormFile Files { get; set; }
         public int OrderNo { get; set; }
+        public bool Visible { get; set; }
+        public string YumpuKey { get; set; }
     }
 }

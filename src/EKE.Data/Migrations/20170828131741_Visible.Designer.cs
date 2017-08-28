@@ -9,9 +9,10 @@ using EKE.Data.Entities.Enums;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170828131741_Visible")]
+    partial class Visible
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -179,9 +180,7 @@ namespace EKE.Data.Migrations
                     b.Property<string>("Title")
                         .IsRequired();
 
-                    b.Property<bool>("Visible");
-
-                    b.Property<string>("YumpuKey");
+                    b.Property<int>("Visible");
 
                     b.HasKey("Id");
 
