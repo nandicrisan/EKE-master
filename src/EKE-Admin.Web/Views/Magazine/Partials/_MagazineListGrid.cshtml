@@ -13,8 +13,8 @@
         columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").MultiFilterable(false);
         columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(false);
         columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").MultiFilterable(false);
-        columns.Add(model => model.Visible).Titled("Látható").RenderedAs(model => model.Visible ? "Igen" : "Nem").MultiFilterable(false);
-        columns.Add(model => Html.ActionLink("Szerkesztés", "EditMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+        //columns.Add(model => model.Visible).Titled("Látható").RenderedAs(model => model.Visible ? "Igen" : "Nem").MultiFilterable(false);
+        columns.Add(model => $"<a href='#' class='visibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Magazine/UpdateVisibility' data-title='Látható?' data-name='Visible'>" + (model.Visible ? "Igen" : "Nem") + "</a>").Titled("Látható").Encoded(false).MultiFilterable(false);
         columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
     })
     .MultiFilterable()

@@ -43,7 +43,7 @@ textarea {
         vertical-align: middle;
     }
 
-    .edit-magazines .form-group .input-group .input-group-addon:hover{
+    .edit-magazines .form-group .input-group .input-group-addon:hover {
         background-color: lightgray;
         color: white;
         cursor: pointer;
@@ -51,4 +51,14 @@ textarea {
 
 .magazine-list .box-body div {
     padding: 0;
+}
+
+.border-left-radius-10 {
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+}
+
+.no-click {
+    pointer-events: none;
+    background-color: lightgray !important;
 }

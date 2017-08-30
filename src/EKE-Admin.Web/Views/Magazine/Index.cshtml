@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label>1. Kiadvány kiválasztása</label>
                         <div class="input-group">
-                            <div class="input-group-addon filter">
+                            <div class="input-group-addon filter border-left-radius-10">
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mName" style="width: 100%;" disabled="disabled">
@@ -54,14 +54,13 @@
                     <div class="form-group">
                         <label>2. Évfolyam kiválasztása</label>
                         <div class="input-group">
-                            <div class="input-group-addon filter">
+                            <div class="input-group-addon filter border-left-radius-10 no-click noYear">
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mYear" style="width: 100%;" disabled="disabled">
-                                <option selected="selected">1800</option>
-                                @for (int i = 1801; i <= DateTime.Now.Year; i++)
+                                @foreach(var year in Model.Magazines.OrderBy(x=>x.PublishYear).Select(x=>x.PublishYear).Distinct())
                                 {
-                                    <option value="@i">@i</option>
+                                    <option value="@year">@year</option>
                                 }
                             </select>
                         </div>
@@ -71,7 +70,7 @@
                     <div class="form-group">
                         <label>3. Szám kiválasztása</label>
                         <div class="input-group">
-                            <div class="input-group-addon filter">
+                            <div class="input-group-addon filter border-left-radius-10 no-click noSection">
                                 <i class="fa fa-times"></i>
                             </div>
                             <select class="form-control select2 mNumber" style="width: 100%;" disabled="disabled">

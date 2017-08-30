@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using EKE.Service.ServiceModel;
+using System.Net;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -40,7 +42,14 @@ namespace EKE_Admin.Web.Controllers
                 return View(new MagazineVM());
             }
 
-            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags.Data);
+            var magazines = _magService.GetAllMagazines();
+            if (!magazines.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", tags.Status, tags.Message);
+                return View(new MagazineVM());
+            }
+
+            var mapper = _mapper.Map<MagazineVM>(magazineCategories.Data).Map(tags.Data).Map(magazines.Data);
             return View(mapper);
         }
 
@@ -295,6 +304,17 @@ namespace EKE_Admin.Web.Controllers
 
             TempData["ErrorMessage"] = "Hiba a törlés során";
             return NotFound("hiba");
+        }
+        #endregion
+
+        #region XEdit
+        [HttpPost]
+        public IActionResult UpdateVisibility(XEditVM model)
+        {
+            var mappedModel = _mapper.Map<XEditSM>(model);
+            var result = _magService.UpdateVisibility(mappedModel);
+            if (result.IsOk()) return Json(200);
+            return Json(result.Status);
         }
         #endregion
     }

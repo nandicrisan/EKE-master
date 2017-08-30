@@ -1,4 +1,4 @@
-﻿var s, g,
+﻿var s, g, x
 MagazineList = {
 
     settings: {
@@ -9,9 +9,14 @@ MagazineList = {
         grid: $('.mvc-grid'),
     },
 
+    xedit: {
+        visibilityCheck: $(".visibleCheck"),
+    },
+
     init: function () {
         s = this.settings;
         g = this.mvcgrid;
+        x = this.xedit;
         this.initPage();
         this.bindUIActions();
         this.initMvcGrid();
@@ -29,7 +34,7 @@ MagazineList = {
     },
 
     bindUIActions: function () {
-
+        
     },
 
     initMvcGrid: function () {
@@ -39,10 +44,24 @@ MagazineList = {
             },
             reloadEnded: function (grid) {
                 MagazineList.loadingOverlay(false, s.gridContainer)
+                MagazineList.initXEdit();
             },
             reloadFailed: function (grid, result) {
                 MagazineList.loadingOverlay(false, s.gridContainer)
             },
+        });
+    },
+
+    initXEdit: function () {
+        $('.visibleCheck').editable({
+            source: [
+                { value: 'True', text: 'Igen' },
+                { value: 'False', text: 'Nem' },
+            ],
+            params: function (params) {
+                params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                return params;
+            }
         });
     },
 

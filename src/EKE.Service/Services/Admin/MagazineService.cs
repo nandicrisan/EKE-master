@@ -1,6 +1,7 @@
 ﻿using EKE.Data.Entities.Gyopar;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
+using EKE.Service.ServiceModel;
 using EKE.Service.Utils;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -22,6 +23,7 @@ namespace EKE.Service.Services.Admin
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
+        Result<Magazine> UpdateVisibility(XEditSM model);
         Result<Magazine> GetMagazinesBy(Expression<Func<Magazine, bool>> predicate);
 
         Result<List<Article>> GetAllArticles();
@@ -660,7 +662,23 @@ namespace EKE.Service.Services.Admin
                     magazine.MediaElements.Add(mediaElement);
                 }
             }
-            #endregion
         }
+        #endregion
+
+        #region XEdit
+        public Result<Magazine> UpdateVisibility(XEditSM model)
+        {
+            var visible = Convert.ToBoolean(model.Value);
+            var result = _magazineRepo.GetById(model.PrimaryKey);
+
+            if (result == null) return new Result<Magazine>(ResultStatus.NOT_FOUND);
+            if (result.Visible == visible) return new Result<Magazine>(result);
+
+            result.Visible = visible;
+            _magazineRepo.Update(result);
+            SaveChanges();
+            return new Result<Magazine>(result);
+        }
+        #endregion
     }
 }

@@ -10,6 +10,10 @@ Magazine = {
         addArticleContainer: $(".add-article"),
         selectors: $(".select2"),
         gridContainer: $(".article-grid"),
+
+        noSection: $(".noSection"),
+        noYear: $(".noYear"),
+        noClick: "no-click",
     },
 
     mvcgrid: {
@@ -61,6 +65,35 @@ Magazine = {
         }
 
         Magazine.gridRequest();
+
+        if (s.mName.attr("disabled") !== "disabled")
+        {
+            s.noYear.removeClass(s.noClick);
+        }
+        else
+        {
+            s.mYear.attr("disabled", "disabled");
+            s.noYear.addClass(s.noClick);
+            s.noYear.children().addClass("fa-times");
+            s.noYear.children().removeClass("fa-check");
+
+            s.mNumber.attr("disabled", "disabled");
+            s.noSection.addClass(s.noClick);
+            s.noSection.children().addClass("fa-times");
+            s.noSection.children().removeClass("fa-check");
+        }
+
+        if (s.mName.attr("disabled") !== "disabled" && s.mYear.attr("disabled") !== "disabled")
+        {
+            s.noSection.removeClass(s.noClick);
+        }
+        else
+        {
+            s.mNumber.attr("disabled", "disabled");
+            s.noSection.addClass(s.noClick);
+            elem.children().addClass("fa-times");
+            elem.children().removeClass("fa-check");
+        }
 
         if (s.mName.attr("disabled") !== "disabled" && s.mYear.attr("disabled") !== "disabled" && s.mNumber.attr("disabled") !== "disabled") {
             Magazine.showAddArticleButton(true);

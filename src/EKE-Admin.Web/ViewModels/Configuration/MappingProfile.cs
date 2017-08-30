@@ -2,6 +2,7 @@
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity.AccountViewModels;
+using EKE.Service.ServiceModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace EKE_Admin.Web.ViewModels.Configuration
                 .ForMember(dest => dest.MagazineCategories, opt => opt.MapFrom(src => src));
             CreateMap<List<Tag>, MagazineVM>()
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src));
+            CreateMap<List<Magazine>, MagazineVM>()
+                .ForMember(dest => dest.Magazines, opt => opt.MapFrom(src => src));
 
             CreateMap<List<ApplicationUser>, UserManagementVM>()
                 .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src));
@@ -47,6 +50,11 @@ namespace EKE_Admin.Web.ViewModels.Configuration
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src));
             CreateMap<List<Author>, ArticleVM>()
                 .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src));
+
+            CreateMap<XEditVM, XEditSM>()
+                .ForMember(dest => dest.PrimaryKey, opt => opt.MapFrom(src => src.pk))
+                .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.value))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
         }
     }
 }
