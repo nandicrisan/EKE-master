@@ -146,28 +146,29 @@ namespace EKE.Service.Services.Admin
                 if (exists.Any())
                     return new Result<Magazine>(ResultStatus.ALREADYEXISTS, "A lapszám már létezik! Kérem ellenőrizze az adatokat!");
 
-                //if (model.Files != null)
-                //{
-                //    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.PublishYear, model.PublishSection));
-                //    if (!Directory.Exists(uploads))
-                //        Directory.CreateDirectory(uploads);
+                if (model.Files != null)
+                {
+                    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.PublishYear, model.PublishSection));
+                    if (!Directory.Exists(uploads))
+                        Directory.CreateDirectory(uploads);
 
-                //    var mediaElements = new List<MediaElement>();
-                //    if (model.Files.Length > 0)
-                //    {
-                //        using (var fileStream = new FileStream(Path.Combine(uploads, model.Files.FileName), FileMode.Create))
-                //        {
-                //            model.Files.CopyToAsync(fileStream);
-                //        }
-                //    }
-                //    var mediaElem = new MediaElement();
-                //    mediaElem.OriginalName = String.Format("{0}/{1}", uploads, model.Files.Name);
-                //    mediaElem.Name = RandomString(10);
-                //    mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Pdf;
-                //    mediaElements.Add(mediaElem);
-
-                //    model.MediaElements = mediaElements;
-                //}
+                    var mediaElements = new List<MediaElement>();
+                    if (model.Files.Length > 0)
+                    {
+                        using (var fileStream = new FileStream(Path.Combine(uploads, model.Files.FileName), FileMode.Create))
+                        {
+                            model.Files.CopyToAsync(fileStream);
+                        }
+                    }
+                    var mediaElem = new MediaElement();
+                    mediaElem.OriginalName = String.Format("{0}/{1}", uploads, model.Files.FileName);
+                    mediaElem.Description = string.Format("{0}_{1}", model.PublishYear, model.PublishSection);
+                    mediaElem.Name = RandomString(10);
+                    mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                    mediaElem.Scope = Data.Entities.Enums.MediaTypesScope.Cover;
+                    mediaElements.Add(mediaElem);
+                    model.MediaElements = mediaElements;
+                }
 
                 model.DateCreated = DateTime.Now;
                 model.Slug = GenerateSlug(model.Title, model.PublishYear, model.PublishSection);
@@ -192,7 +193,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazine = _magazineRepo.GetById(id);
+                var magazine = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements);
                 _magazineRepo.Delete(magazine);
                 SaveChanges();
                 return new Result<bool>(true);

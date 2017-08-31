@@ -26,15 +26,15 @@ MagazineList = {
         $(".select2").select2();
         MagazineList.sideBarActive(".f3");
 
-        $("#pdf-uploader").fileinput({
+        $("#image-uploader").fileinput({
             language: "hu",
             showUpload: false,
-            allowedFileExtensions: ["pdf"]
+            allowedFileExtensions: ["jpg", "png"]
         });
     },
 
     bindUIActions: function () {
-        
+
     },
 
     initMvcGrid: function () {

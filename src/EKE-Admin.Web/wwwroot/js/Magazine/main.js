@@ -91,8 +91,8 @@ Magazine = {
         {
             s.mNumber.attr("disabled", "disabled");
             s.noSection.addClass(s.noClick);
-            elem.children().addClass("fa-times");
-            elem.children().removeClass("fa-check");
+            s.noSection.children().addClass("fa-times");
+            s.noSection.children().removeClass("fa-check");
         }
 
         if (s.mName.attr("disabled") !== "disabled" && s.mYear.attr("disabled") !== "disabled" && s.mNumber.attr("disabled") !== "disabled") {
@@ -233,6 +233,9 @@ Magazine = {
         var year = window.localStorage.getItem("MYear");
 
         if (format != null && number != null && year != null) {
+            s.noYear.removeClass(s.noClick);
+            s.noSection.removeClass(s.noClick);
+
             $('.select2').removeAttr("disabled");
 
             $('.fa-times').addClass('fa-check');
@@ -242,9 +245,16 @@ Magazine = {
 
             $('.mName').val(parseInt(format)).trigger('change');
             $('.mYear').val(parseInt(year)).trigger('change');
-            $('.mNumber').val(parseInt(number)).trigger('change');
+            $('.mNumber').val(parseInt(number)).trigger('click');
 
             Magazine.gridRequest();
+
+            setTimeout(function () {
+                $('.mvc-grid').mvcgrid({
+                    reload: true
+                });;
+            }, 1000);
+           
         }
     }
 };

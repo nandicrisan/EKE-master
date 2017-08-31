@@ -11,6 +11,7 @@ namespace EKE.Data.Entities.Gyopar
         public string Name { get; set; }
         public string Description { get; set; }
         public MediaTypesEnum Type { get; set; }
+        public MediaTypesScope Scope { get; set; }
         public Nullable<int> AuthorId { get; set; }
         public Author Author { get; set; }
     }

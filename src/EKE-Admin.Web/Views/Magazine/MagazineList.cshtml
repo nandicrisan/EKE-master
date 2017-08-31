@@ -72,7 +72,7 @@
 </section>
 <section class="content">
     <div class="box box-success">
-        <form asp-action="AddMagazine" asp-controller="Magazine" method="post">
+        <form asp-action="AddMagazine" asp-controller="Magazine" method="post" enctype="multipart/form-data">
             <div class="box-body">
                 <div class="col-sm-1">
                     <div class="form-group">
@@ -134,11 +134,16 @@
                         <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" readonly>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-1">
                     <div class="form-group">
                         <label>Yumpu link</label>
-                        @*<input id="pdf-uploader" name="Files" type="file" data-show-preview="false">*@
-                        <input name="YumpuKey" class="form-control" type="text" data-show-preview="false">
+                        <input name="YumpuKey" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Borító</label>
+                        <input id="image-uploader" name="files" type="file" data-show-preview="false">
                     </div>
                 </div>
                 <div class="col-sm-1">

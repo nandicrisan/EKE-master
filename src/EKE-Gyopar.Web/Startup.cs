@@ -1,18 +1,14 @@
 ﻿using AutoMapper;
-using EKE.Data;
-using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
 using EKE.Service.Services.Admin;
-using EKE_Gyopar.Web.ViewModels.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 
 namespace EKE_Gyopar.Web

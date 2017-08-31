@@ -88,7 +88,7 @@ namespace EKE_Admin.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddMagazine(Magazine model, IFormFile Files)
+        public IActionResult AddMagazine(Magazine model)
         {
             ModelState.Remove("Category.Name");
             if (!ModelState.IsValid)
