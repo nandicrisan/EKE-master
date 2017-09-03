@@ -245,7 +245,7 @@ Magazine = {
 
             $('.mName').val(parseInt(format)).trigger('change');
             $('.mYear').val(parseInt(year)).trigger('change');
-            $('.mNumber').val(parseInt(number)).trigger('click');
+            $('.mNumber').val(parseInt(number)).trigger('change');
 
             Magazine.gridRequest();
 

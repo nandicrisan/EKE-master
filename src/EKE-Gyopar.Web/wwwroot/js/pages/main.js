@@ -344,6 +344,10 @@ Main = {
             $("body, html").animate({
                 scrollTop: $(".contact").offset().top - 100
             }, 600);
+        } else if (number == 5) {
+            $("body, html").animate({
+                scrollTop: $("#orderMagazine").offset().top - 100
+            }, 600);
         } else {
             $("body, html").animate({
                 scrollTop: searchV.tabs.offset().top - 100

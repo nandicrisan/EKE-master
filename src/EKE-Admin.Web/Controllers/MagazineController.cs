@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using EKE.Service.ServiceModel;
 using System.Net;
+using System.Linq;
+using System.IO;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -315,6 +317,20 @@ namespace EKE_Admin.Web.Controllers
             var result = _magService.UpdateVisibility(mappedModel);
             if (result.IsOk()) return Json(200);
             return Json(result.Status);
+        }
+
+        [HttpPost]
+        public IActionResult UploadCover(IFormFile files, int id)
+        {
+            var result = _magService.UpdateCover(files, id);
+            if (result.IsOk()) return Json(200);
+            return Json(result.Status);
+        }
+
+        public IActionResult HtmlFormatter()
+        {
+            var result = _magService.FormatHtml();
+            return null;
         }
         #endregion
     }

@@ -45,6 +45,7 @@ MagazineList = {
             reloadEnded: function (grid) {
                 MagazineList.loadingOverlay(false, s.gridContainer)
                 MagazineList.initXEdit();
+                MagazineList.initCoverUploader();
             },
             reloadFailed: function (grid, result) {
                 MagazineList.loadingOverlay(false, s.gridContainer)
@@ -62,6 +63,24 @@ MagazineList = {
                 params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
                 return params;
             }
+        });
+    },
+
+    initCoverUploader: function () {
+        $(".cover-uploader").fileinput({
+            language: "hu",
+            showUpload: true,
+            allowedFileExtensions: ["jpg", "png"],
+            uploadUrl: "/Magazine/UploadCover",
+            uploadExtraData: function (previewId, index) {
+                var elem = $(this)[0].$btnFile[0];
+                return {
+                    __RequestVerificationToken: $('[name="__RequestVerificationToken"]').val(),
+                    id: $(elem).find(".cover-uploader").first().data('id'),
+                };
+            },
+            maxFileCount: 1,
+            multiple: false,
         });
     },
 

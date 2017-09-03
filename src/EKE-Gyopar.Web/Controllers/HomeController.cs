@@ -108,5 +108,16 @@ namespace EKE_Gyopar.Web.Controllers
             return StatusCode((int)result.Status, result.Message);
         }
 
+        [HttpPost]
+        public IActionResult AddOrder(Order model)
+        {
+            if (ModelState.IsValid)
+            {
+                //var result = _magazineService.AddOrder(model);
+                return null;
+            }
+            return null;
+        }
+
     }
 }

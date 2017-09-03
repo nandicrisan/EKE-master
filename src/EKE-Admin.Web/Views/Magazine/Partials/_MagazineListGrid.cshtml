@@ -1,4 +1,5 @@
 ﻿@using NonFactors.Mvc.Grid;
+@using EKE.Data.Entities.Enums
 @model IEnumerable<EKE.Data.Entities.Gyopar.Magazine>
 
 @(Html
@@ -9,12 +10,13 @@
         columns.Add(model => model.PublishYear).Titled("Kiadási év").MultiFilterable(false);
         columns.Add(model => model.PublishSection).Titled("Kiadási szám").MultiFilterable(false);
         columns.Add(model => model.Title).Titled("Cím").MultiFilterable(true);
-        columns.Add(model => model.MagazineTags).Titled("Kulcsszavak").MultiFilterable(true);
         columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").MultiFilterable(false);
         columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(false);
         columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").MultiFilterable(false);
         //columns.Add(model => model.Visible).Titled("Látható").RenderedAs(model => model.Visible ? "Igen" : "Nem").MultiFilterable(false);
-        columns.Add(model => $"<a href='#' class='visibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Magazine/UpdateVisibility' data-title='Látható?' data-name='Visible'>" + (model.Visible ? "Igen" : "Nem") + "</a>").Titled("Látható").Encoded(false).MultiFilterable(false);
+        columns.Add(model => $"<a href='#' class='visibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Magazine/UpdateVisibility' data-title='Látható?' data-name='Visible'>" + (model.Visible ? "Igen" : "Nem") + "</a>").Titled("Látható").Encoded(false).Sortable(true);
+        columns.Add(model => $"<p href='#'>" + (model.MediaElements != null ? model.MediaElements.Count(x => x.Scope == MediaTypesScope.Cover) > 0 ? "Van" : "Nincs" : "Nincs") + "</p>").Titled("Borítókép").Encoded(false).Sortable(true);
+        columns.Add(model => $"<input class='cover-uploader' name='files' type='file' data-show-preview='true' data-id=" + model.Id + ">").Titled("Látható").Encoded(false).Filterable(false);
         columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
     })
     .MultiFilterable()

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 
 namespace EKE.Service.Services.Admin
 {
@@ -24,7 +25,10 @@ namespace EKE.Service.Services.Admin
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
         Result<Magazine> UpdateVisibility(XEditSM model);
+        Result<Magazine> UpdateCover(IFormFile files, int id);
         Result<Magazine> GetMagazinesBy(Expression<Func<Magazine, bool>> predicate);
+
+        List<MediaElement> CreateMediaElements(IFormFile files, int year, string section);
 
         Result<List<Article>> GetAllArticles();
         Result<List<Article>> GetAllArticlesBy(Expression<Func<Article, bool>> predicate);
@@ -46,6 +50,7 @@ namespace EKE.Service.Services.Admin
         Result DeleteTag(int id);
 
         Result<List<Author>> GetAllAuthors();
+        Result FormatHtml();
     }
 
     public class MagazineService : BaseService, IMagazineService
@@ -86,7 +91,7 @@ namespace EKE.Service.Services.Admin
 
         public Result<List<Magazine>> GetAllMagazinesIncluding()
         {
-            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category).ToList());
+            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category, x => x.MediaElements).ToList());
         }
 
         public Result<List<Magazine>> GetLastMagazines(int count)
@@ -148,26 +153,7 @@ namespace EKE.Service.Services.Admin
 
                 if (model.Files != null)
                 {
-                    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.PublishYear, model.PublishSection));
-                    if (!Directory.Exists(uploads))
-                        Directory.CreateDirectory(uploads);
-
-                    var mediaElements = new List<MediaElement>();
-                    if (model.Files.Length > 0)
-                    {
-                        using (var fileStream = new FileStream(Path.Combine(uploads, model.Files.FileName), FileMode.Create))
-                        {
-                            model.Files.CopyToAsync(fileStream);
-                        }
-                    }
-                    var mediaElem = new MediaElement();
-                    mediaElem.OriginalName = String.Format("{0}/{1}", uploads, model.Files.FileName);
-                    mediaElem.Description = string.Format("{0}_{1}", model.PublishYear, model.PublishSection);
-                    mediaElem.Name = RandomString(10);
-                    mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
-                    mediaElem.Scope = Data.Entities.Enums.MediaTypesScope.Cover;
-                    mediaElements.Add(mediaElem);
-                    model.MediaElements = mediaElements;
+                    model.MediaElements = CreateMediaElements(model.Files, model.PublishYear, model.PublishSection);
                 }
 
                 model.DateCreated = DateTime.Now;
@@ -193,7 +179,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazine = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements);
+                var magazine = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements, x => x.Articles);
                 _magazineRepo.Delete(magazine);
                 SaveChanges();
                 return new Result<bool>(true);
@@ -217,6 +203,36 @@ namespace EKE.Service.Services.Admin
             }
         }
         #endregion
+        #endregion
+
+        #region MediaElements
+        public List<MediaElement> CreateMediaElements(IFormFile files, int year, string section)
+        {
+#warning MEGOLDANI!
+            //var gyoparPath = _environment.WebRootPath.Replace("EKE-Admin.Web", "EKE-Gyopar.Web");
+            var relativePath = String.Format("Uploads/{0}/{1}", year.ToString().Trim(), section.Trim());
+            var uploads = Path.Combine(relativePath, relativePath);
+            if (!Directory.Exists(uploads))
+                Directory.CreateDirectory(uploads);
+
+            var mediaElements = new List<MediaElement>();
+            if (files.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, files.FileName), FileMode.Create))
+                {
+                    files.CopyToAsync(fileStream);
+                }
+            }
+            var mediaElem = new MediaElement();
+            mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, files.FileName);
+            mediaElem.Description = string.Format("{0}_{1}", year.ToString().Trim(), section.Trim());
+            mediaElem.Name = RandomString(10);
+            mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+            mediaElem.Scope = Data.Entities.Enums.MediaTypesScope.Cover;
+            mediaElements.Add(mediaElem);
+
+            return mediaElements;
+        }
         #endregion
 
         #region Articles
@@ -679,6 +695,40 @@ namespace EKE.Service.Services.Admin
             _magazineRepo.Update(result);
             SaveChanges();
             return new Result<Magazine>(result);
+        }
+
+        public Result<Magazine> UpdateCover(IFormFile files, int id)
+        {
+            var result = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements);
+
+            if (result == null) return new Result<Magazine>(ResultStatus.NOT_FOUND);
+
+            //var removable = result.MediaElements.FirstOrDefault(x => x.Scope == Data.Entities.Enums.MediaTypesScope.Cover);
+            //result.MediaElements.Remove(removable);
+            result.MediaElements = CreateMediaElements(files, result.PublishYear, result.PublishSection);
+
+            _magazineRepo.Update(result);
+            SaveChanges();
+            return new Result<Magazine>(result);
+        }
+
+        public Result FormatHtml()
+        {
+            var articles = _articleRepo.GetAll();
+            foreach (var item in articles)
+            {
+                if (!string.IsNullOrEmpty(item.Content))
+                {
+                    var content = item.Content;
+
+                    content = content.Replace("\r\n", "<br />");
+                    item.Content = content;
+
+                    _articleRepo.Update(item);
+                    SaveChanges();
+                }
+            }
+            return new Result(ResultStatus.OK);
         }
         #endregion
     }
