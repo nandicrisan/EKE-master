@@ -209,9 +209,9 @@ namespace EKE.Service.Services.Admin
         public List<MediaElement> CreateMediaElements(IFormFile files, int year, string section)
         {
 #warning MEGOLDANI!
-            //var gyoparPath = _environment.WebRootPath.Replace("EKE-Admin.Web", "EKE-Gyopar.Web");
+            var gyoparPath = _environment.WebRootPath.Replace("EKE-Admin.Web", "EKE-Gyopar.Web");
             var relativePath = String.Format("Uploads/{0}/{1}", year.ToString().Trim(), section.Trim());
-            var uploads = Path.Combine(relativePath, relativePath);
+            var uploads = Path.Combine(gyoparPath, relativePath);
             if (!Directory.Exists(uploads))
                 Directory.CreateDirectory(uploads);
 
