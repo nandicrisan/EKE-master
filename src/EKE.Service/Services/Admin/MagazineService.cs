@@ -220,7 +220,7 @@ namespace EKE.Service.Services.Admin
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, files.FileName), FileMode.Create))
                 {
-                    files.CopyToAsync(fileStream);
+                    files.CopyTo(fileStream);
                 }
             }
             var mediaElem = new MediaElement();
@@ -706,7 +706,7 @@ namespace EKE.Service.Services.Admin
             //var removable = result.MediaElements.FirstOrDefault(x => x.Scope == Data.Entities.Enums.MediaTypesScope.Cover);
             //result.MediaElements.Remove(removable);
 
-            if (files == null || files.Length > 0) return new Result<Magazine>(ResultStatus.ERROR);
+            if (files == null || files.Length == 0) return new Result<Magazine>(ResultStatus.ERROR);
 
             result.MediaElements = CreateMediaElements(files, result.PublishYear, result.PublishSection);
 

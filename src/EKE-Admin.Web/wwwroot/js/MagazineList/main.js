@@ -69,7 +69,7 @@ MagazineList = {
     initCoverUploader: function () {
         $(".cover-uploader").fileinput({
             language: "hu",
-            showUpload: false,
+            showUpload: true,
             allowedFileExtensions: ["jpg", "png"],
             uploadUrl: "/Magazine/UploadCover",
             uploadExtraData: function (previewId, index) {
