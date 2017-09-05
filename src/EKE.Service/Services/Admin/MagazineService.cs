@@ -705,6 +705,9 @@ namespace EKE.Service.Services.Admin
 
             //var removable = result.MediaElements.FirstOrDefault(x => x.Scope == Data.Entities.Enums.MediaTypesScope.Cover);
             //result.MediaElements.Remove(removable);
+
+            if (files == null || files.Length > 0) return new Result<Magazine>(ResultStatus.ERROR);
+
             result.MediaElements = CreateMediaElements(files, result.PublishYear, result.PublishSection);
 
             _magazineRepo.Update(result);

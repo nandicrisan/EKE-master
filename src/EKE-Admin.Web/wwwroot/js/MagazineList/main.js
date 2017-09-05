@@ -69,7 +69,7 @@ MagazineList = {
     initCoverUploader: function () {
         $(".cover-uploader").fileinput({
             language: "hu",
-            showUpload: true,
+            showUpload: false,
             allowedFileExtensions: ["jpg", "png"],
             uploadUrl: "/Magazine/UploadCover",
             uploadExtraData: function (previewId, index) {
@@ -80,7 +80,6 @@ MagazineList = {
                 };
             },
             maxFileCount: 1,
-            multiple: false,
         });
     },
 
