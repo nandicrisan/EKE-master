@@ -6,22 +6,18 @@
     .Grid(Model)
     .Build(columns =>
     {
-        columns.Add(model => model.Category.Name).Titled("Folyóirat").MultiFilterable(true);
-        columns.Add(model => model.PublishYear).Titled("Kiadási év").MultiFilterable(false);
-        columns.Add(model => model.PublishSection).Titled("Kiadási szám").MultiFilterable(false);
-        columns.Add(model => model.Title).Titled("Cím").MultiFilterable(true);
-        columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").MultiFilterable(false);
-        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(false);
-        columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").MultiFilterable(false);
-        //columns.Add(model => model.Visible).Titled("Látható").RenderedAs(model => model.Visible ? "Igen" : "Nem").MultiFilterable(false);
-        columns.Add(model => $"<a href='#' class='visibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Magazine/UpdateVisibility' data-title='Látható?' data-name='Visible'>" + (model.Visible ? "Igen" : "Nem") + "</a>").Titled("Látható").Encoded(false).Sortable(true);
+        columns.Add(model => model.Category.Name).Titled("Folyóirat").Filterable(true);
+        columns.Add(model => $"<a href='#' class='yearCheck' data-type='text' data-pk=" + model.Id + " data-url='/Magazine/Update' data-title='Kiadási év' data-name='Year'>" + model.PublishYear + "</a>").Titled("Kiadási év").Encoded(false).Filterable(true).Sortable(true);
+        columns.Add(model => $"<a href='#' class='sectionCheck' data-type='text' data-pk=" + model.Id + " data-url='/Magazine/Update' data-title='Cím?' data-name='Section'>" + model.PublishSection + "</a>").Titled("Kiadási szám").Encoded(false).Sortable(true);
+        columns.Add(model => $"<a href='#' class='titleCheck' data-type='text' data-pk=" + model.Id + " data-url='/Magazine/Update' data-title='Cím?' data-name='Title'>" + model.Title + "</a>").Titled("Cím").Encoded(false).Sortable(true);
+        columns.Add(model => model.DateCreated).Titled("Létrehozási dátum").Sortable(true);
+        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").Filterable(true);
+        columns.Add(model => model.Articles != null ? model.Articles.Count : 0).Titled("Cikkek száma").Sortable(true);
+        columns.Add(model => $"<a href='#' class='visibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Magazine/Update' data-title='Látható?' data-name='Visible'>" + (model.Visible ? "Igen" : "Nem") + "</a>").Titled("Látható").Encoded(false).Sortable(true);
         columns.Add(model => $"<p href='#'>" + (model.MediaElements != null ? model.MediaElements.Count(x => x.Scope == MediaTypesScope.Cover) > 0 ? "Van" : "Nincs" : "Nincs") + "</p>").Titled("Borítókép").Encoded(false).Sortable(true);
-        columns.Add(model => $"<input class='cover-uploader' name='files' type='file' data-show-preview='false' data-id=" + model.Id + ">").Titled("Látható").Encoded(false).Filterable(false);
+        columns.Add(model => $"<input class='cover-uploader' name='files' type='file' data-show-preview='false' data-id=" + model.Id + ">").Titled("Látható").Encoded(false);
         columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazine", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
     })
-    .MultiFilterable()
-    .Filterable()
-    .Sortable()
     .Pageable()
     .Empty("Üres adattár a megadott paraméterekkel!")
 )

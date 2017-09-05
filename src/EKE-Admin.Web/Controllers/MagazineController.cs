@@ -311,10 +311,10 @@ namespace EKE_Admin.Web.Controllers
 
         #region XEdit
         [HttpPost]
-        public IActionResult UpdateVisibility(XEditVM model)
+        public IActionResult Update(XEditVM model)
         {
             var mappedModel = _mapper.Map<XEditSM>(model);
-            var result = _magService.UpdateVisibility(mappedModel);
+            var result = _magService.Update(mappedModel);
             if (result.IsOk()) return Json(200);
             return Json(result.Status);
         }

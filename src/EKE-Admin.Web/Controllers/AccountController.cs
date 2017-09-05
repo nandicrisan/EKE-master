@@ -137,13 +137,12 @@ namespace EKE_Admin.Web.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LogOff()
+        public async Task<IActionResult> LogOff()
         {
-            _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(AccountController.SignIn), "Home");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         //

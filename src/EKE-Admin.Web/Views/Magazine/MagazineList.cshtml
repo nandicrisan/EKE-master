@@ -12,56 +12,6 @@
 
 <section class="content-header">
     <h1>
-        Folyóiratok kezelése
-        <small>Vezérlő panel</small>
-    </h1>
-    @*<ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
-        </ol>*@
-</section>
-<section class="content">
-    <div class="box box-success">
-        <form asp-action="AddMagazineCategory" asp-controller="Magazine" method="post">
-            <div class="box-body">
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label>Név*</label>
-                        <input name="Name" class="form-control" type="text" placeholder="Folyóirat neve">
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label>Hozzáadta</label>
-                        <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" placeholder="@User.Identity.Name" readonly>
-                    </div>
-                </div>
-                <div class="col-sm-8">
-                    <label></label>
-                    <div class="row">
-                        <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
-                    </div>
-                </div>
-            </div><!-- /.box-body -->
-        </form>
-    </div>
-
-    @(Html
-    .Grid(Model.MagazineCategories)
-    .Build(columns =>
-    {
-        columns.Add(model => model.Name).Titled("Név").MultiFilterable(true);
-        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(true);
-        columns.Add(model => model.Magazines != null ? model.Magazines.Count() : 0).Titled("Lapok száma").MultiFilterable(false);
-        columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazineCategory", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
-    })
-    .Pageable()
-    .Empty("Üres adattár a megadott paraméterekkel!")
-    )
-</section>
-
-<section class="content-header">
-    <h1>
         Lapok kezelése
         <small>Vezérlő panel</small>
     </h1>
@@ -167,6 +117,56 @@
     <div class="magazinelist-grid" style="min-height:250px;">
         @Html.AjaxGrid(Url.Action("MagazineListGrid", "Magazine"))
     </div>
+</section>
+
+<section class="content-header">
+    <h1>
+        Folyóiratok kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+<section class="content">
+    <div class="box box-success">
+        <form asp-action="AddMagazineCategory" asp-controller="Magazine" method="post">
+            <div class="box-body">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Név*</label>
+                        <input name="Name" class="form-control" type="text" placeholder="Folyóirat neve">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Hozzáadta</label>
+                        <input name="PublishedBy" class="form-control" type="text" value="@User.Identity.Name" placeholder="@User.Identity.Name" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <label></label>
+                    <div class="row">
+                        <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </form>
+    </div>
+
+    @(Html
+    .Grid(Model.MagazineCategories)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Name).Titled("Név").MultiFilterable(true);
+        columns.Add(model => model.PublishedBy).Titled("Hozzáadta").MultiFilterable(true);
+        columns.Add(model => model.Magazines != null ? model.Magazines.Count() : 0).Titled("Lapok száma").MultiFilterable(false);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteMagazineCategory", "Magazine", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false); // $"<button asp-action='DeleteMagazineCategory' asp-controller='Magazine' asp-route-id='{model.Id}' class='btn btn-danger' type='post'><i class='fa fa-trash'></i></button>")
+    })
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+    )
 </section>
 
 @section scripts{

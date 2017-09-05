@@ -10,7 +10,7 @@ MagazineList = {
     },
 
     xedit: {
-        visibilityCheck: $(".visibleCheck"),
+        editField: $(".visibleCheck"),
     },
 
     init: function () {
@@ -59,6 +59,27 @@ MagazineList = {
                 { value: 'True', text: 'Igen' },
                 { value: 'False', text: 'Nem' },
             ],
+            params: function (params) {
+                params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                return params;
+            }
+        });
+
+        $('.titleCheck').editable({
+            params: function (params) {
+                params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                return params;
+            }
+        });
+
+        $('.yearCheck').editable({
+            params: function (params) {
+                params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                return params;
+            }
+        });
+
+        $('.sectionCheck').editable({
             params: function (params) {
                 params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
                 return params;

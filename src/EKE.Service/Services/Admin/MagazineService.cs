@@ -26,7 +26,7 @@ namespace EKE.Service.Services.Admin
         Result<Magazine> GetMagazineById(int id);
         Result<Magazine> Add(Magazine model);
         Result<Magazine> Update(Magazine model);
-        Result<Magazine> UpdateVisibility(XEditSM model);
+        Result<Magazine> Update(XEditSM model);
         Result<Magazine> UpdateCover(IFormFile files, int id);
         Result<Magazine> GetMagazinesBy(Expression<Func<Magazine, bool>> predicate);
 
@@ -726,15 +726,35 @@ namespace EKE.Service.Services.Admin
         #endregion
 
         #region XEdit
-        public Result<Magazine> UpdateVisibility(XEditSM model)
+        public Result<Magazine> Update(XEditSM model)
         {
-            var visible = Convert.ToBoolean(model.Value);
             var result = _magazineRepo.GetById(model.PrimaryKey);
-
             if (result == null) return new Result<Magazine>(ResultStatus.NOT_FOUND);
-            if (result.Visible == visible) return new Result<Magazine>(result);
 
-            result.Visible = visible;
+            switch (model.Name)
+            {
+                case "Visible":
+                    var visible = Convert.ToBoolean(model.Value);
+                    if (result.Visible == visible) return new Result<Magazine>(result);
+                    result.Visible = visible;
+                    break;
+                case "Title":
+                    if (result.Title.Trim() == model.Value.Trim()) return new Result<Magazine>(result);
+                    result.Title = model.Value.Trim();
+                    break;
+                case "Section":
+                    if (result.PublishSection.Trim() == model.Value.Trim()) return new Result<Magazine>(result);
+                    result.PublishSection = model.Value.Trim();
+                    break;
+                case "Year":
+                    var year = Convert.ToInt32(model.Value);
+                    if (result.PublishYear == year) return new Result<Magazine>(result);
+                    result.PublishYear = year;
+                    break;
+                default:
+                    return new Result<Magazine>(result);
+            }
+
             _magazineRepo.Update(result);
             SaveChanges();
             return new Result<Magazine>(result);
