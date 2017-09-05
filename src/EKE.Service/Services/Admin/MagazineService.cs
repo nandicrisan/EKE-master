@@ -11,6 +11,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using ImageMagick;
+using EKE.Data.Entities.Enums;
 
 namespace EKE.Service.Services.Admin
 {
@@ -208,7 +210,7 @@ namespace EKE.Service.Services.Admin
         #region MediaElements
         public List<MediaElement> CreateMediaElements(IFormFile files, int year, string section)
         {
-#warning MEGOLDANI!
+#warning MEGOLDANI AZ EGESZ METODUST ATNEZNI!
             var gyoparPath = _environment.WebRootPath.Replace("EKE-Admin.Web", "EKE-Gyopar.Web");
             var relativePath = String.Format("Uploads/{0}/{1}", year.ToString().Trim(), section.Trim());
             var uploads = Path.Combine(gyoparPath, relativePath);
@@ -218,20 +220,61 @@ namespace EKE.Service.Services.Admin
             var mediaElements = new List<MediaElement>();
             if (files.Length > 0)
             {
-                using (var fileStream = new FileStream(Path.Combine(uploads, files.FileName), FileMode.Create))
+                var uploadPath = Path.Combine(uploads, files.FileName);
+                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
                 {
                     files.CopyTo(fileStream);
                 }
+                var fileName = String.Format("r1_{0}", files.FileName);
+                var outputPath = Path.Combine(uploads, fileName);
+                var resize = ResizeImage(uploadPath, outputPath, MediaTypesScope.Cover);
+
+                var mediaElem = new MediaElement();
+                mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, resize.IsOk() ? fileName : files.FileName);
+                mediaElem.Description = string.Format("{0}_{1}", year.ToString().Trim(), section.Trim());
+                mediaElem.Name = RandomString(10);
+                mediaElem.Type = MediaTypesEnum.Image;
+                mediaElem.Scope = MediaTypesScope.Cover;
+                mediaElements.Add(mediaElem);
             }
-            var mediaElem = new MediaElement();
-            mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, files.FileName);
-            mediaElem.Description = string.Format("{0}_{1}", year.ToString().Trim(), section.Trim());
-            mediaElem.Name = RandomString(10);
-            mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
-            mediaElem.Scope = Data.Entities.Enums.MediaTypesScope.Cover;
-            mediaElements.Add(mediaElem);
 
             return mediaElements;
+        }
+
+        public Result ResizeImage(string inputPath, string outputPath, MediaTypesScope type)
+        {
+            var size = 0;
+            var quality = 0;
+
+            switch (type)
+            {
+                case MediaTypesScope.Background:
+                    break;
+                case MediaTypesScope.Cover:
+                    size = 400;
+                    quality = 75;
+                    break;
+                case MediaTypesScope.Article:
+                    break;
+                default:
+                    break;
+            }
+
+            try
+            {
+                using (var image = new MagickImage(inputPath))
+                {
+                    image.Resize(size, size);
+                    image.Strip();
+                    image.Quality = quality;
+                    image.Write(outputPath);
+                    return new Result(ResultStatus.OK);
+                }
+            }
+            catch (Exception)
+            {
+                return new Result(ResultStatus.EXCEPTION);
+            }
         }
         #endregion
 
