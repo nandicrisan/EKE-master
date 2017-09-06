@@ -9,7 +9,7 @@ namespace EKE.Data.DataViewModels
         public List<String> PublishYearRange { get; set; }
         public List<String> PublishSectionRange { get; set; }
         public ObjectTypeEnum ObjectType { get; set; }
-        public List<String> Tags { get; set; }
+        public string Author { get; set; }
         public string Text { get; set; }
         public bool RangeTypeYear { get; set; }
         public bool RangeTypeSection { get; set; }
@@ -20,7 +20,7 @@ namespace EKE.Data.DataViewModels
             Text = string.Empty;
             PublishYearRange = new List<String>();
             PublishSectionRange = new List<String>();
-            Tags = new List<String>();
+            Author = string.Empty;
             RangeTypeYear = true;
             RangeTypeSection = true;
         }

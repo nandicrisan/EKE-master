@@ -53,6 +53,7 @@ namespace EKE.Service.Services.Admin
 
         Result<List<Author>> GetAllAuthors();
         Result FormatHtml();
+        Result AddOrder(Order model);
     }
 
     public class MagazineService : BaseService, IMagazineService
@@ -794,6 +795,15 @@ namespace EKE.Service.Services.Admin
                     SaveChanges();
                 }
             }
+            return new Result(ResultStatus.OK);
+        }
+
+
+        #endregion
+
+        #region Orders
+        public Result AddOrder(Order model)
+        {
             return new Result(ResultStatus.OK);
         }
         #endregion

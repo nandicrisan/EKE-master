@@ -5,20 +5,20 @@
 
             <h3 class="ls1 t400">Rendeljen elő az Erdélyi Gyopárra!</h3>
             <div class="quick-contact-form-result"></div>
-            <form asp-controller="Home" asp-action="AddOrder" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Main.articleOrder()" enctype="multipart/form-data">
+            <form asp-controller="Home" asp-action="AddOrder" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-success="Main.setNoty('Rendelés sikeresen lementve!', 'success');">
                 <div class="form-process"></div>
 
-                <input asp-for="Name" type="text" class="required sm-form-control input-block-level not-dark" id="quick-contact-form-name" name="quick-contact-form-name" value="" placeholder="Teljes név" />
+                <input asp-for="@Model.Name" type="text" class="required sm-form-control input-block-level not-dark" value="" placeholder="Teljes név" />
 
-                <input asp-for="Email" type="email" class="required sm-form-control email input-block-level not-dark" id="quick-contact-form-email" name="quick-contact-form-email" value="" placeholder="Email cím" />
+                <input asp-for="@Model.Email" type="email" class="required sm-form-control email input-block-level not-dark" value="" placeholder="Email cím" />
 
-                <input asp-for="PhoneNumber" type="text" class="required sm-form-control input-block-level not-dark" id="quick-contact-form-phone" name="quick-contact-form-phone" value="" placeholder="Telefonszám" />
+                <input asp-for="@Model.PhoneNumber" type="text" class="required sm-form-control input-block-level not-dark" value="" placeholder="Telefonszám" />
 
-                <textarea asp-for="Description" class="sm-form-control input-block-level not-dark short-textarea" id="quick-contact-form-message" name="quick-contact-form-message" rows="5" cols="30" placeholder="Honnan hallott az Erdélyi Gyopárról?"></textarea>
+                <textarea asp-for="@Model.Description" class="sm-form-control input-block-level not-dark short-textarea" rows="5" cols="30" placeholder="Honnan hallott az Erdélyi Gyopárról?"></textarea>
 
                 <input type="text" class="hidden" id="quick-contact-form-botcheck" name="quick-contact-form-botcheck" value="" />
 
-                <button type="submit" id="quick-contact-form-submit" name="quick-contact-form-submit" class="button button-small button-rounded button-light button-white nomargin" value="submit">Küldés</button>
+                <button type="submit" class="button button-small button-rounded button-light button-white nomargin" value="submit">Küldés</button>
             </form>
         </div>
     </div>

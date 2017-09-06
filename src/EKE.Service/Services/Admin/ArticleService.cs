@@ -70,10 +70,15 @@ namespace EKE.Service.Services.Admin
         private Expression<Func<Article, bool>> GetSearchPredicate(ArticleSearch filter)
         {
             var predicate = PredicateBuilder.New<Article>(true);
-            if (filter.ClearKeyword != null)
+            if (filter.Keyword != null)
             {
                 predicate = predicate.And(p => p.ArticleTag.Any(q => q.Tag.Name.Contains(filter.Keyword)) || p.Author.Name.ToLower().Contains(filter.Keyword) ||
                  p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
+            }
+
+            if (filter.Author != null)
+            {
+                predicate = predicate.And(p => p.Author.Name.ToLower().Contains(filter.Author));
             }
 
             predicate = predicate.And(p => p.Magazine != null);

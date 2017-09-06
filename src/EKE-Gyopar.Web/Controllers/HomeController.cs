@@ -8,6 +8,7 @@ using AutoMapper;
 using EKE.Service.Services.Admin;
 using EKE_Gyopar.Web.ViewModels;
 using EKE.Data.Entities.Gyopar;
+using System.Net;
 
 namespace EKE_Gyopar.Web.Controllers
 {
@@ -113,10 +114,11 @@ namespace EKE_Gyopar.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var result = _magazineService.AddOrder(model);
-                return null;
+                var result = _magazineService.AddOrder(model);
+
+                return Json(new { message = "Rendelés sikeresen lementve!" });
             }
-            return null;
+            return Json(new { message = "Hiba a mentés során!" });
         }
 
     }

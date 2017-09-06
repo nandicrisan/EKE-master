@@ -27,6 +27,7 @@ Main = {
         otherText: $("#otherText"),
         yearRange: $("#yearRange"),
         magazineRange: $("#magazineRange"),
+        authorText: $("#author"),
 
         magazineSelected: $("#magazineSelected"),
         yearSelected: $("#yearSelected"),
@@ -51,6 +52,7 @@ Main = {
         this.initIndex();
         this.initAjax();
         this.bindUIActions();
+        this.initNoty();
     },
 
     bindUIActions: function () {
@@ -79,9 +81,38 @@ Main = {
 
                     _elem.find("div").css("display", "initial");
                     _elem.find(".yearLoading").css("display", "none");
+                },
+                error: function () {
+                    _elem.find("div").css("display", "initial");
+                    _elem.find(".yearLoading").css("display", "none");
+
+                    s.searchButton.button("reset");
+                    Main.setNoty('Hiba a lapszámok lekérése során!', 'error');
                 }
             });
         });
+    },
+
+    initNoty: function () {
+        setTimeout(function () {
+            new Noty({
+                theme: 'relax',
+                type: 'info',
+                layout: 'topRight',
+                text: 'Figyelem! Az oldal fejlesztés alatt áll!',
+                timeout: 3000,
+            }).show();
+        }, 1500);
+    },
+
+    setNoty: function (text, type) {
+        new Noty({
+            theme: 'relax',
+            type: type,
+            layout: 'topRight',
+            text: text,
+            timeout: 5000,
+        }).show();
     },
 
     getMoreArticles: function (numToGet) {
@@ -165,6 +196,9 @@ Main = {
                 $("#overlayMagazine").css("display", "none");
                 p.magazine.css("display", "none");
                 p.magazine.fadeIn(3000);
+            },
+            error: function () {
+                Main.setNoty('Hiba a lapszámok lekérése során!', 'error');
             }
         });
 
@@ -175,6 +209,9 @@ Main = {
                 $("#overlayArticle").css("display", "none");
                 p.article.css("display", "none");
                 p.article.fadeIn(3000);
+            },
+            error: function () {
+                Main.setNoty('Hiba a cikkek lekérése során!', 'error');
             }
         });
     },
@@ -207,8 +244,8 @@ Main = {
             searchFilter.ObjectType = 1;
         }
 
-        searchFilter.Tags = searchV.tagsSelected.val();
         searchFilter.Text = searchV.otherText.val();
+        searchFilter.Author = searchV.authorText.val();
 
         $.ajax({
             type: "GET",
@@ -218,7 +255,7 @@ Main = {
                 PublishYearRange: searchFilter.PublishYearRange,
                 PublishSectionRange: searchFilter.PublishSectionRange,
                 ObjectType: searchFilter.ObjectType,
-                Tags: searchFilter.Tags,
+                Author: searchFilter.Author,
                 Text: searchFilter.Text,
                 Keyword: searchFilter.Text,
                 RangeTypeYear: searchFilter.RangeTypeYear,
@@ -241,6 +278,10 @@ Main = {
                 $("body, html").animate({
                     scrollTop: $($("#posts")).offset().top - 250
                 }, 600);
+            },
+            error: function () {
+                s.searchButton.button("reset");
+                Main.setNoty('Hiba a lekérés során!', 'error');
             }
         });
     },
@@ -276,6 +317,9 @@ Main = {
                 $("body, html").animate({
                     scrollTop: p.articleList.offset().top - 100
                 }, 600);
+            },
+            error: function () {
+                Main.setNoty('Hiba a lekérés során!', 'error');
             }
         });
     },
@@ -325,6 +369,9 @@ Main = {
                 p.articleModal.html(data);
                 Main.initFacebook();
                 SEMICOLON.widget.flickrFeed();
+            },
+            error: function () {
+                Main.setNoty('Hiba a lekérés során!', 'error');
             }
         });
     },
@@ -355,5 +402,5 @@ Main = {
 
             $(".tab_" + number).click();
         }
-    }
+    },
 };

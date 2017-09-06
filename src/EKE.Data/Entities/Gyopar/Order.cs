@@ -15,7 +15,6 @@ namespace EKE.Data.Entities.Gyopar
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required]
         public string Description { get; set; }
     }
 }
