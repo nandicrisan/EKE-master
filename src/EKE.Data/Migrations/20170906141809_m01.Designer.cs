@@ -9,9 +9,10 @@ using EKE.Data.Entities.Enums;
 namespace EKE.Data.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170906141809_m01")]
+    partial class m01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -250,27 +251,6 @@ namespace EKE.Data.Migrations
                     b.HasIndex("MagazineId");
 
                     b.ToTable("MediaElements");
-                });
-
-            modelBuilder.Entity("EKE.Data.Entities.Gyopar.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("EKE.Data.Entities.Gyopar.Tag", b =>

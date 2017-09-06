@@ -6142,6 +6142,7 @@ body:not(.device-touch) .entry-link {
     .post-grid .entry-image img {
         max-height: 360px;
         border-radius: 0;
+        min-height: 345px;
     }
 
     .post-grid .entry-title h2 {

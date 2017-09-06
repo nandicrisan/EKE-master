@@ -1,0 +1,17 @@
+﻿@using NonFactors.Mvc.Grid;
+@using EKE.Data.Entities.Enums
+@model IEnumerable<EKE.Data.Entities.Gyopar.Order>
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Name).Titled("Név");
+        columns.Add(model => model.PhoneNumber).Titled("Telefonszám");
+        columns.Add(model => model.Email).Titled("Email cím");
+        columns.Add(model => model.Description).Titled("Leírás");
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteOrder", "Order", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
+    })
+    .Pageable()
+    .Empty("Üres adattár a megadott paraméterekkel!")
+)

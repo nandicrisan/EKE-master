@@ -115,10 +115,11 @@ namespace EKE_Gyopar.Web.Controllers
             if (ModelState.IsValid)
             {
                 var result = _magazineService.AddOrder(model);
+                if (result.IsOk()) return Json(new { message = "Rendelés sikeresen lementve!" });
 
-                return Json(new { message = "Rendelés sikeresen lementve!" });
+                return Json(new { message = String.Format("Hiba történt! Hibakód: {0}", result.Status) });
             }
-            return Json(new { message = "Hiba a mentés során!" });
+            return Json(new { message = "Hiba a mentés során! Ellenőrizze a mezők helyességét!" });
         }
 
     }

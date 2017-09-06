@@ -20,6 +20,7 @@ namespace EKE.Data
         DbSet<MagazineCategory> MagazineCategories { get; set; }
         DbSet<MediaElement> MediaElements { get; set; }
         DbSet<Tag> Tags { get; set; }
+        DbSet<Order> Orders { get; set; }
         #endregion
 
         //Model configurations

@@ -44,6 +44,10 @@ namespace EKE.Service.Services.Admin
         Result<List<MagazineCategory>> GetAllMagazineCategories();
         Result<MagazineCategory> GetMagazineCategoryById(int id);
 
+        Result<List<Order>> GetAllOrders();
+        Result AddOrder(Order model);
+        Result DeleteOrder(int id);
+
         Result<bool> DeleteMagazineCategory(int id);
         Result<bool> DeleteMagazine(int id);
 
@@ -53,7 +57,6 @@ namespace EKE.Service.Services.Admin
 
         Result<List<Author>> GetAllAuthors();
         Result FormatHtml();
-        Result AddOrder(Order model);
     }
 
     public class MagazineService : BaseService, IMagazineService
@@ -64,6 +67,7 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<Tag> _tagRepo;
         private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
         private readonly IEntityBaseRepository<Author> _authorRepo;
+        private readonly IEntityBaseRepository<Order> _orderRepo;
         private readonly IHostingEnvironment _environment;
 
         public MagazineService(
@@ -73,6 +77,7 @@ namespace EKE.Service.Services.Admin
             IEntityBaseRepository<Tag> tagRepository,
             IEntityBaseRepository<MediaElement> mediaElementRepository,
             IEntityBaseRepository<Author> authorRepository,
+            IEntityBaseRepository<Order> orderRepository,
             IHostingEnvironment environment,
             IUnitOfWork unitOfWork) : base(unitOfWork)
         {
@@ -82,6 +87,7 @@ namespace EKE.Service.Services.Admin
             _tagRepo = tagRepository;
             _mediaElementRepo = mediaElementRepository;
             _authorRepo = authorRepository;
+            _orderRepo = orderRepository;
             _environment = environment;
         }
 
@@ -804,7 +810,37 @@ namespace EKE.Service.Services.Admin
         #region Orders
         public Result AddOrder(Order model)
         {
+            var result = _orderRepo.FindBy(x => x.Email == model.Email && x.PhoneNumber == model.PhoneNumber && x.Name == model.Name);
+            if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+
+            _orderRepo.Add(model);
+            SaveChanges();
             return new Result(ResultStatus.OK);
+        }
+
+        public Result<List<Order>> GetAllOrders()
+        {
+            var result = _orderRepo.GetAll().ToList();
+            return new Result<List<Order>>(result);
+        }
+
+        public Result DeleteOrder(int id)
+        {
+            var result = _orderRepo.GetById(id);
+            if (result == null) return new Result(ResultStatus.NOT_FOUND);
+
+            try
+            {
+                _orderRepo.Delete(result);
+                SaveChanges();
+
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+
         }
         #endregion
     }

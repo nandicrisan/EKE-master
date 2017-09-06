@@ -66,6 +66,7 @@ namespace EKE_Admin.Web
 
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
+            services.AddTransient<IEntityBaseRepository<Order>, EntityBaseRepository<Order>>();
             services.AddTransient<IEntityBaseRepository<MagazineCategory>, EntityBaseRepository<MagazineCategory>>();
             services.AddTransient<IEntityBaseRepository<Tag>, EntityBaseRepository<Tag>>();
             services.AddTransient<IEntityBaseRepository<MediaElement>, EntityBaseRepository<MediaElement>>();

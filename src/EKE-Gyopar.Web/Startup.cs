@@ -53,6 +53,7 @@ namespace EKE_Gyopar.Web
             services.AddTransient<IMagazineService, MagazineService>();
 
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
+            services.AddTransient<IEntityBaseRepository<Order>, EntityBaseRepository<Order>>();
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<MagazineCategory>, EntityBaseRepository<MagazineCategory>>();
             services.AddTransient<IEntityBaseRepository<Tag>, EntityBaseRepository<Tag>>();
