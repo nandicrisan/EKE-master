@@ -12,7 +12,7 @@ using EKE.Data.Entities.Gyopar;
 
 namespace EKE_Admin.Web.Controllers
 {
-    [Authorize(Roles = "superadmin,gyopar")]
+    [Authorize(Roles = "superadmin,gyopar,elorendel")]
     [AutoValidateAntiforgeryToken]
     public class OrderController : Controller
     {
@@ -32,26 +32,26 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult OrderListGrid()
         {
-            var magazines = _magService.GetAllOrders();
-            if (!magazines.IsOk())
+            var orders = _magService.GetAllOrders();
+            if (!orders.IsOk())
             {
-                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazines.Status, magazines.Message);
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", orders.Status, orders.Message);
                 return PartialView("Partials/_OrderListGrid", new List<Order>());
             }
 
             // Only grid string query values will be visible here.
-            return PartialView("Partials/_OrderListGrid", magazines.Data);
+            return PartialView("Partials/_OrderListGrid", orders.Data);
         }
 
         public IActionResult DeleteOrder(int id)
         {
             if (id > 0)
             {
-                var magazines = _magService.DeleteOrder(id);
-                if (magazines.IsOk())
+                var orders = _magService.DeleteOrder(id);
+                if (orders.IsOk())
                     return RedirectToAction("Index");
 
-                TempData["ErrorMessage"] = string.Format("Hiba a törlés során ({0} : {1})", magazines.Status, magazines.Message);
+                TempData["ErrorMessage"] = string.Format("Hiba a törlés során ({0} : {1})", orders.Status, orders.Message);
                 return RedirectToAction("Index");
             }
             TempData["ErrorMessage"] = string.Format("Hiba a törlés során: Nem létező paraméter");

@@ -273,6 +273,24 @@ namespace EKE.Data.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("EKE.Data.Entities.Gyopar.Synonym", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Main");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("SynonymId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SynonymId");
+
+                    b.ToTable("Synonyms");
+                });
+
             modelBuilder.Entity("EKE.Data.Entities.Gyopar.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -430,6 +448,13 @@ namespace EKE.Data.Migrations
                     b.HasOne("EKE.Data.Entities.Gyopar.Magazine")
                         .WithMany("MediaElements")
                         .HasForeignKey("MagazineId");
+                });
+
+            modelBuilder.Entity("EKE.Data.Entities.Gyopar.Synonym", b =>
+                {
+                    b.HasOne("EKE.Data.Entities.Gyopar.Synonym")
+                        .WithMany("Synonyms")
+                        .HasForeignKey("SynonymId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

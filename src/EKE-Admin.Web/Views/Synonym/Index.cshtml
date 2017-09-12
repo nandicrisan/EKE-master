@@ -1,0 +1,65 @@
+﻿@using NonFactors.Mvc.Grid;
+@model EKE_Admin.Web.ViewModels.MagazineVM
+
+@{
+    ViewData["Title"] = "Lapok kezelése";
+}
+<link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
+<link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
+<link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+
+@Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+
+<div id="responseContent"></div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Szinoníma szótár kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="box box-success">
+        <form asp-controller="Synonym" asp-action="AddSynonym" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Synonym.addSuccess()" enctype="multipart/form-data">
+            <div class="box-body">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Szó hozzáadása</label>
+                        <input name="text" class="form-control" type="text" placeholder="Szó">
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <label></label>
+                    <div class="row">
+                        <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+        </form>
+    </div>
+
+    <div class="synonym-grid" style="min-height:250px;">
+        @Html.AjaxGrid(Url.Action("SynonymListGrid", "Synonym"))
+    </div>
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script src="~/js/MVCGrid/mvc-grid.js"></script>
+    <script src="~/js/Synonym/main.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script>
+        $(function () {
+            Synonym.init();
+        });
+    </script>
+}

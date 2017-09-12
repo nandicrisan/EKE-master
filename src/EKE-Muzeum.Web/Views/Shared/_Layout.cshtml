@@ -1,0 +1,83 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EKE-Múzeum | @ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/png" href="~/images/logo/eke.ico">
+    <environment names="Development,Staging,Production">
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,400i|Roboto:300,400,500,700|Rubik:400,600" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="~/css/site.css" />
+
+        <link rel="stylesheet" href="~/css/site/style.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site/dark.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site/font-icons.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site/animate.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site/magnific-popup.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site/responsive.css" type="text/css" />
+    </environment>
+    @*<environment names="Staging,Production">
+            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        </environment>*@
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body class="stretched side-header">
+    <script type="text/javascript">
+                localStorage.setItem("siteRoot", "@Url.Action("", null, null, "http")")
+    </script>
+
+    <div id="wrapper" class="clearfix">
+        @Html.Partial("Partials/_Header")
+        <section id="content">
+            <div class="content-wrap nopadding">
+                @RenderBody()
+            </div>
+        </section>
+        <footer id="footer" class="dark">
+            <div id="copyrights">
+                <div class="container clearfix">
+                    <div class="center">
+                        <p>&copy; 2017 - EKE_Muzeum.Web</p>
+                    </div>
+                </div>
+            </div><!-- #copyrights end -->
+        </footer><!-- #footer end -->
+    </div>
+    <div id="gotoTop" class="icon-angle-up"></div>
+    @*<environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>*@
+    <environment names="Development,Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+
+        <script src="~/js/site/plugins.js" asp-append-version="true"></script>
+        <script src="~/js/site/functions.js" asp-append-version="true"></script>
+
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

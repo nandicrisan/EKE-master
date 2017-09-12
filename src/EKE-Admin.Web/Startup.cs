@@ -5,6 +5,7 @@ using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
+using EKE.Service.Services;
 using EKE.Service.Services.Admin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +64,9 @@ namespace EKE_Admin.Web
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<UserSeed>();
             services.AddTransient<IMagazineService, MagazineService>();
+            services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<IMagazineCategoryService, MagazineCategoryService>();
+            services.AddTransient<IGeneralService, GeneralService>();
 
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
@@ -71,6 +75,7 @@ namespace EKE_Admin.Web
             services.AddTransient<IEntityBaseRepository<Tag>, EntityBaseRepository<Tag>>();
             services.AddTransient<IEntityBaseRepository<MediaElement>, EntityBaseRepository<MediaElement>>();
             services.AddTransient<IEntityBaseRepository<Author>, EntityBaseRepository<Author>>();
+            services.AddTransient<IEntityBaseRepository<Synonym>, EntityBaseRepository<Synonym>>();
 
             //Add Services
             services.AddMvc();

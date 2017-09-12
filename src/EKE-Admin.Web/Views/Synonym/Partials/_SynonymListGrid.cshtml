@@ -1,0 +1,34 @@
+﻿@using NonFactors.Mvc.Grid;
+@using EKE.Data.Entities.Enums
+@model IEnumerable<EKE.Data.Entities.Gyopar.Synonym>
+@{
+
+}
+@functions {
+    public string GenerateHtml(List<EKE.Data.Entities.Gyopar.Synonym> list)
+    {
+        var html = "";
+        var last = list.Last();
+        foreach (var item in list)
+        {
+            if (item.Equals(last)) html += ($"<a href='#' class='synonymCheck' data-type='text' data-pk=" + item.Id + " data-url='/Synonym/UpdateSynonym' data-title='Szó' data-name='Name'>" + item.Name + "</a> ");
+            else html += ($"<a href='#' class='synonymCheck' data-type='text' data-pk=" + item.Id + " data-url='/Synonym/UpdateSynonym' data-title='Szó' data-name='Name'>" + item.Name + "</a>, ");
+        }
+        return html;
+    }
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => $"<a href='#' class='synonymCheck' data-type='text' data-pk=" + model.Id + " data-url='/Synonym/UpdateSynonym' data-title='Szó' data-name='Name'>" + model.Name + "</a>").Titled("Szó").Encoded(false);
+        columns.Add(model => model.Synonyms.Count > 0 ? GenerateHtml(model.Synonyms.ToList()) : "Üres adattár").Titled("Párosítva").Encoded(false);
+        columns.Add(model => model.Synonyms.Count).Titled("Szinonímák száma");
+        columns.Add(model => $"<input type='text' class='synonymAddCheck form-control display-inline-block' data-type='text' data-id='" + model.Id + "'/><div class='input-group-addon cursor-pointer div-button' onclick='Synonym.updateAddSynonym(" + model.Id + ")'><i class='fa fa-caret-right'></i></div>").Titled("Új szó").Encoded(false);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteSynonym", "Synonym", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
+    })
+    .Pageable()
+    .RowCss(model => model.Synonyms.Count > 0 ? "bolded" : "")
+    .Empty("Üres adattár a megadott paraméterekkel!")
+)

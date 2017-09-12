@@ -17,7 +17,10 @@ namespace EKE_Gyopar.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IArticleService _articleService;
         private readonly IMagazineService _magazineService;
-        public HomeController(IMapper mapper, IArticleService articleService, IMagazineService magazineService)
+        public HomeController(
+            IMapper mapper,
+            IArticleService articleService,
+            IMagazineService magazineService)
         {
             _articleService = articleService;
             _magazineService = magazineService;
@@ -102,7 +105,7 @@ namespace EKE_Gyopar.Web.Controllers
         [HttpGet]
         public IActionResult SearchArticleById(string slug)
         {
-            var result = _magazineService.GetArticleBySlug(slug);
+            var result = _articleService.GetArticleBySlug(slug);
             if (result.IsOk())
                 return PartialView("Partials/_Article", result.Data);
 

@@ -11,7 +11,7 @@ namespace EKE.Data
 {
     public class BaseDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options){}
+        public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options) { }
 
         #region Entities
         DbSet<Article> Articles { get; set; }
@@ -21,6 +21,7 @@ namespace EKE.Data
         DbSet<MediaElement> MediaElements { get; set; }
         DbSet<Tag> Tags { get; set; }
         DbSet<Order> Orders { get; set; }
+        DbSet<Synonym> Synonyms { get; set; }
         #endregion
 
         //Model configurations

@@ -216,7 +216,7 @@ Main = {
         });
     },
 
-    searchMethod: function (page) {
+    searchMethod: function (page, firstLoad) {
         var searchFilter = {};
 
         searchFilter.Page = 1
@@ -272,7 +272,7 @@ Main = {
                 s.searchButton.button("reset");
 
                 if (page == undefined) {
-                    Main.initPagination();
+                    Main.initPagination(true);
                 }
 
                 $("body, html").animate({
@@ -286,13 +286,15 @@ Main = {
         });
     },
 
-    initPagination: function () {
+    initPagination: function (firstLoad) {
         $('#pagination-search').twbsPagination({
             totalPages: Math.ceil(parseInt($(".foundItems").text(), 10) / 8),
             visiblePages: 5,
             onPageClick: function (event, page) {
-                p.searchpartial.children("#posts").html(t.searchLoader);
-                Main.searchMethod(page);
+                if (!firstLoad) {
+                    p.searchpartial.children("#posts").html(t.searchLoader);
+                    Main.searchMethod(page, firstLoad);
+                } else { firstLoad = false; }
             }
         });
     },

@@ -13,6 +13,7 @@ using EKE.Service.ServiceModel;
 using System.Net;
 using System.Linq;
 using System.IO;
+using EKE.Service.Services;
 
 namespace EKE_Admin.Web.Controllers
 {
@@ -22,15 +23,27 @@ namespace EKE_Admin.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMagazineService _magService;
-        public MagazineController(IMagazineService magazineService, IMapper mapperService)
+        private readonly IArticleService _articleService;
+        private readonly IMagazineCategoryService _magCatService;
+        private readonly IGeneralService _generalService;
+
+        public MagazineController(
+            IMagazineService magazineService,
+            IArticleService articleService,
+            IMagazineCategoryService magazineCategoryService,
+            IGeneralService generalService,
+            IMapper mapperService)
         {
             _magService = magazineService;
+            _magCatService = magazineCategoryService;
+            _articleService = articleService;
+            _generalService = generalService;
             _mapper = mapperService;
         }
 
         public IActionResult Index()
         {
-            var magazineCategories = _magService.GetAllMagazineCategories();
+            var magazineCategories = _magCatService.GetAllMagazineCategories();
             if (!magazineCategories.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategories.Status, magazineCategories.StatusText);
@@ -58,7 +71,7 @@ namespace EKE_Admin.Web.Controllers
         #region Magazine
         public IActionResult MagazineList()
         {
-            var magazineCategories = _magService.GetAllMagazineCategories();
+            var magazineCategories = _magCatService.GetAllMagazineCategories();
             if (!magazineCategories.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", magazineCategories.Status, magazineCategories.Message);
@@ -114,7 +127,7 @@ namespace EKE_Admin.Web.Controllers
                 TempData["ErrorMessage"] = string.Format("Hiba a validáció során! Kérem töltsön ki minden szükséges mezőt!");
                 return RedirectToAction("MagazineList");
             }
-            var magazines = _magService.Add(model);
+            var magazines = _magCatService.Add(model);
             if (magazines.IsOk())
                 return RedirectToAction("MagazineList");
 
@@ -124,7 +137,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult DeleteMagazineCategory(int id)
         {
-            var magazines = _magService.DeleteMagazineCategory(id);
+            var magazines = _magCatService.DeleteMagazineCategory(id);
             if (magazines.IsOk())
                 return RedirectToAction("MagazineList");
 
@@ -158,7 +171,7 @@ namespace EKE_Admin.Web.Controllers
             if (section != 0)
                 predicate.And(x => x.Magazine.PublishSection.Contains(String.Format("{0}", section)));
 
-            var result = _magService.GetAllArticlesBy(predicate);
+            var result = _articleService.GetAllArticlesBy(predicate);
             if (!result.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", result.Status, result.Message);
@@ -210,7 +223,7 @@ namespace EKE_Admin.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var result = _magService.Add(model.Article, User.Identity.Name);
+            var result = _articleService.Add(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
                 TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
@@ -235,7 +248,7 @@ namespace EKE_Admin.Web.Controllers
                 return RedirectToAction("Index", model);
             }
 
-            var result = _magService.Update(model.Article, User.Identity.Name);
+            var result = _articleService.Update(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
                 TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
@@ -247,7 +260,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult DeleteArticle(int id)
         {
-            var magazines = _magService.DeleteArticle(id);
+            var magazines = _articleService.DeleteArticle(id);
             if (magazines.IsOk())
                 return PartialView("Layout/_SuccessHandling", "Sikeresen törölve");
 
@@ -256,7 +269,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult EditArticle(int id)
         {
-            var article = _magService.GetArticleById(id);
+            var article = _articleService.GetArticleById(id);
             if (!article.IsOk())
                 return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", article.Status, article.Message));
 
@@ -329,7 +342,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult HtmlFormatter()
         {
-            var result = _magService.FormatHtml();
+            var result = _articleService.FormatHtml();
             return null;
         }
         #endregion

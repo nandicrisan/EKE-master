@@ -28,8 +28,16 @@
 
             @if (User.IsInRole("superadmin") || User.IsInRole("gyopar"))
             {
+                <li class="header">EKE - Gyopár</li>
                 @Html.Partial("Layout/Sidebar/_Gyopar")
+                @Html.Partial("Layout/Sidebar/_Order")
                 @Html.Partial("Layout/Sidebar/_Tools")
+            }
+
+            @if (User.IsInRole("elorendel"))
+            {
+                <li class="header">EKE - Gyopár</li>
+                @Html.Partial("Layout/Sidebar/_Order")
             }
         </ul>
     </section>

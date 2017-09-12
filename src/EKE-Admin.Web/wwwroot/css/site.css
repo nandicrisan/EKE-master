@@ -62,3 +62,21 @@ textarea {
     pointer-events: none;
     background-color: lightgray !important;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.div-button {
+    display: inline-block;
+    height: 34px;
+    vertical-align: top;
+}
+
+.display-inline-block {
+    display: inline-block;
+}
+
+.bolded {
+    font-weight: bold;
+}

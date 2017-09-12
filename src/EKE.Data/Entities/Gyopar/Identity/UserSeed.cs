@@ -29,16 +29,26 @@ namespace EKE.Data.Entities.Identity
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var roleStore = new RoleStore<IdentityRole>(_context);
+            var roleStore = new RoleStore<ApplicationRole>(_context);
 
             if (!_context.Roles.Any(r => r.Name == "superadmin"))
             {
-                await roleStore.CreateAsync(new IdentityRole { Name = "superadmin", NormalizedName = "superadmin" });
+                await roleStore.CreateAsync(new ApplicationRole { Name = "superadmin", NormalizedName = "superadmin" });
             }
 
             if (!_context.Roles.Any(r => r.Name == "gyopar"))
             {
-                await roleStore.CreateAsync(new IdentityRole { Name = "gyopar", NormalizedName = "gyopar" });
+                await roleStore.CreateAsync(new ApplicationRole { Name = "gyopar", NormalizedName = "gyopar" });
+            }
+
+            if (!_context.Roles.Any(r => r.Name == "muzeum"))
+            {
+                await roleStore.CreateAsync(new ApplicationRole { Name = "muzeum", NormalizedName = "muzeum" });
+            }
+
+            if (!_context.Roles.Any(r => r.Name == "elorendel"))
+            {
+                await roleStore.CreateAsync(new ApplicationRole { Name = "elorendel", NormalizedName = "elorendel" });
             }
 
             if (!_context.Users.Any(u => u.UserName == user.UserName))

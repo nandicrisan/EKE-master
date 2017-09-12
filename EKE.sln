@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4D7EA0BF-3D33-40E6-91A5-8D093AC46564}"
 EndProject
@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKE-Gyopar.Web", "src\EKE-G
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKE.Importer", "EKE.Importer\EKE.Importer.csproj", "{F59D54F5-8028-4A67-B9D9-C7EB303239F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKE-Muzeum.Web", "src\EKE-Muzeum.Web\EKE-Muzeum.Web.csproj", "{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{F59D54F5-8028-4A67-B9D9-C7EB303239F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F59D54F5-8028-4A67-B9D9-C7EB303239F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F59D54F5-8028-4A67-B9D9-C7EB303239F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +63,6 @@ Global
 		{28538E88-D36C-4C68-A5E0-5A031306B476} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
 		{FD1BE771-F3C6-49C2-AF2D-5BF1FEF51C3A} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
 		{F59D54F5-8028-4A67-B9D9-C7EB303239F5} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
+		{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8} = {4D7EA0BF-3D33-40E6-91A5-8D093AC46564}
 	EndGlobalSection
 EndGlobal
