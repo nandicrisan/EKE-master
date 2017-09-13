@@ -2,10 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.IO;
-using Microsoft.Extensions.Configuration;
+using EKE.Data.Entities.Museum;
 
 namespace EKE.Data
 {
@@ -22,6 +19,9 @@ namespace EKE.Data
         DbSet<Tag> Tags { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Synonym> Synonyms { get; set; }
+
+        DbSet<Element> M_Element { get; set; }
+        DbSet<ElementCategory> M_ElementCategory { get; set; }
         #endregion
 
         //Model configurations

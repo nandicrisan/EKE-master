@@ -1,0 +1,60 @@
+﻿@model EKE_Admin.Web.ViewModels.MuseumVM
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Cikk szerkesztése</h3>
+    </div><!-- /.box-header -->
+    <!-- form start -->
+    <form method="post" enctype="multipart/form-data" asp-controller="Museum" asp-action="AddElement">
+        @*asp-controller="Magazine" asp-action="AddArticle" data-ajax="true" data-ajax-method="POST" data-ajax-mode="insertafter" data-ajax-update="#responseContent" data-ajax-success="Magazine.articleAddSuccess()" enctype="multipart/form-data"*@
+        @Html.HiddenFor(x => x.Element.DateCreated)
+    <div class="box-body">
+        <div class="col-md-9 row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Név</label>
+                    <input asp-for="Element.Title" class="form-control" placeholder="Cím" type="text">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Megjelenési dátum</label>
+                    <input asp-for="Element.DatePublished" class="form-control" type="datetime" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Kategória</label>
+                    <select asp-for="SelectedCategoryId" class="form-control select2" data-placeholder="Kategória kiválsztása" style="width: 100%;">
+                        @foreach (var item in Model.Categories)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Tartalom</label>
+                    <textarea asp-for="Element.Description" class="form-control" id="editor"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Képek feltöltése</label>
+                <input id="image-uploader" asp-for="Files" type="file" multiple>
+            </div>
+        </div>
+
+    </div><!-- /.box-body -->
+
+    <div class="box-footer">
+        <button type="submit" class="btn btn-primary">Feltöltés</button>
+    </div>
+</form>
+</div>

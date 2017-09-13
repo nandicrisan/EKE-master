@@ -1,0 +1,55 @@
+﻿@using NonFactors.Mvc.Grid;
+@model EKE_Admin.Web.ViewModels.MagazineVM
+
+@{
+    ViewData["Title"] = "Lapok kezelése";
+}
+<link rel="stylesheet" href="~/lib/admin-lte/plugins/select2/select2.css">
+<link href="~/css/MVCGrid/mvc-grid.css" rel="stylesheet">
+<link href="~/lib/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
+
+@Html.Partial("Layout/_ErrorHandling", TempData["ErrorMessage"])
+
+<div id="responseContent"></div>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Elemek kezelése
+        <small>Vezérlő panel</small>
+    </h1>
+    @*<ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>*@
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <a class="btn btn-block btn-social btn-bitbucket margin-bottom">
+        <i class="fa fa-plus"></i> Elem hozzáadása
+    </a>
+
+    <div class="add-elem">
+    </div>
+
+    <div class="elem-grid" style="min-height:250px;">
+        @Html.AjaxGrid(Url.Action("ElementListGrid", "Museum"))
+    </div>
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script src="~/lib/admin-lte/plugins/select2/select2.full.js"></script>
+    <script src="~/js/MVCGrid/mvc-grid.js"></script>
+    <script src="~/js/Museum/main.js"></script>
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+    <script src="~/lib/bootstrap-fileinput/js/locales/hu.js"></script>
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        $(function () {
+            Museum.initElem();
+        });
+    </script>
+}

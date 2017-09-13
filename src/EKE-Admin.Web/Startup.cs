@@ -3,10 +3,12 @@ using EKE.Data;
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
+using EKE.Data.Entities.Museum;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
 using EKE.Service.Services;
 using EKE.Service.Services.Admin;
+using EKE.Service.Services.Admin.Muzeum;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -67,6 +69,7 @@ namespace EKE_Admin.Web
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<IMagazineCategoryService, MagazineCategoryService>();
             services.AddTransient<IGeneralService, GeneralService>();
+            services.AddTransient<IMuseumService, MuseumService>();
 
             services.AddTransient<IEntityBaseRepository<Magazine>, EntityBaseRepository<Magazine>>();
             services.AddTransient<IEntityBaseRepository<Article>, EntityBaseRepository<Article>>();
@@ -76,6 +79,8 @@ namespace EKE_Admin.Web
             services.AddTransient<IEntityBaseRepository<MediaElement>, EntityBaseRepository<MediaElement>>();
             services.AddTransient<IEntityBaseRepository<Author>, EntityBaseRepository<Author>>();
             services.AddTransient<IEntityBaseRepository<Synonym>, EntityBaseRepository<Synonym>>();
+            services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
+            services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();
 
             //Add Services
             services.AddMvc();

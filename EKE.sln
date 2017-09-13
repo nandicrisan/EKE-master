@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKE-Gyopar.Web", "src\EKE-G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKE.Importer", "EKE.Importer\EKE.Importer.csproj", "{F59D54F5-8028-4A67-B9D9-C7EB303239F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EKE-Muzeum.Web", "src\EKE-Muzeum.Web\EKE-Muzeum.Web.csproj", "{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EKE-Muzeum.Web", "src\EKE-Muzeum.Web\EKE-Muzeum.Web.csproj", "{E69DDEF0-F8E3-4F67-BADE-FBAEE72266E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CFE4F63A-570C-473E-92E7-59E452E83ABD} = {CFE4F63A-570C-473E-92E7-59E452E83ABD}
+		{03BFE44F-9AAC-4400-9A02-7AECCC3497CA} = {03BFE44F-9AAC-4400-9A02-7AECCC3497CA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

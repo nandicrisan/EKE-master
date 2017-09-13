@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EKE.Data.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using EKE.Data.Repository;
+using EKE.Data.Entities.Museum;
+using EKE.Service.Services.Admin.Muzeum;
 
 namespace EKE_Muzeum.Web
 {
@@ -19,6 +21,13 @@ namespace EKE_Muzeum.Web
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
             Configuration = builder.Build();
         }
 
@@ -28,7 +37,26 @@ namespace EKE_Muzeum.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddDbContext<EKE.Data.BaseDbContext>(options =>
+                  options.UseSqlServer(Configuration.GetConnectionString("EKEConnectionString")));
+
+            RegisterServices(services);
+        }
+
+        private void RegisterServices(IServiceCollection services)
+        {
+            //Add Framework services.
+            services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IMuseumService, MuseumService>();
+
+            services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
+            services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();
+
+            //Add Services
             services.AddMvc();
+            services.AddSession();
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +75,11 @@ namespace EKE_Muzeum.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = context =>
+                context.Context.Response.Headers.Add("Cache-Control", "public, max-age=2592000")
+            });
 
             app.UseMvc(routes =>
             {

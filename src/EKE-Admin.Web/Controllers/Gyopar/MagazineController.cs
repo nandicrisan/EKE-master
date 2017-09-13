@@ -219,18 +219,18 @@ namespace EKE_Admin.Web.Controllers
             ModelState.Remove("Article.Author.Name");
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Hiba a validáció során. A mezők kitöltése kötelező!";
-                return RedirectToAction("Index");
+                message = "Hiba a validáció során. A mezők kitöltése kötelező!";
+                return PartialView("Layout/_ErrorHandling", message);
             }
 
             var result = _articleService.Add(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
-                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
-                return RedirectToAction("Index");
+                message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return PartialView("Layout/_ErrorHandling", message);
             }
 
-            return RedirectToAction("Index");
+            return Json("");
         }
 
         [HttpPost]
@@ -244,18 +244,18 @@ namespace EKE_Admin.Web.Controllers
             ModelState.Remove("Article.Author.Name");
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Hiba a validáció során. A mezők kitöltése kötelező!";
-                return RedirectToAction("Index", model);
+                message = "Hiba a validáció során. A mezők kitöltése kötelező!";
+                return PartialView("Layout/_ErrorHandling", message);
             }
 
             var result = _articleService.Update(model.Article, User.Identity.Name);
             if (!result.IsOk())
             {
-                TempData["ErrorMessage"] = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
-                return RedirectToAction("Index", model);
+                message = String.Format("Hiba a hozzáadás során: {0} - {1}", result.Status, result.Message);
+                return PartialView("Layout/_ErrorHandling", message);
             }
 
-            return RedirectToAction("Index", model);
+            return Json("");
         }
 
         public IActionResult DeleteArticle(int id)
