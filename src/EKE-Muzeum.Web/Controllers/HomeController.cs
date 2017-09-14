@@ -1,23 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using EKE.Service.Services.Admin.Muzeum;
+using EKE_Muzeum.Web.ViewModels;
 
 namespace EKE_Muzeum.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IMapper _mapper;
+        private readonly IMuseumService _museumService;
+        public HomeController(IMuseumService museumService, IMapper mapperService)
         {
-            return View();
+            _museumService = museumService;
+            _mapper = mapperService;
         }
 
-        public IActionResult About()
+        public IActionResult Index()
         {
-            ViewData["Message"] = "Your application description page.";
+            var result = _museumService.GetSelectedRows();
+            var map = _mapper.Map<HomeVM>(result.Data);
+            return View(map);
+        }
 
-            return View();
+        public IActionResult GetElements(int page, string category = "")
+        {
+            var result = _museumService.GetByPage(page, category);
+            return PartialView("Partials/_ElementHandler", result.Data);
         }
 
         public IActionResult Contact()

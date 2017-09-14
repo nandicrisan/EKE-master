@@ -9,6 +9,7 @@ using AutoMapper;
 using EKE.Data.Repository;
 using EKE.Data.Entities.Museum;
 using EKE.Service.Services.Admin.Muzeum;
+using EKE.Service.Services;
 
 namespace EKE_Muzeum.Web
 {
@@ -49,6 +50,7 @@ namespace EKE_Muzeum.Web
             services.AddApplicationInsightsTelemetry(Configuration);
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IMuseumService, MuseumService>();
+            services.AddTransient<IGeneralService, GeneralService>();
 
             services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
             services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();

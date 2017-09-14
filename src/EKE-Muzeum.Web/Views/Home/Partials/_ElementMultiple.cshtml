@@ -1,0 +1,37 @@
+﻿@model EKE.Data.Entities.Museum.Element
+<article class="portfolio-item pf-icons pf-illustrations" style="height:350px;">
+    <div class="portfolio-image">
+        <div class="fslider" data-arrows="false" data-animation="fade">
+            <div class="flexslider">
+                <div class="slider-wrap">
+                    @foreach (var media in Model.MediaElement)
+                    {
+                        <div class="slide"><a href="portfolio-single-gallery.html"><img src="@media.OriginalName" alt="@media.Name"></a></div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-overlay" data-lightbox="gallery">
+            @for (int i = 0; i < Model.MediaElement.Count; i++)
+            {
+                if (i == 0)
+                {
+                    <a href="@Model.MediaElement.ElementAt(i).OriginalName" class="left-icon" data-lightbox="gallery-item"><i class="icon-line-stack-2"></i></a>
+                }
+                else if (i + 1 == Model.MediaElement.Count)
+                {
+                    <a href="@Model.MediaElement.ElementAt(i).OriginalName" class="right-icon"><i class="icon-line-ellipsis"></i></a>
+                }
+                else
+                {
+                    <a href="@Model.MediaElement.ElementAt(i).OriginalName" class="hidden" data-lightbox="gallery-item"></a>
+                }
+
+            }
+        </div>
+    </div>
+    <div class="portfolio-desc">
+        <h3><a href="portfolio-single-gallery.html">@Model.Title</a></h3>
+        <span><a href="#">@Model.Category.Name</a></span>
+    </div>
+</article>

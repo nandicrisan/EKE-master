@@ -1,0 +1,13 @@
+﻿@model List<EKE.Data.Entities.Museum.Element>
+
+@foreach (var item in Model)
+{
+    @if (item.MediaElement.Count > 1)
+    {
+        @Html.Partial("Partials/_ElementMultiple", item)
+    }
+    else
+    {
+        @Html.Partial("Partials/_ElementSingle", item)
+    }
+}

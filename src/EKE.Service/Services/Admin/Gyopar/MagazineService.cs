@@ -32,8 +32,6 @@ namespace EKE.Service.Services.Admin
 
         Result<bool> DeleteMagazine(int id);
 
-        List<MediaElement> CreateMediaElements(IFormFile files, int year, string section);
-
         Result<List<Order>> GetAllOrders();
         Result AddOrder(Order model);
         Result DeleteOrder(int id);
@@ -159,7 +157,9 @@ namespace EKE.Service.Services.Admin
 
                 if (model.Files != null)
                 {
-                    model.MediaElements = CreateMediaElements(model.Files, model.PublishYear, model.PublishSection);
+                    ICollection<IFormFile> files = new List<IFormFile>();
+                    files.Add(model.Files);
+                    model.MediaElements = _generalService.CreateMediaElements(files, model.PublishYear, model.PublishSection, ProjectBaseEnum.Gyopar);
                 }
 
                 model.DateCreated = DateTime.Now;
@@ -209,77 +209,6 @@ namespace EKE.Service.Services.Admin
             }
         }
         #endregion
-        #endregion
-
-        #region MediaElements
-        public List<MediaElement> CreateMediaElements(IFormFile files, int year, string section)
-        {
-#warning MEGOLDANI AZ EGESZ METODUST ATNEZNI!
-            var gyoparPath = _environment.WebRootPath.Replace("EKE-Admin.Web", "EKE-Gyopar.Web");
-            var relativePath = String.Format("Uploads/{0}/{1}", year.ToString().Trim(), section.Trim());
-            var uploads = Path.Combine(gyoparPath, relativePath);
-            if (!Directory.Exists(uploads))
-                Directory.CreateDirectory(uploads);
-
-            var mediaElements = new List<MediaElement>();
-            if (files.Length > 0)
-            {
-                var uploadPath = Path.Combine(uploads, files.FileName);
-                using (var fileStream = new FileStream(uploadPath, FileMode.Create))
-                {
-                    files.CopyTo(fileStream);
-                }
-                var fileName = String.Format("r1_{0}", files.FileName);
-                var outputPath = Path.Combine(uploads, fileName);
-                var resize = ResizeImage(uploadPath, outputPath, MediaTypesScope.Cover);
-
-                var mediaElem = new MediaElement();
-                mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, resize.IsOk() ? fileName : files.FileName);
-                mediaElem.Description = string.Format("{0}_{1}", year.ToString().Trim(), section.Trim());
-                mediaElem.Name = _generalService.RandomString(10);
-                mediaElem.Type = MediaTypesEnum.Image;
-                mediaElem.Scope = MediaTypesScope.Cover;
-                mediaElements.Add(mediaElem);
-            }
-
-            return mediaElements;
-        }
-
-        public Result ResizeImage(string inputPath, string outputPath, MediaTypesScope type)
-        {
-            var size = 0;
-            var quality = 0;
-
-            switch (type)
-            {
-                case MediaTypesScope.Background:
-                    break;
-                case MediaTypesScope.Cover:
-                    size = 400;
-                    quality = 75;
-                    break;
-                case MediaTypesScope.Article:
-                    break;
-                default:
-                    break;
-            }
-
-            try
-            {
-                using (var image = new MagickImage(inputPath))
-                {
-                    image.Resize(size, size);
-                    image.Strip();
-                    image.Quality = quality;
-                    image.Write(outputPath);
-                    return new Result(ResultStatus.OK);
-                }
-            }
-            catch (Exception)
-            {
-                return new Result(ResultStatus.EXCEPTION);
-            }
-        }
         #endregion
 
         #region Tags
@@ -400,7 +329,9 @@ namespace EKE.Service.Services.Admin
 
             if (files == null || files.Length == 0) return new Result<Magazine>(ResultStatus.ERROR);
 
-            result.MediaElements = CreateMediaElements(files, result.PublishYear, result.PublishSection);
+            ICollection<IFormFile> filesCollection = new List<IFormFile>();
+            filesCollection.Add(files);
+            result.MediaElements = _generalService.CreateMediaElements(filesCollection, result.PublishYear, result.PublishSection, ProjectBaseEnum.Gyopar);
 
             _magazineRepo.Update(result);
             SaveChanges();

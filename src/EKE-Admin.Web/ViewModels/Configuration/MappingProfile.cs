@@ -3,10 +3,7 @@ using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity.AccountViewModels;
 using EKE.Service.ServiceModel;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EKE_Admin.Web.ViewModels.Configuration
 {
@@ -21,6 +18,8 @@ namespace EKE_Admin.Web.ViewModels.Configuration
             CreateMap<Magazine, MagazineVM>();
             CreateMap<MagazineCategory, MagazineVM>();
             CreateMap<Article, MagazineVM>();
+
+            CreateMap<MuseumVM, MuseumSM>();
 
             CreateMap<List<Magazine>, MagazineListVM>()
                 .ForMember(dest => dest.Magazines, opt => opt.MapFrom(src => src));

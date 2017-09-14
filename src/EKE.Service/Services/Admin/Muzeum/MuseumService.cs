@@ -1,8 +1,10 @@
 ﻿using EKE.Data.DataViewModels;
+using EKE.Data.Entities.Enums;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Museum;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
+using EKE.Service.ServiceModel;
 using EKE.Service.Utils;
 using LinqKit;
 using Microsoft.AspNetCore.Hosting;
@@ -19,9 +21,10 @@ namespace EKE.Service.Services.Admin.Muzeum
     {
         Result<Element> GetElementById(int id);
         Result<List<Element>> GetAllElements();
+        Result<List<Element>> GetSelectedRows();
         Result<List<Element>> GetAllElementsByIncluding(Expression<Func<Element, bool>> predicate, params Expression<Func<Element, object>>[] inclProp);
-
-        Result AddElement(Element model);
+        Result<List<Element>> GetByPage(int page, string category);
+        Result AddElement(MuseumSM model);
         Result UpdateElement(Element model);
         Result DeleteElement(int id);
 
@@ -55,14 +58,22 @@ namespace EKE.Service.Services.Admin.Muzeum
             _elementRepo = elementRepository;
         }
 
-        public Result AddElement(Element model)
+        public Result AddElement(MuseumSM model)
         {
             try
             {
-                var result = _elementRepo.FindBy(x => x.Title.Trim().ToLower() == model.Title.Trim().ToLower());
+                var result = _elementRepo.FindBy(x => x.Title.Trim().ToLower() == model.Element.Title.Trim().ToLower());
                 if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
 
-                _elementRepo.Add(model);
+                var category = _elementCategoryRepo.GetById(model.SelectedCategoryId);
+                if (category == null) return new Result(ResultStatus.NOT_FOUND, "Category");
+
+                var elem = model.Element;
+                elem.Category = category;
+                elem.MediaElement = _generalService.CreateMediaElements(model.Files, model.Element.DatePublished.Year, "1", ProjectBaseEnum.Muzeum);
+                elem.Publisher = model.Publisher;
+
+                _elementRepo.Add(elem);
                 SaveChanges();
                 return new Result(ResultStatus.OK);
             }
@@ -97,7 +108,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetById(id);
+                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.MediaElement);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
                 _elementRepo.Delete(result);
@@ -156,7 +167,19 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<Element>>(_elementRepo.GetAllIncluding(x => x.Category).ToList());
+                return new Result<List<Element>>(_elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement).ToList());
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Element>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
+        public Result<List<Element>> GetSelectedRows()
+        {
+            try
+            {
+                return new Result<List<Element>>(_elementRepo.GetAllIncludingPred(x => x.Selected, x => x.Category, x => x.MediaElement).Take(12).ToList());
             }
             catch (Exception ex)
             {
@@ -236,6 +259,26 @@ namespace EKE.Service.Services.Admin.Muzeum
             catch (Exception ex)
             {
                 return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result<List<Element>> GetByPage(int page, string category)
+        {
+            var skip = page * 12;
+            try
+            {
+                if (String.IsNullOrEmpty(category))
+                {
+                    var resultList = _elementRepo.GetAllIncludingPred(x => !x.Selected, x => x.MediaElement, x => x.Category).Skip(skip).ToList();
+                    return new Result<List<Element>>(resultList);
+                }
+
+                var result = _elementRepo.GetAllIncludingPred(x => x.Category.Name == category, x => x.MediaElement, x => x.Category).Skip(skip).ToList();
+                return new Result<List<Element>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Element>>(ResultStatus.ERROR, ex.Message);
             }
         }
     }

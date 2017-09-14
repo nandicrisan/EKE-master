@@ -11,6 +11,7 @@
     {
         Background = 0,
         Cover = 1,
-        Article = 2
+        Article = 2,
+        Museum = 3,
     }
 }

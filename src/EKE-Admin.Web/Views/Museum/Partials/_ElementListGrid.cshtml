@@ -11,6 +11,8 @@
         columns.Add(model => model.Category.Name).Titled("Kategória");
         columns.Add(model => model.Description).Titled("Leírás");
         columns.Add(model => model.DateCreated).Titled("Dátum");
+        columns.Add(model => model.Selected).Titled("Kiválasztott");
+        columns.Add(model => model.MediaElement.Count).Titled("Képek száma");
         columns.Add(model => Html.ActionLink("Törlés", "DeleteElement", "Museum", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
     })
     .Pageable()

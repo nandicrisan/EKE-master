@@ -10,6 +10,7 @@ using EKE.Data.Entities.Gyopar;
 using EKE.Service.Services.Admin.Muzeum;
 using EKE.Data.Entities.Museum;
 using EKE_Admin.Web.ViewModels;
+using EKE.Service.ServiceModel;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -121,7 +122,15 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult AddElement(MuseumVM model)
         {
-            return Json("");
+            if (ModelState.IsValid)
+            {
+                var map = _mapper.Map<MuseumSM>(model);
+                map.Publisher = User.Identity.Name;
+                var result = _museumService.AddElement(map);
+                if (result.IsOk()) return RedirectToAction("Index");
+            }
+            TempData["ErrorMessage"] = string.Format("Hiba a hozzáadás során: Nem létező paraméter");
+            return RedirectToAction("Index");
         }
     }
 }

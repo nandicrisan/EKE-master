@@ -324,7 +324,10 @@ namespace EKE.Data.Migrations
 
                     b.Property<string>("Publisher");
 
-                    b.Property<string>("Title");
+                    b.Property<bool>("Selected");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
