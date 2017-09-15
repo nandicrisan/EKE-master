@@ -6,12 +6,12 @@
 @*@Html.Partial("Partials/_ElementDescription")*@
 
 <div id="portfolio" class="portfolio grid-container portfolio-3 portfolio-full portfolio-nomargin portfolio-notitle clearfix">
-
     @Html.Partial("Partials/_ElementHandler", Model.Elements)
-
+    
     <div class="appendResult"></div>
-    <div class="scrollUpdate" data-page="0" data-category=""></div>
 </div>
+
+<div class="scrollUpdate" data-page="0" data-category=""></div>
 
 @section scripts {
     <environment names="Development,Staging,Production">

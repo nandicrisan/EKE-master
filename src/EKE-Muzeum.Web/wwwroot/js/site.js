@@ -3,7 +3,6 @@
         settings: {
             scrollPosition: $(".scrollUpdate"),
             appendResult: $(".appendResult"),
-            scrollable: true,
         },
 
         initPage: function () {
@@ -20,18 +19,16 @@
         },
 
         bindUIActions: function () {
-            Museum.scrollToAjax();
+            $(window).scroll(Museum.scrollToAjax);
         },
 
         scrollToAjax: function () {
-            function isScrolledIntoView(elem) {
-                var docViewTop = $(window).scrollTop();
-                var docViewBottom = docViewTop + $(window).height();
-
-                var elemTop = $(elem).offset().top;
-                var elemBottom = elemTop + $(elem).height();
-
-                return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+            var hT = s.scrollPosition.offset().top,
+                hH = s.scrollPosition.outerHeight(),
+                wH = $(window).height();
+            if ($(window).scrollTop() > hT + hH - wH) {
+                $(window).off("scroll", Museum.scrollToAjax);
+                Museum.getElementsByPage();
             }
         },
 
@@ -48,9 +45,9 @@
                 },
                 traditional: true,
                 success: function (data) {
+                    data = $("#portfolio").html();
                     s.appendResult.html(data);
-                    s.scrollPosition.data('page', parseInt(page + 1, 10));
-                    s.scrollable = true;
+                    $(window).on("scroll", Museum.scrollToAjax);
                 },
                 error: function () {
 
