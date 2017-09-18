@@ -25,6 +25,12 @@ Museum = {
         this.bindUIActions();
     },
 
+    initTag: function () {
+        s = this.settings;
+        g = this.mvcgrid;
+        this.initPageTag();
+    },
+
     initPage: function () {
         Museum.sideBarActive(".f10")
         $(".select2").select2();
@@ -44,6 +50,23 @@ Museum = {
 
     initPageCat: function () {
         Museum.sideBarActive(".f11")
+
+        $('.mvc-grid').mvcgrid({
+            reloadStarted: function (grid) {
+                Museum.loadingOverlay(true, s.gridContainer)
+            },
+            reloadEnded: function (grid) {
+                Museum.loadingOverlay(false, s.gridContainer)
+            },
+            reloadFailed: function (grid, result) {
+                Museum.loadingOverlay(false, s.gridContainer)
+            },
+        });
+
+    },
+
+    initPageTag: function () {
+        Museum.sideBarActive(".f12")
 
         $('.mvc-grid').mvcgrid({
             reloadStarted: function (grid) {

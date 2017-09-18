@@ -1,6 +1,6 @@
 ﻿@using NonFactors.Mvc.Grid;
 @using EKE.Data.Entities.Enums
-@model IEnumerable<EKE.Data.Entities.Museum.ElementCategory>
+@model IEnumerable<EKE.Data.Entities.Museum.ElementTag>
 
 @(Html
     .Grid(Model)
@@ -9,7 +9,7 @@
         columns.Add(model => model.Name).Titled("Név");
         columns.Add(model => model.DateCreated).Titled("Hozzáadva");
         columns.Add(model => model.Author).Titled("Hozzáadta");
-        columns.Add(model => Html.ActionLink("Törlés", "DeleteElementCategory", "Museum", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
+        columns.Add(model => Html.ActionLink("Törlés", "DeleteElementTag", "Museum", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
     })
     .Pageable()
     .Empty("Üres adattár a megadott paraméterekkel!")

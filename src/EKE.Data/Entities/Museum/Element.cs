@@ -20,6 +20,7 @@ namespace EKE.Data.Entities.Museum
         public bool Selected { get; set; }
 
         public virtual ElementCategory Category { get; set; }
+        public virtual ICollection<ElementTag> Tags { get; set; }
         public virtual ICollection<MediaElement> MediaElement { get; set; }
 
         public Element()

@@ -35,12 +35,18 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result AddElementCategory(string text, string author);
         Result UpdateElementCategory(ElementCategory model);
         Result DeleteElementCategory(int id);
+
+        Result<List<ElementTag>> GetAllTags();
+        Result AddElementTag(string text, string author);
+        Result UpdateElementTag(ElementTag model);
+        Result DeleteElementTag(int id);
     }
 
     public class MuseumService : BaseService, IMuseumService
     {
         private readonly IEntityBaseRepository<Element> _elementRepo;
         private readonly IEntityBaseRepository<ElementCategory> _elementCategoryRepo;
+        private readonly IEntityBaseRepository<ElementTag> _elementTagsRepo;
 
         private readonly IGeneralService _generalService;
         private readonly IHostingEnvironment _environment;
@@ -48,6 +54,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         public MuseumService(
             IEntityBaseRepository<Element> elementRepository,
             IEntityBaseRepository<ElementCategory> elementCategoryRepository,
+            IEntityBaseRepository<ElementTag> elementTagRepository,
             IHostingEnvironment environment,
             IGeneralService generalService,
             IUnitOfWork unitOfWork) : base(unitOfWork)
@@ -56,6 +63,7 @@ namespace EKE.Service.Services.Admin.Muzeum
             _generalService = generalService;
             _elementCategoryRepo = elementCategoryRepository;
             _elementRepo = elementRepository;
+            _elementTagsRepo = elementTagRepository;
         }
 
         public Result AddElement(MuseumSM model)
@@ -279,6 +287,73 @@ namespace EKE.Service.Services.Admin.Muzeum
             catch (Exception ex)
             {
                 return new Result<List<Element>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
+        public Result<List<ElementTag>> GetAllTags()
+        {
+            try
+            {
+                return new Result<List<ElementTag>>(_elementTagsRepo.GetAll().ToList());
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<ElementTag>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
+        public Result AddElementTag(string text, string author)
+        {
+            try
+            {
+                var result = _elementTagsRepo.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
+                if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+
+                var model = new ElementTag();
+                model.Author = author;
+                model.Name = text;
+
+                _elementTagsRepo.Add(model);
+                SaveChanges();
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result UpdateElementTag(ElementTag model)
+        {
+            try
+            {
+                var result = _elementTagsRepo.GetByIdIncluding(model.Id);
+                if (result == null) return new Result(ResultStatus.NOT_FOUND);
+
+                _elementTagsRepo.Update(model);
+                SaveChanges();
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result DeleteElementTag(int id)
+        {
+            try
+            {
+                var result = _elementTagsRepo.GetById(id);
+                if (result == null) return new Result(ResultStatus.NOT_FOUND);
+
+                _elementTagsRepo.Delete(result);
+                SaveChanges();
+                return new Result(ResultStatus.OK);
+            }
+            catch (Exception ex)
+            {
+                return new Result(ResultStatus.EXCEPTION, ex.Message);
             }
         }
     }

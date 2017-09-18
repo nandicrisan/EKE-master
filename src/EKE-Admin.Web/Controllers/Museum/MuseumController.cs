@@ -132,5 +132,51 @@ namespace EKE_Admin.Web.Controllers
             TempData["ErrorMessage"] = string.Format("Hiba a hozzáadás során: Nem létező paraméter");
             return RedirectToAction("Index");
         }
+
+        public IActionResult ElementTagsListGrid()
+        {
+            var elements = _museumService.GetAllTags();
+            if (!elements.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", elements.Status, elements.Message);
+                return PartialView("Partials/_ElementTagsListGrid", new List<Order>());
+            }
+
+            // Only grid string query values will be visible here.
+            return PartialView("Partials/_ElementTagsListGrid", elements.Data);
+        }
+
+        public IActionResult Tag()
+        {
+            return View();
+        }
+
+        public IActionResult AddTag(string text)
+        {
+            if (!String.IsNullOrEmpty(text))
+            {
+                var category = _museumService.AddElementTag(text, User.Identity.Name);
+                if (category.IsOk())
+                    return Json("");
+
+                return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", category.Status, category.Message));
+            }
+            return PartialView("Layout/_ErrorHandling", "Hiba a törlés során!");
+        }
+
+        public IActionResult DeleteElementTag(int id)
+        {
+            if (id > 0)
+            {
+                var elementCat = _museumService.DeleteElementTag(id);
+                if (elementCat.IsOk())
+                    return RedirectToAction("Tag");
+
+                TempData["ErrorMessage"] = string.Format("Hiba a törlés során ({0} : {1})", elementCat.Status, elementCat.Message);
+                return RedirectToAction("Tag");
+            }
+            TempData["ErrorMessage"] = string.Format("Hiba a törlés során: Nem létező paraméter");
+            return RedirectToAction("Tag");
+        }
     }
 }

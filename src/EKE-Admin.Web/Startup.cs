@@ -81,6 +81,7 @@ namespace EKE_Admin.Web
             services.AddTransient<IEntityBaseRepository<Synonym>, EntityBaseRepository<Synonym>>();
             services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
             services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();
+            services.AddTransient<IEntityBaseRepository<ElementTag>, EntityBaseRepository<ElementTag>>();
 
             //Add Services
             services.AddMvc();

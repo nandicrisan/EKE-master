@@ -22,6 +22,7 @@ namespace EKE.Data
 
         DbSet<Element> M_Element { get; set; }
         DbSet<ElementCategory> M_ElementCategory { get; set; }
+        DbSet<ElementTag> M_ElementTag { get; set; }
         #endregion
 
         //Model configurations
