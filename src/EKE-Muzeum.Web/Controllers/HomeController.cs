@@ -22,11 +22,18 @@ namespace EKE_Muzeum.Web.Controllers
             return View(map);
         }
 
-        public IActionResult GetElements(int page, string category = "")
+        public IActionResult GetElements(int page, string category = "", string keyword = "")
         {
-            var result = _museumService.GetByPage(page, category);
+            var result = _museumService.GetByPage(page, category, keyword);
             return PartialView("Partials/_ElementHandler", result.Data);
         }
+
+        public IActionResult Search(string keyword)
+        {
+            var result = _museumService.Search(keyword);
+            return PartialView("Partials/_ElementHandler", result.Data);
+        }
+
 
         public IActionResult Contact()
         {

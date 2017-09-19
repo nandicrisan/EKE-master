@@ -1,7 +1,14 @@
 ﻿@using NonFactors.Mvc.Grid;
 @using EKE.Data.Entities.Enums
+@using Microsoft.AspNetCore.Html
 @model IEnumerable<EKE.Data.Entities.Museum.Element>
-
+@functions{
+        public IHtmlContent ConvertToHtmlType(string input)
+        {
+            var output = input.Length > 150 ? input.Substring(0, 150) : input;
+            return Html.Raw(output);
+        }
+}
 @(Html
     .Grid(Model)
     .Build(columns =>
@@ -9,7 +16,7 @@
         columns.Add(model => model.Title).Titled("Cím");
         columns.Add(model => model.Author).Titled("Szerző");
         columns.Add(model => model.Category.Name).Titled("Kategória");
-        columns.Add(model => model.Description).Titled("Leírás");
+        columns.Add(model => ConvertToHtmlType(model.Description)).Titled("Leírás");
         columns.Add(model => model.DateCreated).Titled("Dátum");
         columns.Add(model => model.Selected).Titled("Kiválasztott");
         columns.Add(model => model.MediaElement.Count).Titled("Képek száma");

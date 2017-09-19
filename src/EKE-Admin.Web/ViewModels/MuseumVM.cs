@@ -12,13 +12,17 @@ namespace EKE_Admin.Web.ViewModels
     {
         public Element Element { get; set; }
         public List<ElementCategory> Categories { get; set; }
+        public List<ElementTag> Tags { get; set; }
         public ICollection<IFormFile> Files { get; set; }
         [Required]
         public int SelectedCategoryId { get; set; }
+        public List<int> SelectedTagId { get; set; }
+
         public MuseumVM()
         {
             Element = new Element();
             Categories = new List<ElementCategory>();
+            Tags = new List<ElementTag>();
         }
     }
 }

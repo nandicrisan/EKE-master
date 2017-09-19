@@ -54,6 +54,7 @@ namespace EKE_Muzeum.Web
 
             services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
             services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();
+            services.AddTransient<IEntityBaseRepository<ElementTag>, EntityBaseRepository<ElementTag>>();
 
             //Add Services
             services.AddMvc();

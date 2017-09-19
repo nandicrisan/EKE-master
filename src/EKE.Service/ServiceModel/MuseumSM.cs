@@ -11,6 +11,7 @@ namespace EKE.Service.ServiceModel
         public Element Element { get; set; }
         public ICollection<IFormFile> Files { get; set; }
         public int SelectedCategoryId { get; set; }
+        public List<int> SelectedTagId { get; set; }
         public string Publisher { get; set; }
     }
 }

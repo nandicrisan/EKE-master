@@ -23,7 +23,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result<List<Element>> GetAllElements();
         Result<List<Element>> GetSelectedRows();
         Result<List<Element>> GetAllElementsByIncluding(Expression<Func<Element, bool>> predicate, params Expression<Func<Element, object>>[] inclProp);
-        Result<List<Element>> GetByPage(int page, string category);
+        Result<List<Element>> GetByPage(int page, string category, string keyword);
         Result AddElement(MuseumSM model);
         Result UpdateElement(Element model);
         Result DeleteElement(int id);
@@ -40,6 +40,8 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result AddElementTag(string text, string author);
         Result UpdateElementTag(ElementTag model);
         Result DeleteElementTag(int id);
+
+        Result<List<Element>> Search(string keyword);
     }
 
     public class MuseumService : BaseService, IMuseumService
@@ -76,10 +78,20 @@ namespace EKE.Service.Services.Admin.Muzeum
                 var category = _elementCategoryRepo.GetById(model.SelectedCategoryId);
                 if (category == null) return new Result(ResultStatus.NOT_FOUND, "Category");
 
+                var tags = new List<ElementTag>();
+                foreach (var item in model.SelectedTagId)
+                {
+                    var tag = _elementTagsRepo.GetById(item);
+                    if (tag == null) return new Result(ResultStatus.NOT_FOUND, "Category");
+                    tags.Add(tag);
+                }
+
+
                 var elem = model.Element;
                 elem.Category = category;
                 elem.MediaElement = _generalService.CreateMediaElements(model.Files, model.Element.DatePublished.Year, "1", ProjectBaseEnum.Muzeum);
                 elem.Publisher = model.Publisher;
+                elem.Tags = tags;
 
                 _elementRepo.Add(elem);
                 SaveChanges();
@@ -116,7 +128,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.MediaElement);
+                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.MediaElement, x => x.Tags);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
                 _elementRepo.Delete(result);
@@ -270,7 +282,7 @@ namespace EKE.Service.Services.Admin.Muzeum
             }
         }
 
-        public Result<List<Element>> GetByPage(int page, string category)
+        public Result<List<Element>> GetByPage(int page, string category, string keyword)
         {
             var skip = page * 12;
             try
@@ -354,6 +366,25 @@ namespace EKE.Service.Services.Admin.Muzeum
             catch (Exception ex)
             {
                 return new Result(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public Result<List<Element>> Search(string keyword)
+        {
+            try
+            {
+                var predicate = PredicateBuilder.New<Element>(true);
+                predicate.And(x => x.Title.ToLower().Contains(keyword.Trim().ToLower()));
+                //predicate.Or(x => x.Description.ToLower().Contains(keyword.ToLower()));
+                //predicate.Or(x => x.Category.Name.ToLower().Contains(keyword.ToLower()));
+                //predicate.Or(x => x.Tags.Where(tag => tag.Name.ToLower().Contains(keyword.ToLower())) != null);
+
+                var result = _elementRepo.GetAllIncludingPred(predicate, x => x.Category, x => x.MediaElement, x => x.Tags).ToList();
+                return new Result<List<Element>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new Result<List<Element>>(ResultStatus.ERROR, ex.Message);
             }
         }
     }

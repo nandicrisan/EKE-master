@@ -43,10 +43,22 @@
                     </div>
                 </div>
 
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Címkék</label>
+                        <select asp-for="SelectedTagId" class="form-control select2" data-placeholder="Kategória kiválsztása" style="width: 100%;" multiple="true">
+                            @foreach (var item in Model.Tags)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-md-1">
                     <div class="form-group">
                         <label>Kiválasztott</label>
-                        <input asp-for="Element.Selected" class="form-control" type="checkbox" value="true" required />
+                        <input asp-for="Element.Selected" type="checkbox" value="true" />
                     </div>
                 </div>
 

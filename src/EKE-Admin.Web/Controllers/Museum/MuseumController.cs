@@ -112,10 +112,14 @@ namespace EKE_Admin.Web.Controllers
         public IActionResult CreateElemPartial()
         {
             var category = _museumService.GetAllElementCategories();
-            if (!category.IsOk()) return PartialView("Layout/_ErrorHandling", string.Format("Hiba a törlés során ({0} : {1})", category.Status, category.Message));
+            if (!category.IsOk()) return PartialView("Layout/_ErrorHandling", string.Format("Hiba a lekérés során ({0} : {1})", category.Status, category.Message));
+
+            var tags = _museumService.GetAllTags();
+            if (!tags.IsOk()) return PartialView("Layout/_ErrorHandling", string.Format("Hiba a lekérés során ({0} : {1})", category.Status, category.Message));
 
             var model = new MuseumVM();
             model.Categories = category.Data;
+            model.Tags = tags.Data;
 
             return PartialView("Partials/_AddElement", model);
         }
