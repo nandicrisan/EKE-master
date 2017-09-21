@@ -41,7 +41,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result UpdateElementTag(ElementTag model);
         Result DeleteElementTag(int id);
 
-        Result<List<Element>> Search(string keyword);
+        Result<List<Element>> Search(string keyword, int skip = 0);
     }
 
     public class MuseumService : BaseService, IMuseumService
@@ -187,7 +187,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<Element>>(_elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement).ToList());
+                return new Result<List<Element>>(_elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList());
             }
             catch (Exception ex)
             {
@@ -199,7 +199,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<Element>>(_elementRepo.GetAllIncludingPred(x => x.Selected, x => x.Category, x => x.MediaElement).Take(12).ToList());
+                return new Result<List<Element>>(_elementRepo.GetAllIncludingPred(x => x.Selected, x => x.Category, x => x.MediaElement, x => x.Tags).Take(12).ToList());
             }
             catch (Exception ex)
             {
@@ -287,14 +287,20 @@ namespace EKE.Service.Services.Admin.Muzeum
             var skip = page * 12;
             try
             {
-                if (String.IsNullOrEmpty(category))
+                if (String.IsNullOrEmpty(keyword))
                 {
-                    var resultList = _elementRepo.GetAllIncludingPred(x => !x.Selected, x => x.MediaElement, x => x.Category).Skip(skip).ToList();
-                    return new Result<List<Element>>(resultList);
+                    if (String.IsNullOrEmpty(category))
+                    {
+                        var resultList = _elementRepo.GetAllIncludingPred(x => !x.Selected, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
+                        return new Result<List<Element>>(resultList);
+                    }
+
+                    var result = _elementRepo.GetAllIncludingPred(x => x.Category.Name.ToLower() == category.ToLower(), x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
+                    return new Result<List<Element>>(result);
                 }
 
-                var result = _elementRepo.GetAllIncludingPred(x => x.Category.Name == category, x => x.MediaElement, x => x.Category).Skip(skip).ToList();
-                return new Result<List<Element>>(result);
+                var searchResult = Search(keyword, skip);
+                return new Result<List<Element>>(searchResult.Data);
             }
             catch (Exception ex)
             {
@@ -369,17 +375,28 @@ namespace EKE.Service.Services.Admin.Muzeum
             }
         }
 
-        public Result<List<Element>> Search(string keyword)
+        public Result<List<Element>> Search(string keyword, int skip = 0)
         {
             try
             {
                 var predicate = PredicateBuilder.New<Element>(true);
                 predicate.And(x => x.Title.ToLower().Contains(keyword.Trim().ToLower()));
-                //predicate.Or(x => x.Description.ToLower().Contains(keyword.ToLower()));
-                //predicate.Or(x => x.Category.Name.ToLower().Contains(keyword.ToLower()));
-                //predicate.Or(x => x.Tags.Where(tag => tag.Name.ToLower().Contains(keyword.ToLower())) != null);
+                predicate.Or(x => x.Description.ToLower().Contains(keyword.ToLower()));
+                predicate.Or(x => x.Category.Name.ToLower().Contains(keyword.ToLower()));
 
-                var result = _elementRepo.GetAllIncludingPred(predicate, x => x.Category, x => x.MediaElement, x => x.Tags).ToList();
+                var synonyms = _generalService.GetAllSynonymsByName(keyword);
+                if (synonyms.Count > 0)
+                {
+                    foreach (var synonym in synonyms)
+                    {
+                        predicate.Or(x => x.Title.ToLower().Contains(keyword.Trim().ToLower()));
+                        predicate.Or(x => x.Description.ToLower().Contains(synonym.Name.ToLower()));
+                        predicate.Or(x => x.Category.Name.ToLower().Contains(synonym.Name.ToLower()));
+                    }
+                }
+
+
+                var result = _elementRepo.GetAllIncludingPred(predicate, x => x.Category, x => x.MediaElement, x => x.Tags).Skip(skip).Take(12).ToList();
                 return new Result<List<Element>>(result);
             }
             catch (Exception ex)

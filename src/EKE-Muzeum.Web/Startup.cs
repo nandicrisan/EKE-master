@@ -10,6 +10,7 @@ using EKE.Data.Repository;
 using EKE.Data.Entities.Museum;
 using EKE.Service.Services.Admin.Muzeum;
 using EKE.Service.Services;
+using EKE.Data.Entities.Gyopar;
 
 namespace EKE_Muzeum.Web
 {
@@ -55,6 +56,7 @@ namespace EKE_Muzeum.Web
             services.AddTransient<IEntityBaseRepository<ElementCategory>, EntityBaseRepository<ElementCategory>>();
             services.AddTransient<IEntityBaseRepository<Element>, EntityBaseRepository<Element>>();
             services.AddTransient<IEntityBaseRepository<ElementTag>, EntityBaseRepository<ElementTag>>();
+            services.AddTransient<IEntityBaseRepository<Synonym>, EntityBaseRepository<Synonym>>();
 
             //Add Services
             services.AddMvc();

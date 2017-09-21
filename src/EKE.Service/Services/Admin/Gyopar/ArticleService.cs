@@ -38,7 +38,6 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<Magazine> _magazineRepo;
         private readonly IEntityBaseRepository<Author> _authorRepo;
         private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
-        private readonly IEntityBaseRepository<Synonym> _synonymRepo;
 
         private readonly IGeneralService _generalService;
         private readonly IHostingEnvironment _environment;
@@ -60,7 +59,6 @@ namespace EKE.Service.Services.Admin
             _magazineCatRepo = magazineCatRepository;
             _authorRepo = authorRepository;
             _mediaElementRepo = mediaElementRepository;
-            _synonymRepo = synonymRepository;
 
             _environment = environment;
             _generalService = generalService;
@@ -114,7 +112,7 @@ namespace EKE.Service.Services.Admin
             {
                 //predicate = predicate.And(p => p.ArticleTag.Any(q => q.Tag.Name.Contains(filter.Keyword)) || p.Author.Name.ToLower().Contains(filter.Keyword) ||
                 // p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
-                var dictionary = GetAllByName(filter.Keyword);
+                var dictionary = _generalService.GetAllSynonymsByName(filter.Keyword);
                 predicate = predicate.And(p => p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
 
                 if (dictionary.Count > 0)
@@ -424,25 +422,6 @@ namespace EKE.Service.Services.Admin
                 }
             }
             return new Result(ResultStatus.OK);
-        }
-
-        public List<Synonym> GetAllByName(string name)
-        {
-            var result = _synonymRepo.GetAllIncludingPred(x => x.Name == name.Trim(), x => x.Synonyms).FirstOrDefault();
-            if (result == null) return new List<Synonym>();
-            if (result.Synonyms.Count == 0)
-            {
-                result = _synonymRepo.GetAllIncluding(x => x.Synonyms).FirstOrDefault(e => e.Synonyms
-                                 .Any(a => a.Name == name));
-                if (result == null) return new List<Synonym>();
-                result.Synonyms = result.Synonyms.Where(x => x.Name != name).ToList();
-                var list = result.Synonyms;
-                result.Synonyms = null;
-                list.Add(result);
-                return list.ToList();
-            }
-
-            return result.Synonyms.ToList();
         }
         #endregion
     }

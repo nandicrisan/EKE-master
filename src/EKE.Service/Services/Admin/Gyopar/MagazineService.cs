@@ -36,12 +36,6 @@ namespace EKE.Service.Services.Admin
         Result AddOrder(Order model);
         Result DeleteOrder(int id);
 
-        Result<List<Synonym>> GetAllSynonyms();
-        Result<Synonym> AddSynonym(string text);
-        Result DeleteSynonym(int id);
-        Result ConnectSynonym(int id, string text);
-        Result UpdateSynonym(XEditSM model);
-
         Result<List<Tag>> GetAllTags();
         Result<Tag> Add(Tag model);
         Result DeleteTag(int id);
@@ -57,7 +51,6 @@ namespace EKE.Service.Services.Admin
         private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
         private readonly IEntityBaseRepository<Author> _authorRepo;
         private readonly IEntityBaseRepository<Order> _orderRepo;
-        private readonly IEntityBaseRepository<Synonym> _synonymRepo;
 
         private readonly IHostingEnvironment _environment;
         private readonly IGeneralService _generalService;
@@ -70,7 +63,6 @@ namespace EKE.Service.Services.Admin
             IEntityBaseRepository<MediaElement> mediaElementRepository,
             IEntityBaseRepository<Author> authorRepository,
             IEntityBaseRepository<Order> orderRepository,
-            IEntityBaseRepository<Synonym> synonymRepository,
             IHostingEnvironment environment,
             IGeneralService generalService,
             IUnitOfWork unitOfWork) : base(unitOfWork)
@@ -83,7 +75,6 @@ namespace EKE.Service.Services.Admin
             _orderRepo = orderRepository;
             _environment = environment;
             _generalService = generalService;
-            _synonymRepo = synonymRepository;
         }
 
         #region Magazines
@@ -376,76 +367,7 @@ namespace EKE.Service.Services.Admin
         }
         #endregion
 
-        #region Synonyms
-        public Result<List<Synonym>> GetAllSynonyms()
-        {
-            var result = _synonymRepo.GetAllIncludingPred(x => x.Main, x => x.Synonyms).ToList();
-            return new Result<List<Synonym>>(result);
-        }
 
-        public Result<Synonym> AddSynonym(string text)
-        {
-            var exists = _synonymRepo.FindBy(x => x.Name == text);
-            if (exists.Count() > 0) return new Result<Synonym>(ResultStatus.ALREADYEXISTS);
-
-            Synonym model = new Synonym();
-            model.Name = text;
-            model.Main = true;
-
-            _synonymRepo.Add(model);
-            SaveChanges();
-            return new Result<Synonym>(model);
-        }
-
-        public Result DeleteSynonym(int id)
-        {
-            var result = _synonymRepo.GetByIdIncluding(id, x => x.Synonyms);
-            if (result == null) return new Result(ResultStatus.NOT_FOUND);
-
-            foreach (var item in result.Synonyms)
-            {
-                _synonymRepo.Delete(result);
-                SaveChanges();
-            }
-
-            _synonymRepo.Delete(result);
-            SaveChanges();
-            return new Result(ResultStatus.OK);
-        }
-
-        public Result ConnectSynonym(int id, string text)
-        {
-            var result = _synonymRepo.GetByIdIncluding(id, x => x.Synonyms);
-            if (result == null) return new Result(ResultStatus.NOT_FOUND);
-
-            var newSynonym = new Synonym();
-            newSynonym.Name = text;
-            newSynonym.Main = false;
-
-            result.Synonyms.Add(newSynonym);
-            _synonymRepo.Update(result);
-            SaveChanges();
-            return new Result(ResultStatus.OK);
-        }
-
-        public Result UpdateSynonym(XEditSM model)
-        {
-            var result = _synonymRepo.GetByIdIncluding(model.PrimaryKey, x => x.Synonyms);
-            if (result == null) return new Result(ResultStatus.NOT_FOUND);
-
-            if (String.IsNullOrEmpty(model.Value))
-            {
-                _synonymRepo.Delete(result);
-                SaveChanges();
-                return new Result(ResultStatus.OK);
-            }
-
-            result.Name = model.Value;
-            _synonymRepo.Update(result);
-            SaveChanges();
-            return new Result(ResultStatus.OK);
-        }
-        #endregion
 
         #region Private
         private void CheckMediaElements(List<Magazine> magazines)

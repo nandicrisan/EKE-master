@@ -74,6 +74,8 @@
 
         search: function (keyword) {
             s.scrollPosition.data("keyword", keyword);
+            s.scrollPosition.data("page", 0);
+            s.scrollPosition.data("category", "");
 
             $.ajax({
                 type: "GET",
@@ -81,6 +83,32 @@
                 context: document.body,
                 data: {
                     keyword: keyword
+                },
+                traditional: true,
+                success: function (data) {
+                    $(".portfolio-item").remove();
+                    s.appendResult.append(data);
+                    SEMICOLON.documentOnResize.init()
+                    SEMICOLON.widget.loadFlexSlider();
+                },
+                error: function () {
+
+                }
+            });
+        },
+
+        getElementsByCategory: function (category) {
+            s.scrollPosition.data("keyword", "");
+            s.scrollPosition.data("page", 0);
+            s.scrollPosition.data("category", category);
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetElements",
+                context: document.body,
+                data: {
+                    category: category,
+                    page: 0
                 },
                 traditional: true,
                 success: function (data) {

@@ -15,10 +15,8 @@
                 <input asp-for="@Model.PhoneNumber" type="text" class="required sm-form-control input-block-level not-dark" value="" placeholder="Telefonszám" />
 
                 <textarea asp-for="@Model.Description" class="sm-form-control input-block-level not-dark short-textarea" rows="5" cols="30" placeholder="Honnan hallott az Erdélyi Gyopárról?"></textarea>
-
-                <input type="text" class="hidden" id="quick-contact-form-botcheck" name="quick-contact-form-botcheck" value="" />
-
-                <button type="submit" class="button button-small button-rounded button-light button-white nomargin" value="submit">Küldés</button>
+                <recaptcha />
+                <button type="submit" class="button button-small button-rounded button-light button-white nomargin margin-top-10" value="submit">Küldés</button>
             </form>
         </div>
     </div>

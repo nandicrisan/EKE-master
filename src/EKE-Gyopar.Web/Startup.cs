@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace EKE_Gyopar.Web
 {
@@ -40,6 +41,13 @@ namespace EKE_Gyopar.Web
             // Add framework services.
             services.AddDbContext<EKE.Data.BaseDbContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("EKEConnectionString")));
+
+            services.AddRecaptcha(new RecaptchaOptions
+            {
+                SiteKey = "6Lc3kzEUAAAAABZjTzg4nIf2cy4jA9C3JbQokHMA",
+                SecretKey = "6Lc3kzEUAAAAADukBcvWZyOU5o-LWgBD1Ot7S9Nx",
+                LanguageCode = "hu"
+            });
 
             RegisterServices(services);
         }

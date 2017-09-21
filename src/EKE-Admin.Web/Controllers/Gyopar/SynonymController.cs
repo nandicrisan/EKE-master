@@ -9,6 +9,7 @@ using AutoMapper;
 using EKE.Data.Entities.Gyopar;
 using EKE_Admin.Web.ViewModels;
 using EKE.Service.ServiceModel;
+using EKE.Service.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,10 +21,12 @@ namespace EKE_Admin.Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMagazineService _magService;
+        private readonly IGeneralService _generalService;
 
-        public SynonymController(IMagazineService magazineService, IMapper mapperService)
+        public SynonymController(IMagazineService magazineService, IGeneralService generalService, IMapper mapperService)
         {
             _magService = magazineService;
+            _generalService = generalService;
             _mapper = mapperService;
         }
 
@@ -35,7 +38,7 @@ namespace EKE_Admin.Web.Controllers
 
         public IActionResult SynonymListGrid()
         {
-            var synonyms = _magService.GetAllSynonyms();
+            var synonyms = _generalService.GetAllSynonyms();
             if (!synonyms.IsOk())
             {
                 TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", synonyms.Status, synonyms.Message);
@@ -50,7 +53,7 @@ namespace EKE_Admin.Web.Controllers
         {
             if (!String.IsNullOrEmpty(text))
             {
-                var synonym = _magService.AddSynonym(text);
+                var synonym = _generalService.AddSynonym(text);
                 if (synonym.IsOk())
                     return Json("");
 
@@ -63,7 +66,7 @@ namespace EKE_Admin.Web.Controllers
         {
             if (id > 0)
             {
-                var synonym = _magService.DeleteSynonym(id);
+                var synonym = _generalService.DeleteSynonym(id);
                 if (synonym.IsOk())
                     return RedirectToAction("Index");
 
@@ -78,7 +81,7 @@ namespace EKE_Admin.Web.Controllers
         {
             if (id > 0 && !String.IsNullOrEmpty(text))
             {
-                var synonym = _magService.ConnectSynonym(id, text);
+                var synonym = _generalService.ConnectSynonym(id, text);
                 if (synonym.IsOk())
                     return RedirectToAction("Index");
 
@@ -92,7 +95,7 @@ namespace EKE_Admin.Web.Controllers
         public IActionResult UpdateSynonym(XEditVM model)
         {
             var mappedModel = _mapper.Map<XEditSM>(model);
-            var synonym = _magService.UpdateSynonym(mappedModel);
+            var synonym = _generalService.UpdateSynonym(mappedModel);
             if (synonym.IsOk())
                 return RedirectToAction("Index");
 

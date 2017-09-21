@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EKE.Data.DataViewModels;
 using AutoMapper;
 using EKE.Service.Services.Admin;
 using EKE_Gyopar.Web.ViewModels;
 using EKE.Data.Entities.Gyopar;
-using System.Net;
+using System.Threading.Tasks;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace EKE_Gyopar.Web.Controllers
 {
@@ -113,6 +113,7 @@ namespace EKE_Gyopar.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateRecaptcha]
         public IActionResult AddOrder(Order model)
         {
             if (ModelState.IsValid)
@@ -124,6 +125,5 @@ namespace EKE_Gyopar.Web.Controllers
             }
             return Json(new { message = "Hiba a mentés során! Ellenőrizze a mezők helyességét!" });
         }
-
     }
 }

@@ -132,3 +132,7 @@
 .padding-article {
     padding: 0px 0px 10px 20px
 }
+
+.margin-top-10 {
+    margin-top: 10px !important;
+}
