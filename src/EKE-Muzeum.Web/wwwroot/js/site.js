@@ -1,4 +1,4 @@
-﻿var s, g,
+﻿var s, g, e,
     Museum = {
         settings: {
             scrollPosition: $(".scrollUpdate"),
@@ -6,10 +6,19 @@
             appendedPortfolioItems: $(".appendResult .portfolio-item"),
         },
 
+        elem: {
+            nextElem: $(".nextElemDesc"),
+            prevElem: $(".prevElemDesc"),
+            closeElem: $(".closeElemDesc"),
+            elemDesc: $("#elemDesc"),
+        },
+
         initPage: function () {
             s = this.settings;
+            e = this.elem;
             this.init();
             this.bindUIActions();
+            this.initCookies();
         },
 
         init: function () {
@@ -17,6 +26,10 @@
             $(window).load(function () {
                 SEMICOLON.documentOnResize.init()
             });
+        },
+
+        initCookies: function () {
+            $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true })
         },
 
         bindUIActions: function () {
@@ -27,6 +40,14 @@
                     Museum.search($(this).val());
                 }
             });
+
+            $(".elemTitle").on("click", function () {
+                Museum.getElement($(this).data("id"));
+            });
+        },
+
+        closeElemDesc: function () {
+            e.elemDesc.slideUp(500);
         },
 
         scrollToAjax: function () {
@@ -77,6 +98,9 @@
             s.scrollPosition.data("page", 0);
             s.scrollPosition.data("category", "");
 
+            $(".icon").addClass("loader");
+            $(".fa-search").removeClass("fa-search");
+
             $.ajax({
                 type: "GET",
                 url: "/Home/Search",
@@ -86,6 +110,9 @@
                 },
                 traditional: true,
                 success: function (data) {
+                    $(".fa").addClass("fa-search");
+                    $(".icon").removeClass("loader");
+
                     $(".portfolio-item").remove();
                     s.appendResult.append(data);
                     SEMICOLON.documentOnResize.init()
@@ -121,5 +148,68 @@
 
                 }
             });
+        },
+
+        getElement: function (id) {
+            e.elemDesc.slideUp(500);
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetElement",
+                context: document.body,
+                data: {
+                    id: id,
+                },
+                traditional: true,
+                success: function (data) {
+                    Museum.showElementDesc(data);
+                },
+                error: function () {
+
+                }
+            });
+        },
+
+        getPrevElement: function (id) {
+            e.elemDesc.slideUp(500);
+            $.ajax({
+                type: "GET",
+                url: "/Home/NextElement",
+                context: document.body,
+                data: {
+                    id: id,
+                },
+                traditional: true,
+                success: function (data) {
+                    Museum.showElementDesc(data);
+                },
+                error: function () {
+
+                }
+            });
+        },
+
+        getNextElement: function (id) {
+            e.elemDesc.slideUp(500);
+            $.ajax({
+                type: "GET",
+                url: "/Home/PrevElement",
+                context: document.body,
+                data: {
+                    id: id,
+                },
+                traditional: true,
+                success: function (data) {
+                    Museum.showElementDesc(data);
+                },
+                error: function () {
+
+                }
+            });
+        },
+
+        showElementDesc: function (data) {
+            e.elemDesc.html(data);
+            SEMICOLON.widget.loadFlexSlider();
+            e.elemDesc.slideDown(750);
         }
     };

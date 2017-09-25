@@ -75,3 +75,24 @@ textarea {
         -o-transition: all .55s ease;
         transition: all .55s ease;
     }
+
+.loader {
+    border: 1px solid #f3f3f3;
+    border-top: 1px solid #555;
+    border-radius: 50%;
+    width: 10px;
+    top: 9px;
+    height: 10px;
+    animation: spin 2s linear infinite;
+    left: 5px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

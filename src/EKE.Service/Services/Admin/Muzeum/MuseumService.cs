@@ -224,7 +224,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetByIdIncluding(id, x => x.Category);
+                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.Tags, x => x.MediaElement);
                 if (result == null) return new Result<Element>(ResultStatus.NOT_FOUND);
                 return new Result<Element>(result);
             }

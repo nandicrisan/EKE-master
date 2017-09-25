@@ -34,6 +34,23 @@ namespace EKE_Muzeum.Web.Controllers
             return PartialView("Partials/_ElementHandler", result.Data);
         }
 
+        public IActionResult GetElement(int id)
+        {
+            var result = _museumService.GetElementById(id);
+            return PartialView("Partials/_ElementDescription", result.Data);
+        }
+
+        public IActionResult NextElement(int id)
+        {
+            var result = _museumService.GetElementById(id);
+            return PartialView("Partials/_ElementDescription", result.Data);
+        }
+
+        public IActionResult PrevElement(int id)
+        {
+            var result = _museumService.GetElementById(id);
+            return PartialView("Partials/_ElementDescription", result.Data);
+        }
 
         public IActionResult Contact()
         {

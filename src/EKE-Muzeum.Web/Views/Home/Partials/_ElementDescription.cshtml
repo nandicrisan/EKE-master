@@ -1,17 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EKE.Data.Entities.Museum.Element
 @{
 }
 
 <section id="page-title">
 
     <div class="container clearfix">
-        <h1>Teszt cím</h1>
+        <h1>@Model.Title</h1>
         <div id="portfolio-navigation">
-            <a href="#"><i class="icon-angle-left"></i></a>
-            <a href="#"><i class="icon-line-grid"></i></a>
-            <a href="#"><i class="icon-angle-right"></i></a>
+            <a href="#"><i class="icon-angle-left" onclick="Museum.getPrevElement('@Model.Id')"></i></a>
+            <a href="#"><i class="icon-line-grid" onclick="Museum.closeElemDesc()"></i></a>
+            <a href="#"><i class="icon-angle-right" onclick="Museum.getNextElement('@Model.Id')"></i></a>
         </div>
     </div>
 
@@ -26,30 +24,15 @@
                 <div class="fslider" data-animation="fade" data-thumbs="true" data-arrows="false" data-speed="1200" data-pause="7000">
                     <div class="flexslider">
                         <div class="slider-wrap">
-                            <div class="slide" data-thumb="images/slider/boxed/thumbs/2.jpg">
-                                <a href="#">
-                                    <img src="images/slider/boxed/2.jpg" alt="Slide 2">
-                                    <div class="flex-caption slider-caption-bg">Responsive Ready Design</div>
-                                </a>
-                            </div>
-                            <div class="slide" data-thumb="images/slider/boxed/thumbs/3.jpg">
-                                <a href="#">
-                                    <img src="images/slider/boxed/3.jpg" alt="Slide 3">
-                                    <div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-top-left">Retina Graphics Display</div>
-                                </a>
-                            </div>
-                            <div class="slide" data-thumb="images/slider/boxed/thumbs/4.jpg">
-                                <a href="#">
-                                    <img src="images/slider/boxed/4.jpg" alt="Slide 4">
-                                    <div class="flex-caption slider-caption-bg slider-caption-top-right">Bootstrap 3+ Compatible</div>
-                                </a>
-                            </div>
-                            <div class="slide" data-thumb="images/slider/boxed/thumbs/5.jpg">
-                                <a href="#">
-                                    <img src="images/slider/boxed/5.jpg" alt="Slide 5">
-                                    <div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">eCommerce Design Included</div>
-                                </a>
-                            </div>
+                            @foreach (var item in Model.MediaElement)
+                            {
+                                <div class="slide" data-thumb="@item.OriginalName">
+                                    <a href="#">
+                                        <img src="@item.OriginalName" alt="@item.Name">
+                                        <div class="flex-caption slider-caption-bg">@item.Name</div>
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -67,8 +50,7 @@
         <div class="fancy-title title-bottom-border">
             <h2>Leírás:</h2>
         </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, dolores, facere, corrupti delectus ex quidem adipisci tempore.</p>
-        <p>Illum molestias cupiditate eveniet dolore obcaecati voluptatibus est quos eos id recusandae officia. Cupiditate, voluptates quibusdam ipsum vel corporis laboriosam id est doloremque?</p>
+        @Html.Raw(Model.Description)
         <!-- Portfolio Single - Description End -->
 
         <div class="line"></div>
@@ -76,10 +58,9 @@
         <!-- Portfolio Single - Meta
         ============================================= -->
         <ul class="portfolio-meta bottommargin">
-            <li><span><i class="icon-user"></i>Jogtulajdon:</span> John Doe</li>
-            <li><span><i class="icon-calendar3"></i>Készült:</span> 17th March 2014</li>
-            <li><span><i class="icon-lightbulb"></i>Kategória:</span> HTML5 / PHP / CSS3</li>
-            <li><span><i class="icon-link"></i>Besorolás/ érték:</span> <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></li>
+            <li><span><i class="icon-user"></i>Jogtulajdon:</span> @Model.Author</li>
+            <li><span><i class="icon-calendar3"></i>Készült:</span> @Model.DatePublished.Year</li>
+            <li><span><i class="icon-lightbulb"></i>Kategória:</span> @Model.Category.Name</li>
         </ul>
         <!-- Portfolio Single - Meta End -->
         <!-- Portfolio Single - Share
@@ -103,14 +84,14 @@
                     <i class="icon-gplus"></i>
                     <i class="icon-gplus"></i>
                 </a>
-                <a href="#" class="social-icon si-borderless si-rss">
-                    <i class="icon-rss"></i>
-                    <i class="icon-rss"></i>
-                </a>
-                <a href="#" class="social-icon si-borderless si-email3">
-                    <i class="icon-email3"></i>
-                    <i class="icon-email3"></i>
-                </a>
+                @*<a href="#" class="social-icon si-borderless si-rss">
+                        <i class="icon-rss"></i>
+                        <i class="icon-rss"></i>
+                    </a>
+                    <a href="#" class="social-icon si-borderless si-email3">
+                        <i class="icon-email3"></i>
+                        <i class="icon-email3"></i>
+                    </a>*@
             </div>
         </div>
         <!-- Portfolio Single - Share End -->

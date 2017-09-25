@@ -53,6 +53,11 @@ Main = {
         this.initAjax();
         this.bindUIActions();
         this.initNoty();
+        this.initCookies();
+    },
+
+    initCookies: function () {
+        $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true })
     },
 
     bindUIActions: function () {
