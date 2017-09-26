@@ -32,7 +32,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result<List<ElementCategory>> GetAllElementCategories();
         Result<List<ElementCategory>> GetAllElementCategoriesByIncluding(Expression<Func<ElementCategory, bool>> predicate, params Expression<Func<ElementCategory, object>>[] inclProp);
 
-        Result AddElementCategory(string text, string author);
+        Result AddElementCategory(string text, string author, int parentCategoryId);
         Result UpdateElementCategory(ElementCategory model);
         Result DeleteElementCategory(int id);
 
@@ -103,7 +103,7 @@ namespace EKE.Service.Services.Admin.Muzeum
             }
         }
 
-        public Result AddElementCategory(string text, string author)
+        public Result AddElementCategory(string text, string author, int parentCategoryId)
         {
             try
             {
@@ -113,6 +113,13 @@ namespace EKE.Service.Services.Admin.Muzeum
                 var model = new ElementCategory();
                 model.Author = author;
                 model.Name = text;
+
+                if (parentCategoryId != 0)
+                {
+                    var categoryResult = _elementCategoryRepo.GetById(parentCategoryId);
+                    if (categoryResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    model.Parent = categoryResult;
+                }
 
                 _elementCategoryRepo.Add(model);
                 SaveChanges();
@@ -162,7 +169,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<ElementCategory>>(_elementCategoryRepo.GetAll().ToList());
+                return new Result<List<ElementCategory>>(_elementCategoryRepo.GetAllIncluding(x => x.Parent).ToList());
             }
             catch (Exception ex)
             {

@@ -28,6 +28,12 @@ namespace EKE_Muzeum.Web.Controllers
             return PartialView("Partials/_ElementHandler", result.Data);
         }
 
+        public IActionResult GetCategoriesMenu()
+        {
+            var result = _museumService.GetAllElementCategories();
+            return PartialView("Partials/_PrimaryMenu", result.Data);
+        }
+
         public IActionResult Search(string keyword)
         {
             var result = _museumService.Search(keyword);

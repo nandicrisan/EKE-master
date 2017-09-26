@@ -1,5 +1,5 @@
 ﻿@using NonFactors.Mvc.Grid;
-@model EKE_Admin.Web.ViewModels.MagazineVM
+@model EKE_Admin.Web.ViewModels.MuseumVM
 
 @{
     ViewData["Title"] = "Lapok kezelése";
@@ -35,7 +35,24 @@
                         <input name="text" class="form-control" type="text" placeholder="Szó">
                     </div>
                 </div>
-                <div class="col-sm-10">
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Szülő kategória kiválasztása</label>
+                        <select class="form-control select2" name="parent">
+                            <option value="0">Főkategória</option>
+                            @if (Model.Categories.Count > 1)
+                            {
+                                foreach (var item in Model.Categories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-8">
                     <label></label>
                     <div class="row">
                         <button class="btn btn-default pull-right" type="submit">Hozzáadás</button>

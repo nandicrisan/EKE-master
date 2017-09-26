@@ -87,6 +87,25 @@ textarea {
     left: 5px;
 }
 
+.loader2 {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #555;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin-right: 15px;
+    display: inline-flex;
+    vertical-align: inherit;
+}
+
+.page-title-loading {
+    padding: 25px 25px 0px !important;
+    background-color: #eee !important;
+    border-bottom: 1px solid #C0B480 !important;
+    position: relative;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

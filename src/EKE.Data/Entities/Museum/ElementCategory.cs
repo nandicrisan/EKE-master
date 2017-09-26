@@ -12,6 +12,8 @@ namespace EKE.Data.Entities.Museum
         public DateTime DateCreated { get; set; }
         public string Author { get; set; }
 
+        public virtual ElementCategory Parent { get; set; }
+
         public ElementCategory()
         {
             DateCreated = DateTime.Now;

@@ -57,7 +57,7 @@ Main = {
     },
 
     initCookies: function () {
-        $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true })
+        $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true, expireDays: 1 })
     },
 
     bindUIActions: function () {

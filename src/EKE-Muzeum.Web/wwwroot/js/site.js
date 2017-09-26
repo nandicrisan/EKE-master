@@ -11,12 +11,14 @@
             prevElem: $(".prevElemDesc"),
             closeElem: $(".closeElemDesc"),
             elemDesc: $("#elemDesc"),
+            elemLoader: $(".page-title-loading")
         },
 
         initPage: function () {
             s = this.settings;
             e = this.elem;
             this.init();
+            this.initMenuBar();
             this.bindUIActions();
             this.initCookies();
         },
@@ -28,8 +30,25 @@
             });
         },
 
+        initMenuBar: function () {
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetCategoriesMenu",
+                context: document.body,
+                traditional: true,
+                success: function (data) {
+                    $(".primary-menu").html(data);
+                    SEMICOLON.header.init()
+                    Museum.bindUIActions();
+                },
+                error: function () {
+
+                }
+            });
+        },
+
         initCookies: function () {
-            $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true })
+            $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true, expireDays: 1 })
         },
 
         bindUIActions: function () {
@@ -44,6 +63,10 @@
             $(".elemTitle").on("click", function () {
                 Museum.getElement($(this).data("id"));
             });
+
+            $(".elemCategory").on("click", function () {
+                Museum.getElementsByCategory($(this).text());
+            })
         },
 
         closeElemDesc: function () {
@@ -81,11 +104,13 @@
                 },
                 traditional: true,
                 success: function (data) {
-                    //data = $(".loadElems").html();
-                    s.scrollPosition.data('page', parseInt(page + 1));
-                    s.appendResult.append(data);
-                    SEMICOLON.documentOnResize.init()
-                    setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 3000);
+                    if (data != "") {
+                        s.scrollPosition.data('page', parseInt(page + 1));
+                        s.appendResult.append(data);
+                        SEMICOLON.documentOnResize.init()
+                        setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 3000);
+                        Museum.bindUIActions();
+                    }
                 },
                 error: function () {
 
@@ -98,8 +123,7 @@
             s.scrollPosition.data("page", 0);
             s.scrollPosition.data("category", "");
 
-            $(".icon").addClass("loader");
-            $(".fa-search").removeClass("fa-search");
+            Museum.showElemLoading();
 
             $.ajax({
                 type: "GET",
@@ -110,13 +134,13 @@
                 },
                 traditional: true,
                 success: function (data) {
-                    $(".fa").addClass("fa-search");
-                    $(".icon").removeClass("loader");
-
                     $(".portfolio-item").remove();
                     s.appendResult.append(data);
                     SEMICOLON.documentOnResize.init()
                     SEMICOLON.widget.loadFlexSlider();
+                    Museum.closeElemDesc();
+                    Museum.hideElemLoading();
+                    Museum.bindUIActions();
                 },
                 error: function () {
 
@@ -128,6 +152,8 @@
             s.scrollPosition.data("keyword", "");
             s.scrollPosition.data("page", 0);
             s.scrollPosition.data("category", category);
+
+            Museum.showElemLoading();
 
             $.ajax({
                 type: "GET",
@@ -143,6 +169,7 @@
                     s.appendResult.append(data);
                     SEMICOLON.documentOnResize.init()
                     SEMICOLON.widget.loadFlexSlider();
+                    Museum.hideElemLoading();
                 },
                 error: function () {
 
@@ -152,6 +179,7 @@
 
         getElement: function (id) {
             e.elemDesc.slideUp(500);
+            Museum.showElemLoading();
             $.ajax({
                 type: "GET",
                 url: "/Home/GetElement",
@@ -161,6 +189,7 @@
                 },
                 traditional: true,
                 success: function (data) {
+                    Museum.hideElemLoading();
                     Museum.showElementDesc(data);
                 },
                 error: function () {
@@ -171,6 +200,7 @@
 
         getPrevElement: function (id) {
             e.elemDesc.slideUp(500);
+            Museum.showElemLoading();
             $.ajax({
                 type: "GET",
                 url: "/Home/NextElement",
@@ -180,6 +210,7 @@
                 },
                 traditional: true,
                 success: function (data) {
+                    Museum.hideElemLoading();
                     Museum.showElementDesc(data);
                 },
                 error: function () {
@@ -190,6 +221,7 @@
 
         getNextElement: function (id) {
             e.elemDesc.slideUp(500);
+            Museum.showElemLoading();
             $.ajax({
                 type: "GET",
                 url: "/Home/PrevElement",
@@ -199,6 +231,7 @@
                 },
                 traditional: true,
                 success: function (data) {
+                    Museum.hideElemLoading();
                     Museum.showElementDesc(data);
                 },
                 error: function () {
@@ -211,5 +244,13 @@
             e.elemDesc.html(data);
             SEMICOLON.widget.loadFlexSlider();
             e.elemDesc.slideDown(750);
+        },
+
+        showElemLoading: function () {
+            e.elemLoader.slideDown(500);
+        },
+
+        hideElemLoading: function () {
+            e.elemLoader.slideUp(500);
         }
     };

@@ -37,7 +37,16 @@ namespace EKE_Admin.Web.Controllers
         // GET: /<controller>/
         public IActionResult Category()
         {
-            return View();
+            var model = new MuseumVM();
+            var categories = _museumService.GetAllElementCategories();
+            if (!categories.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", categories.Status, categories.Message);
+                return View();
+            }
+
+            model.Categories = categories.Data;
+            return View(model);
         }
 
         public IActionResult ElementListGrid()
@@ -96,11 +105,11 @@ namespace EKE_Admin.Web.Controllers
             return RedirectToAction("Category");
         }
 
-        public IActionResult AddCategory(string text)
+        public IActionResult AddCategory(string text, int parent)
         {
             if (!String.IsNullOrEmpty(text))
             {
-                var category = _museumService.AddElementCategory(text, User.Identity.Name);
+                var category = _museumService.AddElementCategory(text, User.Identity.Name, parent);
                 if (category.IsOk())
                     return Json("");
 
