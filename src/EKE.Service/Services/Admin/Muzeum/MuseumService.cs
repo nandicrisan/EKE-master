@@ -302,7 +302,19 @@ namespace EKE.Service.Services.Admin.Muzeum
                         return new Result<List<Element>>(resultList);
                     }
 
-                    var result = _elementRepo.GetAllIncludingPred(x => x.Category.Name.ToLower() == category.ToLower(), x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
+                    var childCategories = _elementCategoryRepo.GetAllIncludingPred(x => x.Parent.Name.ToLower().Trim() == category.ToLower().Trim(), x => x.Parent);
+
+                    var predicate = PredicateBuilder.New<Element>(true);
+                    predicate.And(x => x.Category.Name.ToLower() == category.ToLower());
+                    if (childCategories.Count() > 0)
+                    {
+                        foreach (var item in childCategories)
+                        {
+                            predicate.Or(x => x.Category.Name.ToLower() == item.Name.ToLower());
+                        }
+                    }
+
+                    var result = _elementRepo.GetAllIncludingPred(predicate, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
                     return new Result<List<Element>>(result);
                 }
 

@@ -24,6 +24,10 @@
 </head>
 
 <body class="hold-transition skin-green sidebar-mini">
+    <script type="text/javascript">
+                localStorage.setItem("siteRoot", "@Url.Action("", null, null, "http")")
+    </script>
+
     <div class="wrapper">
         @Html.Partial("Layout/_Header")
         @Html.Partial("Layout/_Sidebar")

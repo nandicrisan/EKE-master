@@ -15,28 +15,6 @@
 
 <nav id="primary-menu">
     <ul>
-        @*<li class="current">
-                <a href="index.html"><div>Home</div></a>
-                <ul>
-                    <li>
-                        <a href="index-corporate.html"><div>Home - Corporate</div></a>
-                        <ul>
-                            <li><a href="index-corporate.html"><div>Corporate - Layout 1</div></a></li>
-                            <li><a href="index-corporate-2.html"><div>Corporate - Layout 2</div></a></li>
-                            <li><a href="index-corporate-3.html"><div>Corporate - Layout 3</div></a></li>
-                            <li><a href="index-corporate-4.html"><div>Corporate - Layout 4</div></a></li>
-                        </ul>
-                    </li>
-                    <li><a href="index-boxed.html"><div>Home - Boxed Layout</div></a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#"><div>Shortcodes</div></a>
-                <ul>
-                    <li><a href="animations.html"><div><i class="icon-magic"></i>Animations</div></a></li>
-                </ul>
-            </li>*@
         @if (Model.Count == 0)
         {
             <li>
@@ -48,32 +26,32 @@
             foreach (var item in parents)
             {
                 <li>
-                    <a href="javascript:Museum.getElementsByCategory('@item.Name')"><div>@item.Name</div></a>
+                    <a href="#"><div>@item.Name</div></a>
 
                     @if (Childrens(item).Count != 0)
                     {
-                        foreach (var children in Childrens(item))
-                        {
-                            <ul>
+                        <ul>
+                            @foreach (var children in Childrens(item))
+                            {
                                 <li>
-                                    <a href="javascript:Museum.getElementsByCategory('@item.Name')"><div>@children.Name</div></a>
+                                    <a href="#"><div>@children.Name</div></a>
                                     @if (Childrens(children).Count != 0)
                                     {
-                                        foreach (var subChildren in Childrens(children))
-                                        {
-                                            <ul>
+                                        <ul>
+                                            @foreach (var subChildren in Childrens(children))
+                                            {
                                                 <li>
-                                                    <a href="javascript:Museum.getElementsByCategory('@item.Name')"><div>@subChildren.Name</div></a>
+                                                    <a href="#"><div>@subChildren.Name</div></a>
                                                 </li>
-                                            </ul>
-                                        }
+                                            }
+                                        </ul>
                                     }
                                 </li>
-                            </ul>
-                        }
+                            }
+                        </ul>
                     }
                 </li>
             }
         }
     </ul>
-</nav><!-- #primary-menu end -->
+</nav>

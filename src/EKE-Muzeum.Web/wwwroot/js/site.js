@@ -28,6 +28,7 @@
             $(window).load(function () {
                 SEMICOLON.documentOnResize.init()
             });
+            $(window).scroll(Museum.scrollToAjax);
         },
 
         initMenuBar: function () {
@@ -39,6 +40,7 @@
                 success: function (data) {
                     $(".primary-menu").html(data);
                     SEMICOLON.header.init()
+                    Museum.unbindUIActions();
                     Museum.bindUIActions();
                 },
                 error: function () {
@@ -51,20 +53,24 @@
             $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true, expireDays: 1 })
         },
 
-        bindUIActions: function () {
-            $(window).scroll(Museum.scrollToAjax);
+        unbindUIActions: function () {
+            $("#search").off();
+            $(".elemTitle").off()
+            $("#primary-menu div").off()
+        },
 
+        bindUIActions: function () {
             $("#search").keyup(function () {
                 if ($(this).val().length > 2) {
                     Museum.search($(this).val());
                 }
             });
 
-            $(".elemTitle").on("click", function () {
+            $(".elemTitle").click(function () {
                 Museum.getElement($(this).data("id"));
             });
 
-            $(".elemCategory").on("click", function () {
+            $("#primary-menu div").click(function () {
                 Museum.getElementsByCategory($(this).text());
             })
         },
@@ -104,13 +110,15 @@
                 },
                 traditional: true,
                 success: function (data) {
-                    if (data != "") {
-                        s.scrollPosition.data('page', parseInt(page + 1));
-                        s.appendResult.append(data);
-                        SEMICOLON.documentOnResize.init()
-                        setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 3000);
-                        Museum.bindUIActions();
-                    }
+                    s.scrollPosition.data('page', parseInt(page + 1));
+                    s.appendResult.append(data);
+                    
+                    Museum.unbindUIActions();
+                    Museum.bindUIActions();
+
+                    SEMICOLON.documentOnResize.init()
+
+                    setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 3000);
                 },
                 error: function () {
 
@@ -136,11 +144,14 @@
                 success: function (data) {
                     $(".portfolio-item").remove();
                     s.appendResult.append(data);
-                    SEMICOLON.documentOnResize.init()
-                    SEMICOLON.widget.loadFlexSlider();
+                    
                     Museum.closeElemDesc();
                     Museum.hideElemLoading();
+                    Museum.unbindUIActions();
                     Museum.bindUIActions();
+
+                    SEMICOLON.documentOnResize.init()
+                    SEMICOLON.widget.loadFlexSlider();
                 },
                 error: function () {
 
@@ -150,10 +161,11 @@
 
         getElementsByCategory: function (category) {
             s.scrollPosition.data("keyword", "");
-            s.scrollPosition.data("page", 0);
+            s.scrollPosition.data("page", 1);
             s.scrollPosition.data("category", category);
 
             Museum.showElemLoading();
+            Museum.closeElemDesc();
 
             $.ajax({
                 type: "GET",
@@ -167,9 +179,13 @@
                 success: function (data) {
                     $(".portfolio-item").remove();
                     s.appendResult.append(data);
+
+                    Museum.hideElemLoading();
+                    Museum.unbindUIActions();
+                    Museum.bindUIActions();
+
                     SEMICOLON.documentOnResize.init()
                     SEMICOLON.widget.loadFlexSlider();
-                    Museum.hideElemLoading();
                 },
                 error: function () {
 

@@ -143,7 +143,7 @@ Magazine = {
         var year = $(".mYear option:selected").val();
         var number = $(".mNumber option:selected").val();
         $.ajax({
-            url: location.href + '/CreateArticlePartial',
+            url: localStorage.siteRoot + '/CreateArticlePartial',
             dataType: 'html',
             data: {
                 format: format,
