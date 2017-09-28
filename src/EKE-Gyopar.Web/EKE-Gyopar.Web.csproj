@@ -16,6 +16,7 @@
     <Content Include="wwwroot\images\bckgrnd\honlapra2.jpg" />
     <Content Include="wwwroot\images\bckgrnd\honlapra3.jpg" />
     <Content Include="wwwroot\images\components\EGY_borito_H.jpg" />
+    <Content Include="wwwroot\images\icons\submenu-dark.png" />
     <Content Include="wwwroot\images\sprite-skin-nice.png" />
     <Content Include="wwwroot\images\Uploads\egyebek\01 Bakancs H.jpg" />
     <Content Include="wwwroot\images\Uploads\egyebek\02 Memoriajatek jo.jpg" />
