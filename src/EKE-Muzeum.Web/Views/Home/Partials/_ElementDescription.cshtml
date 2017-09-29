@@ -62,7 +62,10 @@
             {
                 <li><i class="icon-user"></i> &nbsp; @Model.Author</li>
             }
-            <li><span><i class="icon-calendar3"></i>Készült:</span> @Model.DatePublished.Year</li>
+            @if (Model.DatePublished.Year != 1)
+            {
+                <li><span><i class="icon-calendar3"></i>Készült:</span> @Model.DatePublished.Year</li>
+            }
             <li><span><i class="icon-lightbulb"></i>Kategória:</span> @Model.Category.Name</li>
         </ul>
         <!-- Portfolio Single - Meta End -->

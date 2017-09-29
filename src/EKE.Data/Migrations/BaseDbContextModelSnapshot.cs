@@ -318,8 +318,6 @@ namespace EKE.Data.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<DateTime>("DatePublished");
-
                     b.Property<string>("Description");
 
                     b.Property<string>("Publisher");

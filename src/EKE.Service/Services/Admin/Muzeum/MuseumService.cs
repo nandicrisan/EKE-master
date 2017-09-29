@@ -88,7 +88,6 @@ namespace EKE.Service.Services.Admin.Muzeum
                     tags.Add(tag);
                 }
 
-
                 var elem = model.Element;
                 elem.Category = category;
                 elem.MediaElement = _generalService.CreateMediaElements(model.Files, model.Element.DatePublished.Year, "1", ProjectBaseEnum.Muzeum);
