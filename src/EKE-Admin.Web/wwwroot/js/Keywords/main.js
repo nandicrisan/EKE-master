@@ -63,7 +63,7 @@
 
         deleteTag: function (id) {
             $.ajax({
-                url: localStorage.siteRoot + '/Magazine/RemoveTag',
+                url: '/Magazine/RemoveTag',
                 dataType: 'html',
                 data: {
                     id: id,

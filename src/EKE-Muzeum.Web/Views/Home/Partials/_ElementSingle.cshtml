@@ -1,7 +1,7 @@
 ﻿@model EKE.Data.Entities.Museum.Element
 <article class="portfolio-item pf-media pf-icons" style="height:350px;">
     <div class="portfolio-image">
-        <a href="portfolio-single.html">
+        <a href="#" data-id="@Model.Id" class="elemTitle">
             <img src="@Model.MediaElement.FirstOrDefault().OriginalName" alt="@Model.MediaElement.FirstOrDefault().Name">
         </a>
         <div class="portfolio-overlay">

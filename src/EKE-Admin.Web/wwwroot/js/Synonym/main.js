@@ -52,7 +52,7 @@ Synonym = {
         var text = $(".synonymAddCheck[data-id=" + id + "]").val()
 
         $.ajax({
-            url: localStorage.siteRoot + '/Synonym/ConnectSynonym',
+            url: '/Synonym/ConnectSynonym',
             dataType: 'html',
             data: {
                 id: parseInt(id),

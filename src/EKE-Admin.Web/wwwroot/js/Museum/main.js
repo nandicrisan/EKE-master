@@ -119,7 +119,7 @@
 
         createElemPartial: function (elem) {
             $.ajax({
-                url: localStorage.siteRoot + '/Museum/CreateElemPartial',
+                url: '/Museum/CreateElemPartial',
                 dataType: 'html',
                 success: function (data) {
                     $('.add-elem').html(data);

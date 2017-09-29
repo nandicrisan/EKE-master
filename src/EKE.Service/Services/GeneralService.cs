@@ -157,7 +157,7 @@ namespace EKE.Service.Services
 
                     if (type == MediaTypesScope.Museum)
                     {
-                        using (MagickImage watermark = new MagickImage(@"C:\Users\ldeak\Source\Repos\EKE-master\src\EKE-Gyopar.Web\wwwroot\images\logo\eke.gif"))
+                        using (MagickImage watermark = new MagickImage(@"C:\EKE-Backup\Images\eke.gif"))
                         {
                             // Optionally make the watermark more transparent
                             watermark.Evaluate(Channels.Alpha, EvaluateOperator.Divide, 1.5);

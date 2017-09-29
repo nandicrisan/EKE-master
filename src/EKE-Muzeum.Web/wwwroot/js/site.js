@@ -55,12 +55,19 @@
 
         unbindUIActions: function () {
             $("#search").off();
+            $("#search2").off();
             $(".elemTitle").off()
             $("#primary-menu div").off()
         },
 
         bindUIActions: function () {
             $("#search").keyup(function () {
+                if ($(this).val().length > 2) {
+                    Museum.search($(this).val());
+                }
+            });
+
+            $("#search2").keyup(function () {
                 if ($(this).val().length > 2) {
                     Museum.search($(this).val());
                 }

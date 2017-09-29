@@ -173,7 +173,7 @@ body.top-search-open .dark #header-wrap:not(.not-dark) #top-search a,
 .dark.overlay-menu #header-wrap:not(.not-dark) #primary-menu > ul > li:hover > a,
 .dark.overlay-menu #header-wrap:not(.not-dark) #primary-menu > ul > li.current > a,
 .overlay-menu #primary-menu.dark > ul > li:hover > a,
-.overlay-menu #primary-menu.dark > ul > li.current > a { color: #1ABC9C !important; }
+.overlay-menu #primary-menu.dark > ul > li.current > a { color: white !important; }
 
 .dark #primary-menu:not(.not-dark) ul ul,
 .dark #primary-menu:not(.not-dark) ul li .mega-menu-content,
@@ -271,7 +271,7 @@ body.top-search-open .dark #header-wrap:not(.not-dark) #top-search a,
 
 .dark .top-cart-item-image:hover { border-color: #1ABC9C; }
 
-.dark .top-cart-item-desc a:hover { color: #1ABC9C !important; }
+.dark .top-cart-item-desc a:hover { color: white !important; }
 
 .dark .top-cart-item-desc span.top-cart-item-price { color: #AAA; }
 
@@ -1734,7 +1734,7 @@ body #side-panel.dark #side-panel-trigger-close a {
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > ul > li:hover a,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > ul > li.current a,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > div > ul > li:hover a,
-	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > div > ul > li.current a { color: #1ABC9C !important; }
+	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > div > ul > li.current a { color: white !important; }
 
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu ul ul a,
 	body:not(.dark) #header:not(.dark) #header-wrap:not(.dark) #primary-menu > ul > li:hover ul a,

@@ -92,7 +92,7 @@ MagazineList = {
             language: "hu",
             showUpload: true,
             allowedFileExtensions: ["jpg", "png"],
-            uploadUrl: localStorage.siteRoot + "/Magazine/UploadCover",
+            uploadUrl: "/Magazine/UploadCover",
             uploadExtraData: function (previewId, index) {
                 var elem = $(this)[0].$btnFile[0];
                 return {

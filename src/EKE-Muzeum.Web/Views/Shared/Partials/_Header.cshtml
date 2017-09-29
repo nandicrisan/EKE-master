@@ -16,7 +16,7 @@
             <!-- Primary Navigation
             ============================================= -->
             <div class="box">
-                <div class="container-3">
+                <div class="container-3 hidden-sm hidden-xs">
                     <span class="icon"><i class="fa fa-search"></i></span>
                     <input type="search" id="search" placeholder="Keresés..." autocomplete="off" />
                 </div>
@@ -24,6 +24,13 @@
 
             <div class="primary-menu">
                 @Html.Partial("Partials/_PrimaryMenu", new List<EKE.Data.Entities.Museum.ElementCategory>())
+            </div>
+
+            <div class="box-sm hidden-md hidden-lg">
+                <div class="container-3">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                    <input type="search" id="search2" placeholder="Keresés..." autocomplete="off" />
+                </div>
             </div>
 
             <div class="clearfix visible-md visible-lg">

@@ -1,12 +1,12 @@
 ﻿@model EKE.Data.Entities.Museum.Element
-<article class="portfolio-item pf-icons pf-illustrations" style="height:350px;">
-    <div class="portfolio-image">
+<article class="portfolio-item pf-icons pf-illustrations elemTitle" style="height:350px;" data-id="@Model.Id">
+    <div class="portfolio-image elemTitle" data-id="@Model.Id">
         <div class="fslider" data-arrows="false" data-animation="fade">
             <div class="flexslider">
                 <div class="slider-wrap">
                     @foreach (var media in Model.MediaElement)
                     {
-                        <div class="slide"><a href="portfolio-single-gallery.html"><img src="@media.OriginalName" alt="@media.Name"></a></div>
+                        <div class="slide"><a href="#" data-id="@Model.Id" class="elemTitle"><img src="@media.OriginalName" alt="@media.Name"></a></div>
                     }
                 </div>
             </div>
