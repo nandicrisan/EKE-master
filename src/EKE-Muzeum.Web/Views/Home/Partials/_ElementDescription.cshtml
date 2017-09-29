@@ -58,7 +58,10 @@
         <!-- Portfolio Single - Meta
         ============================================= -->
         <ul class="portfolio-meta bottommargin">
-            <li><span><i class="icon-user"></i>Jogtulajdon:</span> @Model.Author</li>
+            @if (Model.Author != "-")
+            {
+                <li><i class="icon-user"></i> &nbsp; @Model.Author</li>
+            }
             <li><span><i class="icon-calendar3"></i>Készült:</span> @Model.DatePublished.Year</li>
             <li><span><i class="icon-lightbulb"></i>Kategória:</span> @Model.Category.Name</li>
         </ul>
@@ -84,14 +87,6 @@
                     <i class="icon-gplus"></i>
                     <i class="icon-gplus"></i>
                 </a>
-                @*<a href="#" class="social-icon si-borderless si-rss">
-                        <i class="icon-rss"></i>
-                        <i class="icon-rss"></i>
-                    </a>
-                    <a href="#" class="social-icon si-borderless si-email3">
-                        <i class="icon-email3"></i>
-                        <i class="icon-email3"></i>
-                    </a>*@
             </div>
         </div>
         <!-- Portfolio Single - Share End -->

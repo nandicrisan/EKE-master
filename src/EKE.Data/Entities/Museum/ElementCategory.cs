@@ -11,6 +11,7 @@ namespace EKE.Data.Entities.Museum
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }
         public string Author { get; set; }
+        public int OrderNo { get; set; }
 
         public virtual ElementCategory Parent { get; set; }
 

@@ -42,6 +42,8 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result DeleteElementTag(int id);
 
         Result<List<Element>> Search(string keyword, int skip = 0);
+
+        Result Update(XEditSM model);
     }
 
     public class MuseumService : BaseService, IMuseumService
@@ -169,7 +171,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<ElementCategory>>(_elementCategoryRepo.GetAllIncluding(x => x.Parent).ToList());
+                return new Result<List<ElementCategory>>(_elementCategoryRepo.GetAllIncluding(x => x.Parent).OrderBy(x => x.OrderNo).ToList());
             }
             catch (Exception ex)
             {
@@ -421,6 +423,52 @@ namespace EKE.Service.Services.Admin.Muzeum
             catch (Exception ex)
             {
                 return new Result<List<Element>>(ResultStatus.ERROR, ex.Message);
+            }
+        }
+
+        public Result Update(XEditSM model)
+        {
+            var catResult = new ElementCategory();
+            var elemResult = new Element();
+            switch (model.Name)
+            {
+                case "CategoryName":
+                    catResult = _elementCategoryRepo.GetById(model.PrimaryKey);
+                    if (catResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    catResult.Name = model.Value;
+                    _elementCategoryRepo.Update(catResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                case "ElemTitle":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    elemResult.Title = model.Value;
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                case "ElemAuthor":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    elemResult.Author = model.Value;
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                case "ElemDescription":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    elemResult.Description = model.Value;
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                case "ElemVisible":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+                    elemResult.Selected = Convert.ToBoolean(model.Value);
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                default:
+                    return new Result(ResultStatus.NOT_FOUND);
             }
         }
     }

@@ -40,6 +40,7 @@
                 },
                 reloadEnded: function (grid) {
                     Museum.loadingOverlay(false, s.gridContainer)
+                    Museum.initXEditElem();
                 },
                 reloadFailed: function (grid, result) {
                     Museum.loadingOverlay(false, s.gridContainer)
@@ -57,6 +58,7 @@
                 },
                 reloadEnded: function (grid) {
                     Museum.loadingOverlay(false, s.gridContainer)
+                    Museum.initXEditCategory();
                 },
                 reloadFailed: function (grid, result) {
                     Museum.loadingOverlay(false, s.gridContainer)
@@ -80,6 +82,49 @@
                 },
             });
 
+        },
+
+        initXEditCategory: function () {
+            $('.categoryNameCheck').editable({
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                }
+            });
+        },
+
+        initXEditElem: function () {
+            $('.elemTitleCheck').editable({
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                }
+            });
+
+            $('.elemAuthorCheck').editable({
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                }
+            });
+
+            $('.elemDescriptionCheck').editable({
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                }
+            });
+
+            $('.elemVisibleCheck').editable({
+                source: [
+                    { value: 'True', text: 'Igen' },
+                    { value: 'False', text: 'Nem' },
+                ],
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                }
+            });
         },
 
         bindUIActions: function () {

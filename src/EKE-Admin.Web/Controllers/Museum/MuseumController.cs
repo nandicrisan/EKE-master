@@ -191,5 +191,16 @@ namespace EKE_Admin.Web.Controllers
             TempData["ErrorMessage"] = string.Format("Hiba a törlés során: Nem létező paraméter");
             return RedirectToAction("Tag");
         }
+
+        #region XEdit
+        [HttpPost]
+        public IActionResult Update(XEditVM model)
+        {
+            var mappedModel = _mapper.Map<XEditSM>(model);
+            var result = _museumService.Update(mappedModel);
+            if (result.IsOk()) return Json(200);
+            return Json(result.Status);
+        }
+        #endregion
     }
 }

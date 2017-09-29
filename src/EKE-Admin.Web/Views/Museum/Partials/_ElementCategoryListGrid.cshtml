@@ -6,10 +6,10 @@
     .Grid(Model)
     .Build(columns =>
     {
-        columns.Add(model => model.Name).Titled("Név");
-        columns.Add(model => model.Parent != null ? model.Parent.Name : "").Titled("Szülő kategória");
+        columns.Add(model => $"<a href='#' class='categoryNameCheck' data-type='text' data-pk=" + model.Id + " data-url='/Museum/Update' data-title='Név' data-name='CategoryName'>" + model.Name + "</a>").Titled("Név").Encoded(false).Filterable(true).Sortable(true);
+        columns.Add(model => model.Parent != null ? model.Parent.Name : "").Titled("Szülő kategória").MultiFilterable(true);
         columns.Add(model => model.DateCreated).Titled("Hozzáadva");
-        columns.Add(model => model.Author).Titled("Hozzáadta");
+        columns.Add(model => model.Author).Titled("Hozzáadta").MultiFilterable(true);
         columns.Add(model => Html.ActionLink("Törlés", "DeleteElementCategory", "Museum", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
     })
     .Pageable()

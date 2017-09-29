@@ -13,12 +13,12 @@
     .Grid(Model)
     .Build(columns =>
     {
-        columns.Add(model => model.Title).Titled("Cím");
-        columns.Add(model => model.Author).Titled("Szerző");
+        columns.Add(model => $"<a href='#' class='elemTitleCheck' data-type='text' data-pk=" + model.Id + " data-url='/Museum/Update' data-title='Cím' data-name='ElemTitle'>" + model.Title + "</a>").Titled("Cím").Encoded(false).Filterable(true).Sortable(true);
+        columns.Add(model => $"<a href='#' class='elemAuthorCheck' data-type='text' data-pk=" + model.Id + " data-url='/Museum/Update' data-title='Szerző' data-name='ElemAuthor'>" + model.Author + "</a>").Titled("Szerző").Encoded(false).Filterable(true).Sortable(true);
         columns.Add(model => model.Category.Name).Titled("Kategória");
-        columns.Add(model => ConvertToHtmlType(model.Description)).Titled("Leírás");
+        columns.Add(model => $"<a href='#' class='elemDescriptionCheck' data-type='textarea' data-pk=" + model.Id + " data-url='/Museum/Update' data-title='Leírás' data-name='ElemDescription'>" + Html.Raw(model.Description) + "</a>").Titled("Leírás").Encoded(false).Css("elemDescription");
         columns.Add(model => model.DateCreated).Titled("Dátum");
-        columns.Add(model => model.Selected).Titled("Kiválasztott");
+        columns.Add(model => $"<a href='#' class='elemVisibleCheck' data-type='select' data-pk=" + model.Id + " data-url='/Museum/Update' data-title='Kiválasztott' data-name='ElemVisible'>" + model.Selected + "</a>").Titled("Kiválasztott").Encoded(false).Sortable(true);
         columns.Add(model => model.MediaElement.Count).Titled("Képek száma");
         columns.Add(model => Html.ActionLink("Törlés", "DeleteElement", "Museum", new { id = model.Id }, new { @class = "btn btn-default" })).Titled("Opciók").Encoded(false);
     })

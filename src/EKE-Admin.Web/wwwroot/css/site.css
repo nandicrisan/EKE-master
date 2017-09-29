@@ -80,3 +80,10 @@ textarea {
 .bolded {
     font-weight: bold;
 }
+
+.elemDescription {
+    max-width: 300px;
+    max-height: 60px;
+    white-space: nowrap;
+    overflow: -webkit-paged-y;
+}

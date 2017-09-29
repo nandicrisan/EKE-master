@@ -135,3 +135,7 @@ textarea {
         transform: rotate(360deg);
     }
 }
+
+#primary-menu div {
+    line-height: 1.5;
+}
