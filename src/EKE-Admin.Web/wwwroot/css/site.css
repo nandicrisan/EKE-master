@@ -87,3 +87,7 @@ textarea {
     white-space: nowrap;
     overflow: -webkit-paged-y;
 }
+
+.elem-grid .file-preview {
+    display: none;
+}

@@ -11,6 +11,7 @@ using EKE.Service.Services.Admin.Muzeum;
 using EKE.Data.Entities.Museum;
 using EKE_Admin.Web.ViewModels;
 using EKE.Service.ServiceModel;
+using Microsoft.AspNetCore.Http;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -59,7 +60,7 @@ namespace EKE_Admin.Web.Controllers
             }
 
             // Only grid string query values will be visible here.
-            return PartialView("Partials/_ElementListGrid", elements.Data);
+            return PartialView("Partials/_ElementListGrid", elements.Data.OrderByDescending(x => x.Id));
         }
 
         public IActionResult ElementCategoryListGrid()
@@ -190,6 +191,28 @@ namespace EKE_Admin.Web.Controllers
             }
             TempData["ErrorMessage"] = string.Format("Hiba a törlés során: Nem létező paraméter");
             return RedirectToAction("Tag");
+        }
+
+        public IActionResult GetCategories()
+        {
+            var model = new List<XEditSelect>();
+            var categories = _museumService.GetAllElementCategories();
+            if (!categories.IsOk())
+            {
+                TempData["ErrorMessage"] = string.Format("Hiba a lekérés során ({0} : {1})", categories.Status, categories.Message);
+                return View();
+            }
+
+            model = Mapper.Map<List<XEditSelect>>(categories.Data);
+            return Json(model);
+        }
+
+        [HttpPost]
+        public IActionResult UploadCover(ICollection<IFormFile> files, int id)
+        {
+            var result = _museumService.UpdateCover(files, id);
+            if (result.IsOk()) return Json(200);
+            return Json(result.Status);
         }
 
         #region XEdit

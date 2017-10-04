@@ -41,6 +41,7 @@
                 reloadEnded: function (grid) {
                     Museum.loadingOverlay(false, s.gridContainer)
                     Museum.initXEditElem();
+                    Museum.initCoverUploader();
                 },
                 reloadFailed: function (grid, result) {
                     Museum.loadingOverlay(false, s.gridContainer)
@@ -125,6 +126,30 @@
                     return params;
                 }
             });
+
+            $('.elemCategoryCheck').editable({
+                source: "/Museum/GetCategories",
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                },
+                sourceCache: true,
+            });
+
+            $('.elemDateCheck').editable({
+                format: 'YYYY-MM-DD',
+                viewformat: 'YYYY.MM.DD',
+                template: 'YYYY / MMMM / D',
+                combodate: {
+                    minYear: 1800,
+                    maxYear: 2017,
+                    minuteStep: 1
+                },
+                params: function (params) {
+                    params["__RequestVerificationToken"] = $('[name="__RequestVerificationToken"]').val();
+                    return params;
+                },
+            });
         },
 
         bindUIActions: function () {
@@ -177,6 +202,23 @@
                         showUpload: false,
                     });
                 },
+            });
+        },
+
+        initCoverUploader: function () {
+            $(".cover-uploader").fileinput({
+                language: "hu",
+                showUpload: true,
+                allowedFileExtensions: ["jpg", "png"],
+                uploadUrl: "/Museum/UploadCover",
+                uploadExtraData: function (previewId, index) {
+                    var elem = $(this)[0].$btnFile[0];
+                    return {
+                        __RequestVerificationToken: $('[name="__RequestVerificationToken"]').val(),
+                        id: $(elem).find(".cover-uploader").first().data('id'),
+                    };
+                },
+                uploadAsync: false,
             });
         },
     };

@@ -102,19 +102,20 @@ namespace EKE.Service.Services
             {
                 if (file.Length > 0)
                 {
-                    var uploadPath = Path.Combine(uploads, file.FileName);
+                    var mediaElem = new MediaElement();
+                    mediaElem.Name = String.Format("{0}_{1}", RandomString(10), file.FileName);
+
+                    var uploadPath = Path.Combine(uploads, mediaElem.Name);
                     using (var fileStream = new FileStream(uploadPath, FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
-                    var fileName = String.Format("r1_{0}", file.FileName);
+                    var fileName = String.Format("r1_{0}", mediaElem.Name);
                     var outputPath = Path.Combine(uploads, fileName);
                     var resize = ResizeImage(uploadPath, outputPath, scope);
 
-                    var mediaElem = new MediaElement();
-                    mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, resize.IsOk() ? fileName : file.FileName);
+                    mediaElem.OriginalName = String.Format("{0}/{1}", relativePath, resize.IsOk() ? fileName : mediaElem.Name);
                     mediaElem.Description = string.Format("{0}_{1}", year.ToString().Trim(), section.Trim());
-                    mediaElem.Name = RandomString(10);
                     mediaElem.Type = MediaTypesEnum.Image;
                     mediaElem.Scope = scope;
                     mediaElements.Add(mediaElem);

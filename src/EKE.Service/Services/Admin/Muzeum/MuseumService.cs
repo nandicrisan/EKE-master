@@ -8,6 +8,7 @@ using EKE.Service.ServiceModel;
 using EKE.Service.Utils;
 using LinqKit;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,6 +45,8 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result<List<Element>> Search(string keyword, int skip = 0);
 
         Result Update(XEditSM model);
+
+        Result<Element> UpdateCover(ICollection<IFormFile> files, int id);
     }
 
     public class MuseumService : BaseService, IMuseumService
@@ -466,9 +469,43 @@ namespace EKE.Service.Services.Admin.Muzeum
                     _elementRepo.Update(elemResult);
                     SaveChanges();
                     return new Result(ResultStatus.OK);
+                case "ElemCategory":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+
+                    var elemCategory = _elementCategoryRepo.GetById(Convert.ToInt32(model.Value));
+                    if (elemCategory == null) return new Result(ResultStatus.NOT_FOUND);
+
+                    elemResult.Category = elemCategory;
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
+                case "ElemDate":
+                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
+
+                    elemResult.DatePublished = Convert.ToDateTime(model.Value);
+                    _elementRepo.Update(elemResult);
+                    SaveChanges();
+                    return new Result(ResultStatus.OK);
                 default:
                     return new Result(ResultStatus.NOT_FOUND);
             }
+        }
+
+        public Result<Element> UpdateCover(ICollection<IFormFile> files, int id)
+        {
+            var result = _elementRepo.GetByIdIncluding(id, x => x.MediaElement);
+
+            if (result == null) return new Result<Element>(ResultStatus.NOT_FOUND);
+
+            if (files == null || files.Count == 0) return new Result<Element>(ResultStatus.ERROR);
+
+            result.MediaElement = _generalService.CreateMediaElements(files, result.DateCreated.Year, "1", ProjectBaseEnum.Muzeum);
+
+            _elementRepo.Update(result);
+            SaveChanges();
+            return new Result<Element>(result);
         }
     }
 }

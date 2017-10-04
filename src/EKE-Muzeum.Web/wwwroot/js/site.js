@@ -117,15 +117,16 @@
                 },
                 traditional: true,
                 success: function (data) {
-                    s.scrollPosition.data('page', parseInt(page + 1));
-                    s.appendResult.append(data);
-                    
-                    Museum.unbindUIActions();
-                    Museum.bindUIActions();
+                    if (data != null) {
+                        s.scrollPosition.data('page', parseInt(page + 1));
+                        s.appendResult.append(data);
 
-                    SEMICOLON.documentOnResize.init()
+                        Museum.unbindUIActions();
+                        Museum.bindUIActions();
 
-                    setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 3000);
+                        SEMICOLON.documentOnResize.init()
+                    }
+                    setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 1500);
                 },
                 error: function () {
 
@@ -151,7 +152,7 @@
                 success: function (data) {
                     $(".portfolio-item").remove();
                     s.appendResult.append(data);
-                    
+
                     Museum.closeElemDesc();
                     Museum.hideElemLoading();
                     Museum.unbindUIActions();

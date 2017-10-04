@@ -966,6 +966,8 @@ body.stretched .container-fullwidth {
 }
 
     .flexslider .slider-wrap > .slide {
+        height: 100%;
+        width: auto !important;
         display: none;
         -webkit-backface-visibility: hidden;
     }
@@ -5452,8 +5454,8 @@ body:not(.device-touch):not(.device-xs):not(.device-xxs) .portfolio-overlay {
 
 .portfolio-overlay a {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 55%;
     background-color: #C0B480;
     width: 40px !important;
     height: 40px !important;

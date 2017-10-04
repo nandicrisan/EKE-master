@@ -2,6 +2,7 @@
 using EKE.Data.Entities;
 using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity.AccountViewModels;
+using EKE.Data.Entities.Museum;
 using EKE.Service.ServiceModel;
 using System.Collections.Generic;
 
@@ -54,6 +55,10 @@ namespace EKE_Admin.Web.ViewModels.Configuration
                 .ForMember(dest => dest.PrimaryKey, opt => opt.MapFrom(src => src.pk))
                 .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.value))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.name));
+
+            CreateMap<ElementCategory, XEditSelect>()
+                .ForMember(dest => dest.text, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.value, opt => opt.MapFrom(src => src.Id));
         }
     }
 }
