@@ -222,13 +222,13 @@ Main = {
     },
 
     searchMethod: function (page, firstLoad) {
-        var searchFilter = {};
 
-        searchFilter.Page = 1
-        if (page != undefined) {
-            searchFilter.Page = page
+        if (firstLoad) {
+            $('#pagination-search').twbsPagination('destroy');
         }
 
+        var searchFilter = {};
+        searchFilter.Page = page;
         searchFilter.RangeTypeYear = true;
         searchFilter.RangeTypeSection = true;
 
@@ -276,9 +276,7 @@ Main = {
                 p.searchpartial.html(data);
                 s.searchButton.button("reset");
 
-                if (page == undefined) {
-                    Main.initPagination(true);
-                }
+                Main.initPagination(firstLoad);
 
                 $("body, html").animate({
                     scrollTop: $($("#posts")).offset().top - 250
@@ -295,12 +293,11 @@ Main = {
         $('#pagination-search').twbsPagination({
             totalPages: Math.ceil(parseInt($(".foundItems").text(), 10) / 8),
             visiblePages: 5,
+            initiateStartPageClick: false,
             onPageClick: function (event, page) {
-                if (!firstLoad) {
-                    p.searchpartial.children("#posts").html(t.searchLoader);
-                    Main.searchMethod(page, firstLoad);
-                } else { firstLoad = false; }
-            }
+                p.searchpartial.children("#posts").html(t.searchLoader);
+                Main.searchMethod(page, false);
+            },
         });
     },
 

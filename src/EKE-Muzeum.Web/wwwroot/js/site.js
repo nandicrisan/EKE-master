@@ -106,6 +106,9 @@
                 SEMICOLON.documentOnResize.init()
             }
 
+            elementResult.attr('data-notify-type', data.alert).attr('data-notify-msg', "Betöltés").html('');
+            SEMICOLON.widget.notifications(elementResult);
+
             $.ajax({
                 type: "GET",
                 url: "/Home/GetElements",
@@ -117,7 +120,7 @@
                 },
                 traditional: true,
                 success: function (data) {
-                    if (data != null) {
+                    if (data != "") {
                         s.scrollPosition.data('page', parseInt(page + 1));
                         s.appendResult.append(data);
 
@@ -125,6 +128,7 @@
                         Museum.bindUIActions();
 
                         SEMICOLON.documentOnResize.init()
+                        SEMICOLON.widget.loadFlexSlider();
                     }
                     setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 1500);
                 },
