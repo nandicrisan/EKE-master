@@ -11,7 +11,8 @@
             prevElem: $(".prevElemDesc"),
             closeElem: $(".closeElemDesc"),
             elemDesc: $("#elemDesc"),
-            elemLoader: $(".page-title-loading")
+            elemLoader: $(".page-title-loading"),
+            elemBottomLoader: $(".page-bottom-loading")
         },
 
         initPage: function () {
@@ -106,8 +107,7 @@
                 SEMICOLON.documentOnResize.init()
             }
 
-            elementResult.attr('data-notify-type', data.alert).attr('data-notify-msg', "Betöltés").html('');
-            SEMICOLON.widget.notifications(elementResult);
+            Museum.showElemBottomLoading();
 
             $.ajax({
                 type: "GET",
@@ -126,6 +126,7 @@
 
                         Museum.unbindUIActions();
                         Museum.bindUIActions();
+                        Museum.hideElemBottomLoading();
 
                         SEMICOLON.documentOnResize.init()
                         SEMICOLON.widget.loadFlexSlider();
@@ -280,5 +281,13 @@
 
         hideElemLoading: function () {
             e.elemLoader.slideUp(500);
-        }
+        },
+
+        showElemBottomLoading: function () {
+            e.elemBottomLoader.slideDown(250);
+        },
+
+        hideElemBottomLoading: function () {
+            e.elemBottomLoader.slideUp(250);
+        },
     };
