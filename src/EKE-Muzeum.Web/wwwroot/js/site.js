@@ -83,8 +83,12 @@
             })
         },
 
-        closeElemDesc: function () {
+        closeElemDesc: function (id) {
             e.elemDesc.slideUp(500);
+            if (id != undefined) {
+                setTimeout(function () { Museum.goTo($("a.elemTitle[data-id=" + id + "]")); }, 600);
+            }
+
         },
 
         scrollToAjax: function () {
@@ -130,6 +134,8 @@
 
                         SEMICOLON.documentOnResize.init()
                         SEMICOLON.widget.loadFlexSlider();
+                    } else {
+                        $(".page-bottom-loading h4").text("Az összes elem betöltődött!");
                     }
                     setTimeout(function () { $(window).on("scroll", Museum.scrollToAjax) }, 1500);
                 },
@@ -199,6 +205,7 @@
 
                     SEMICOLON.documentOnResize.init()
                     SEMICOLON.widget.loadFlexSlider();
+
                 },
                 error: function () {
 
@@ -207,6 +214,7 @@
         },
 
         getElement: function (id) {
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
             e.elemDesc.slideUp(500);
             Museum.showElemLoading();
             $.ajax({
@@ -232,7 +240,7 @@
             Museum.showElemLoading();
             $.ajax({
                 type: "GET",
-                url: "/Home/NextElement",
+                url: "/Home/PrevElement",
                 context: document.body,
                 data: {
                     id: id,
@@ -253,7 +261,7 @@
             Museum.showElemLoading();
             $.ajax({
                 type: "GET",
-                url: "/Home/PrevElement",
+                url: "/Home/NextElement",
                 context: document.body,
                 data: {
                     id: id,
@@ -290,4 +298,10 @@
         hideElemBottomLoading: function () {
             e.elemBottomLoader.slideUp(250);
         },
+
+        goTo: function (obj) {
+            $('html, body').animate({
+                scrollTop: obj.offset().top - 200 + 'px'
+            }, 'slow');
+        }
     };

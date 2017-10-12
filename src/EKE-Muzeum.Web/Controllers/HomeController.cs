@@ -48,13 +48,13 @@ namespace EKE_Muzeum.Web.Controllers
 
         public IActionResult NextElement(int id)
         {
-            var result = _museumService.GetElementById(id);
+            var result = _museumService.GetNeighbourElementById(id, true);
             return PartialView("Partials/_ElementDescription", result.Data);
         }
 
         public IActionResult PrevElement(int id)
         {
-            var result = _museumService.GetElementById(id);
+            var result = _museumService.GetNeighbourElementById(id, false);
             return PartialView("Partials/_ElementDescription", result.Data);
         }
 

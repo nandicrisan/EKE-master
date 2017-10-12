@@ -8,7 +8,7 @@
         <h1>@Model.Title</h1>
         <div id="portfolio-navigation">
             <a href="#"><i class="icon-angle-left" onclick="Museum.getPrevElement('@Model.Id')"></i></a>
-            <a href="#"><i class="icon-line-grid" onclick="Museum.closeElemDesc()"></i></a>
+            <a href="#"><i class="icon-line-grid" onclick="Museum.closeElemDesc('@Model.Id')"></i></a>
             <a href="#"><i class="icon-angle-right" onclick="Museum.getNextElement('@Model.Id')"></i></a>
         </div>
     </div>

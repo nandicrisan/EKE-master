@@ -80,6 +80,17 @@
         <script src="~/js/site/functions.js" asp-append-version="true"></script>
 
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108004248-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-108004248-1');
+        </script>
+
     </environment>
 
     @RenderSection("Scripts", required: false)

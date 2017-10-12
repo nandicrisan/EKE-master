@@ -21,6 +21,7 @@ namespace EKE.Service.Services.Admin.Muzeum
     public interface IMuseumService : IBaseService
     {
         Result<Element> GetElementById(int id);
+        Result<Element> GetNeighbourElementById(int id, bool nextTo);
         Result<List<Element>> GetAllElements();
         Result<List<Element>> GetSelectedRows();
         Result<List<Element>> GetAllElementsByIncluding(Expression<Func<Element, bool>> predicate, params Expression<Func<Element, object>>[] inclProp);
@@ -506,6 +507,29 @@ namespace EKE.Service.Services.Admin.Muzeum
             _elementRepo.Update(result);
             SaveChanges();
             return new Result<Element>(result);
+        }
+
+        public Result<Element> GetNeighbourElementById(int id, bool nextTo)
+        {
+            try
+            {
+                var results = _elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList();
+                Element prev = results.FirstOrDefault();
+                Element nx = results.LastOrDefault();
+                foreach (var item in results)
+                {
+                    if (item.Id < id && item.Id > prev.Id) { prev = item; }
+                    if (item.Id > id && item.Id < nx.Id) { nx = item; }
+                }
+
+                if (nextTo && nx != null) return new Result<Element>(nx);
+                if (!nextTo && prev != null) return new Result<Element>(prev);
+                return new Result<Element>(results.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                return new Result<Element>(ResultStatus.ERROR, ex.Message);
+            }
         }
     }
 }
