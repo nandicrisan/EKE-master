@@ -22,6 +22,7 @@
             this.initMenuBar();
             this.bindUIActions();
             this.initCookies();
+            this.initModal();
         },
 
         init: function () {
@@ -52,6 +53,19 @@
 
         initCookies: function () {
             $.cookieBar({ message: 'Oldalainkon HTTP-sütiket használunk a jobb működésért. Elfogadom ezek használatát.', acceptText: 'Rendben', bottom: true, fixed: true, expireDays: 1 })
+        },
+
+        initModal: function () {
+            $("#initModal").iziModal({
+                title: 'Megragadni a pillanatot',
+                subtitle: '',
+                headerColor: '#C0B480',
+                borderBottom: true,
+                padding: 25,
+                
+            });
+
+            $('#initModal').iziModal('open');
         },
 
         unbindUIActions: function () {
