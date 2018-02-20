@@ -12,13 +12,12 @@ using EKE.Service.Services.Admin.Muzeum;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NonFactors.Mvc.Grid;
 using System;
-using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace EKE_Admin.Web
 {
@@ -105,13 +104,14 @@ namespace EKE_Admin.Web
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
 
-                // Cookie settings
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
-
                 // User settings
                 options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/LogIn";
+                options.LogoutPath = "/Account/LogOff";
             });
         }
 
@@ -132,7 +132,7 @@ namespace EKE_Admin.Web
             }
 
             app.UseStaticFiles();
-            app.UseIdentity();
+            app.UseAuthentication();
             app.UseSession();
 
             app.UseMvc(routes =>
@@ -140,15 +140,6 @@ namespace EKE_Admin.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-            });
-
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                LoginPath = "/account/login",
-
-                AuthenticationScheme = "Cookies",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true
             });
 
             seeder.SeedAdminUser();

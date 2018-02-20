@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace EKE.Service.Services.Admin
 {
@@ -95,13 +94,13 @@ namespace EKE.Service.Services.Admin
 
         private static Func<Article, object> GetSortedFunction(ArticleSearch filter)
         {
-            if (filter == null) return new Func<Article, object>(q => q.DateCreated);
+            if (filter == null) return q => q.DateCreated;
             switch (filter.Order)
             {
                 case 1:
-                    return new Func<Article, object>(c => c.Title);
+                    return c => c.Title;
                 default:
-                    return new Func<Article, object>(q => q.DateCreated);
+                    return q => q.DateCreated;
             }
         }
 
@@ -110,8 +109,6 @@ namespace EKE.Service.Services.Admin
             var predicate = PredicateBuilder.New<Article>(true);
             if (filter.Keyword != null)
             {
-                //predicate = predicate.And(p => p.ArticleTag.Any(q => q.Tag.Name.Contains(filter.Keyword)) || p.Author.Name.ToLower().Contains(filter.Keyword) ||
-                // p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
                 var dictionary = _generalService.GetAllSynonymsByName(filter.Keyword);
                 predicate = predicate.And(p => p.Content.ToLower().Contains(filter.Keyword) || p.Title.ToLower().Contains(filter.Keyword));
 
@@ -138,10 +135,7 @@ namespace EKE.Service.Services.Admin
             {
                 if (filter.PublishYearRange.Count > 0)
                 {
-                    foreach (var item in filter.PublishYearRange)
-                    {
-                        predicate = predicate.And(p => p.Magazine.PublishYear == Convert.ToInt32(filter.PublishYearRange.FirstOrDefault()));
-                    }
+                    predicate = filter.PublishYearRange.Aggregate(predicate, (current, item) => current.And(p => p.Magazine.PublishYear == Convert.ToInt32(item)));
                 }
             }
 
@@ -153,10 +147,7 @@ namespace EKE.Service.Services.Admin
             {
                 if (filter.PublishSectionRange.Count > 0)
                 {
-                    foreach (var item in filter.PublishSectionRange)
-                    {
-                        predicate = predicate.And(p => p.Magazine.PublishSection.Contains(filter.PublishSectionRange.FirstOrDefault()));
-                    }
+                    predicate = filter.PublishSectionRange.Aggregate(predicate, (current, item) => current.And(p => p.Magazine.PublishSection.Contains(item)));
                 }
             }
             return predicate;
@@ -237,7 +228,7 @@ namespace EKE.Service.Services.Admin
             {
                 if (model.Files != null)
                 {
-                    var uploads = Path.Combine(_environment.WebRootPath, String.Format("Uploads/{0}/{1}", model.Magazine.PublishYear, model.Magazine.PublishSection));
+                    var uploads = Path.Combine(_environment.WebRootPath, $"Uploads/{model.Magazine.PublishYear}/{model.Magazine.PublishSection}");
                     if (!Directory.Exists(uploads))
                         Directory.CreateDirectory(uploads);
 
@@ -251,10 +242,12 @@ namespace EKE.Service.Services.Admin
                                 file.CopyToAsync(fileStream);
                             }
                         }
-                        var mediaElem = new MediaElement();
-                        mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
-                        mediaElem.Name = _generalService.RandomString(10);
-                        mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                        var mediaElem = new MediaElement
+                        {
+                            OriginalName = $"{uploads}/{file.Name}",
+                            Name = _generalService.RandomString(10),
+                            Type = Data.Entities.Enums.MediaTypesEnum.Image
+                        };
                         mediaElements.Add(mediaElem);
                     }
 
@@ -266,7 +259,8 @@ namespace EKE.Service.Services.Admin
                     return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
 
                 var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
-                if (!magazine.Any())
+                var enumerable = magazine as IList<Magazine> ?? magazine.ToList();
+                if (!enumerable.Any())
                 {
                     model.Magazine.Category = magCat;
                     model.Magazine.Title = String.Format("{0} / {1}", model.Magazine.PublishYear, model.Magazine.PublishSection);
@@ -275,27 +269,16 @@ namespace EKE.Service.Services.Admin
                 }
                 else
                 {
-                    model.Magazine = magazine.FirstOrDefault();
+                    model.Magazine = enumerable.FirstOrDefault();
                 }
 
-                var author = new Author();
-                if (model.Author.Id == 0)
-                {
-                    author = new Author { Name = model.Author.Name };
-                }
-                else
-                {
-                    author = _authorRepo.GetById(model.Author.Id);
-                }
+                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _authorRepo.GetById(model.Author.Id);
                 model.Author = author;
-                model.Slug = _generalService.GenerateSlug(model.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
+                if (model.Magazine != null)
+                    model.Slug = _generalService.GenerateSlug(model.Title, model.Magazine.PublishYear,
+                        model.Magazine.PublishSection);
                 model.PublishedBy = userName;
                 model.DateCreated = DateTime.Now;
-
-                //foreach (var item in model.ArticleTags)
-                //{
-                //    var tag = _tagRepo.GetById(Convert.ToInt32(item));
-                //}
 
                 _articleRepo.Add(model);
                 SaveChanges();
@@ -328,10 +311,12 @@ namespace EKE.Service.Services.Admin
                                 file.CopyToAsync(fileStream);
                             }
                         }
-                        var mediaElem = new MediaElement();
-                        mediaElem.OriginalName = String.Format("{0}/{1}", uploads, file.Name);
-                        mediaElem.Name = _generalService.RandomString(10);
-                        mediaElem.Type = Data.Entities.Enums.MediaTypesEnum.Image;
+                        var mediaElem = new MediaElement
+                        {
+                            OriginalName = $"{uploads}/{file.Name}",
+                            Name = _generalService.RandomString(10),
+                            Type = Data.Entities.Enums.MediaTypesEnum.Image
+                        };
                         mediaElements.Add(mediaElem);
                     }
 
@@ -343,34 +328,22 @@ namespace EKE.Service.Services.Admin
                     return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
 
                 var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
-                if (!magazine.Any())
+                var enumerable = magazine as IList<Magazine> ?? magazine.ToList();
+                if (!enumerable.Any())
                 {
                     model.Magazine.Category = magCat;
-                    model.Magazine.Title = String.Format("{0} / {1}", model.Magazine.PublishYear, model.Magazine.PublishSection);
+                    model.Magazine.Title = $"{model.Magazine.PublishYear} / {model.Magazine.PublishSection}";
                     model.Magazine.Slug = _generalService.GenerateSlug(model.Magazine.Title, model.Magazine.PublishYear, model.Magazine.PublishSection);
                     model.Magazine.DateCreated = DateTime.Now;
                 }
                 else
                 {
-                    model.Magazine = magazine.FirstOrDefault();
+                    model.Magazine = enumerable.FirstOrDefault();
                 }
 
-                var author = new Author();
-                if (model.Author.Id == 0)
-                {
-                    author = new Author { Name = model.Author.Name };
-                }
-                else
-                {
-                    author = _authorRepo.GetById(model.Author.Id);
-                }
+                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _authorRepo.GetById(model.Author.Id);
                 model.Author = author;
                 model.PublishedBy = username;
-
-                //foreach (var item in model.ArticleTags)
-                //{
-                //    var tag = _tagRepo.GetById(Convert.ToInt32(item));
-                //}
 
                 _articleRepo.Update(model);
                 SaveChanges();
@@ -410,16 +383,14 @@ namespace EKE.Service.Services.Admin
             var articles = _articleRepo.GetAll();
             foreach (var item in articles)
             {
-                if (!string.IsNullOrEmpty(item.Content))
-                {
-                    var content = item.Content;
+                if (string.IsNullOrEmpty(item.Content)) continue;
+                var content = item.Content;
 
-                    content = content.Replace("\r\n", "<br />");
-                    item.Content = content;
+                content = content.Replace("\r\n", "<br />");
+                item.Content = content;
 
-                    _articleRepo.Update(item);
-                    SaveChanges();
-                }
+                _articleRepo.Update(item);
+                SaveChanges();
             }
             return new Result(ResultStatus.OK);
         }

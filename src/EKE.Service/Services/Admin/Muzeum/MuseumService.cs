@@ -1,20 +1,15 @@
-﻿using EKE.Data.DataViewModels;
-using EKE.Data.Entities.Enums;
-using EKE.Data.Entities.Gyopar;
+﻿using EKE.Data.Entities.Enums;
 using EKE.Data.Entities.Museum;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
 using EKE.Service.ServiceModel;
 using EKE.Service.Utils;
 using LinqKit;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace EKE.Service.Services.Admin.Muzeum
 {
@@ -57,17 +52,14 @@ namespace EKE.Service.Services.Admin.Muzeum
         private readonly IEntityBaseRepository<ElementTag> _elementTagsRepo;
 
         private readonly IGeneralService _generalService;
-        private readonly IHostingEnvironment _environment;
 
         public MuseumService(
             IEntityBaseRepository<Element> elementRepository,
             IEntityBaseRepository<ElementCategory> elementCategoryRepository,
             IEntityBaseRepository<ElementTag> elementTagRepository,
-            IHostingEnvironment environment,
             IGeneralService generalService,
             IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _environment = environment;
             _generalService = generalService;
             _elementCategoryRepo = elementCategoryRepository;
             _elementRepo = elementRepository;
@@ -79,7 +71,7 @@ namespace EKE.Service.Services.Admin.Muzeum
             try
             {
                 var result = _elementRepo.FindBy(x => x.Title.Trim().ToLower() == model.Element.Title.Trim().ToLower());
-                if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+                if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
                 var category = _elementCategoryRepo.GetById(model.SelectedCategoryId);
                 if (category == null) return new Result(ResultStatus.NOT_FOUND, "Category");
@@ -113,11 +105,13 @@ namespace EKE.Service.Services.Admin.Muzeum
             try
             {
                 var result = _elementCategoryRepo.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
-                if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+                if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
-                var model = new ElementCategory();
-                model.Author = author;
-                model.Name = text;
+                var model = new ElementCategory
+                {
+                    Author = author,
+                    Name = text
+                };
 
                 if (parentCategoryId != 0)
                 {
@@ -349,11 +343,13 @@ namespace EKE.Service.Services.Admin.Muzeum
             try
             {
                 var result = _elementTagsRepo.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
-                if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+                if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
-                var model = new ElementTag();
-                model.Author = author;
-                model.Name = text;
+                var model = new ElementTag
+                {
+                    Author = author,
+                    Name = text
+                };
 
                 _elementTagsRepo.Add(model);
                 SaveChanges();
@@ -431,12 +427,11 @@ namespace EKE.Service.Services.Admin.Muzeum
 
         public Result Update(XEditSM model)
         {
-            var catResult = new ElementCategory();
-            var elemResult = new Element();
+            Element elemResult;
             switch (model.Name)
             {
                 case "CategoryName":
-                    catResult = _elementCategoryRepo.GetById(model.PrimaryKey);
+                    var catResult = _elementCategoryRepo.GetById(model.PrimaryKey);
                     if (catResult == null) return new Result(ResultStatus.NOT_FOUND);
                     catResult.Name = model.Value;
                     _elementCategoryRepo.Update(catResult);

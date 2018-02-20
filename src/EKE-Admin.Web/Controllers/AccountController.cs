@@ -539,7 +539,6 @@ namespace EKE_Admin.Web.Controllers
                     return PartialView("Layout/_ErrorHandling", "Hiba a törlés során. Nem létező felhasználó!");
 
                 var user = await _userManager.FindByIdAsync(id);
-                var logins = user.Logins;
                 char separator = ',';
                 if (user.RoleAssigned != null)
                 {
@@ -548,11 +547,6 @@ namespace EKE_Admin.Web.Controllers
                     {
                         await _userManager.RemoveFromRoleAsync(user, item);
                     }
-                }
-
-                foreach (var login in logins.ToList())
-                {
-                    await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
                 }
 
                 await _userManager.DeleteAsync(user);

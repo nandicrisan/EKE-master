@@ -1,34 +1,165 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>EKE-Gyopar.Web</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>EKE-Gyopar.Web</PackageId>
     <RuntimeIdentifiers>win10-x64;win81-x64;win8-x64;win7-x64</RuntimeIdentifiers>
-    <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>2.0</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\images\bckgrnd\honlapra1.jpg" />
-    <Content Include="wwwroot\images\bckgrnd\honlapra2.jpg" />
-    <Content Include="wwwroot\images\bckgrnd\honlapra3.jpg" />
-    <Content Include="wwwroot\images\components\EGY_borito_H.jpg" />
-    <Content Include="wwwroot\images\icons\submenu-dark.png" />
-    <Content Include="wwwroot\images\sprite-skin-nice.png" />
-    <Content Include="wwwroot\images\Uploads\egyebek\01 Bakancs H.jpg" />
-    <Content Include="wwwroot\images\Uploads\egyebek\02 Memoriajatek jo.jpg" />
-    <Content Include="wwwroot\images\Uploads\egyebek\03 Falinaptar jo.jpg" />
-    <Content Include="wwwroot\images\Uploads\egyebek\04 Gyoparka jo.jpg" />
-    <Content Include="wwwroot\js\components\pagination.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="wwwroot\**\*">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    <None Include="wwwroot\css\site\fonts\font-icons-snapchat.svg" />
+    <None Include="wwwroot\css\site\fonts\font-icons.svg" />
+    <None Include="wwwroot\css\site\fonts\lined-icons.svg" />
+    <None Include="wwwroot\css\site\fonts\realestate.svg" />
+    <None Include="wwwroot\css\site\fonts\Simple-Line-Icons.dev.svg" />
+    <None Include="wwwroot\css\site\fonts\Simple-Line-Icons.svg" />
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\images\banner4.svg" />
+    <None Include="wwwroot\js\components\bs-select.js" />
+    <None Include="wwwroot\js\components\bs-switches.js" />
+    <None Include="wwwroot\js\components\pagination.js" />
+    <None Include="wwwroot\js\components\rangeslider.min.js" />
+    <None Include="wwwroot\js\home.min.js" />
+    <None Include="wwwroot\js\magazine-search.js" />
+    <None Include="wwwroot\js\maps\jquery.gmap.js" />
+    <None Include="wwwroot\js\pages\main.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\js\site.min.js" />
+    <None Include="wwwroot\js\site\functions.js" />
+    <None Include="wwwroot\js\site\plugins.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery.cookiebar\dist\jquery.cookiebar.min.js" />
+    <None Include="wwwroot\lib\jquery.cookiebar\Gruntfile.js" />
+    <None Include="wwwroot\lib\jquery.cookiebar\jquery.cookiebar.js" />
+    <None Include="wwwroot\lib\jquery.cookiebar\LICENSE" />
+    <None Include="wwwroot\lib\jquery.cookiebar\README.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\noty\.babelrc" />
+    <None Include="wwwroot\lib\noty\.codeclimate.yml" />
+    <None Include="wwwroot\lib\noty\.editorconfig" />
+    <None Include="wwwroot\lib\noty\.github\ISSUE_TEMPLATE.md" />
+    <None Include="wwwroot\lib\noty\.gitignore" />
+    <None Include="wwwroot\lib\noty\.travis.yml" />
+    <None Include="wwwroot\lib\noty\demo\bouncejs\bounce.js" />
+    <None Include="wwwroot\lib\noty\demo\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\noty\demo\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\lib\noty\demo\fonts\gothamrnd-bold.svg" />
+    <None Include="wwwroot\lib\noty\demo\fonts\gothamrnd-book.svg" />
+    <None Include="wwwroot\lib\noty\demo\fonts\gothamrnd-light.svg" />
+    <None Include="wwwroot\lib\noty\demo\fonts\gothamrnd-medium.svg" />
+    <None Include="wwwroot\lib\noty\demo\sendpush.js" />
+    <None Include="wwwroot\lib\noty\demo\store.everything.min.js" />
+    <None Include="wwwroot\lib\noty\docs\.nojekyll" />
+    <None Include="wwwroot\lib\noty\docs\animations.md" />
+    <None Include="wwwroot\lib\noty\docs\api.md" />
+    <None Include="wwwroot\lib\noty\docs\confirm.md" />
+    <None Include="wwwroot\lib\noty\docs\installation.md" />
+    <None Include="wwwroot\lib\noty\docs\options.md" />
+    <None Include="wwwroot\lib\noty\docs\push.md" />
+    <None Include="wwwroot\lib\noty\docs\README.md" />
+    <None Include="wwwroot\lib\noty\docs\types.md" />
+    <None Include="wwwroot\lib\noty\docs\v2\fonts\prestashop-official-pack.svg" />
+    <None Include="wwwroot\lib\noty\docs\v2\img\projects\logo_JetBrains_4.svg" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\documentation.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\fastclick.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\google-code-prettify\prettify.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\jquery-1.10.2.min.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\main.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\.gitignore" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\demo\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\demo\jquery-1.7.2.min.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\demo\jquery-1.8.0.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\demo\notification_html.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\Gruntfile.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\jquery.noty.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\bottom.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\bottomCenter.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\bottomLeft.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\bottomRight.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\center.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\centerLeft.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\centerRight.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\inline.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\top.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\topCenter.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\topLeft.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\layouts\topRight.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\packaged\jquery.noty.packaged.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\packaged\jquery.noty.packaged.min.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\promise.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\themes\bootstrap.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\themes\default.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\themes\metroui.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\themes\relax.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\js\noty\themes\semanticUI.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\noty-2.4.1\README.markdown" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\share.min.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\showdown\showdown.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\showdown\showdown.js.map" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\showdown\showdown.min.js" />
+    <None Include="wwwroot\lib\noty\docs\v2\vendor\showdown\showdown.min.js.map" />
+    <None Include="wwwroot\lib\noty\docs\_assets\bounce.min.js" />
+    <None Include="wwwroot\lib\noty\docs\_assets\docs.js" />
+    <None Include="wwwroot\lib\noty\docs\_assets\docsify.js" />
+    <None Include="wwwroot\lib\noty\docs\_media\browserstack.svg" />
+    <None Include="wwwroot\lib\noty\docs\_media\logo_JetBrains_4.svg" />
+    <None Include="wwwroot\lib\noty\docs\_navbar.md" />
+    <None Include="wwwroot\lib\noty\docs\_sidebar.md" />
+    <None Include="wwwroot\lib\noty\Gruntfile.js" />
+    <None Include="wwwroot\lib\noty\lib\noty.css.map" />
+    <None Include="wwwroot\lib\noty\lib\noty.js" />
+    <None Include="wwwroot\lib\noty\lib\noty.js.map" />
+    <None Include="wwwroot\lib\noty\lib\noty.min.js" />
+    <None Include="wwwroot\lib\noty\lib\noty.min.js.map" />
+    <None Include="wwwroot\lib\noty\manifest.json.template" />
+    <None Include="wwwroot\lib\noty\postcss.config.js" />
+    <None Include="wwwroot\lib\noty\README.markdown" />
+    <None Include="wwwroot\lib\noty\service-worker.js.template" />
+    <None Include="wwwroot\lib\noty\src\api.js" />
+    <None Include="wwwroot\lib\noty\src\button.js" />
+    <None Include="wwwroot\lib\noty\src\index.js" />
+    <None Include="wwwroot\lib\noty\src\noty.scss" />
+    <None Include="wwwroot\lib\noty\src\push.js" />
+    <None Include="wwwroot\lib\noty\src\themes\bootstrap-v3.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\bootstrap-v4.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\metroui.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\mint.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\nest.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\relax.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\semanticui.scss" />
+    <None Include="wwwroot\lib\noty\src\themes\sunset.scss" />
+    <None Include="wwwroot\lib\noty\src\utils.js" />
+    <None Include="wwwroot\lib\noty\test\unit\init.test.js" />
+    <None Include="wwwroot\lib\noty\test\unit\phantom.js" />
+    <None Include="wwwroot\lib\noty\test\vendor\jquery-slim.min.js" />
+    <None Include="wwwroot\lib\noty\test\vendor\qunit.js" />
+    <None Include="wwwroot\lib\noty\webpack.config.js" />
+    <None Include="wwwroot\_references.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,28 +168,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
-    <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
     <PackageReference Include="BundlerMinifier.Core" Version="2.4.337" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
     <PackageReference Include="PaulMiami.AspNetCore.Mvc.Recaptcha" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\Uploads\covers\" />
+    <TypeScriptCompile Include="wwwroot\lib\noty\index.d.ts" />
   </ItemGroup>
 
 </Project>

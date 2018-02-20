@@ -28,7 +28,7 @@
         init: function () {
             window.localStorage.setItem("scrollable", true);
             $(window).load(function () {
-                SEMICOLON.documentOnResize.init()
+                SEMICOLON.documentOnResize.init();
             });
             $(window).scroll(Museum.scrollToAjax);
         },
@@ -41,7 +41,7 @@
                 traditional: true,
                 success: function (data) {
                     $(".primary-menu").html(data);
-                    SEMICOLON.header.init()
+                    SEMICOLON.header.init();
                     Museum.unbindUIActions();
                     Museum.bindUIActions();
                 },
@@ -71,8 +71,8 @@
         unbindUIActions: function () {
             $("#search").off();
             $("#search2").off();
-            $(".elemTitle").off()
-            $("#primary-menu div").off()
+            $(".elemTitle").off();
+            $("#primary-menu div").off();
         },
 
         bindUIActions: function () {
@@ -117,12 +117,12 @@
 
         getElementsByPage: function () {
             var category = s.scrollPosition.data("category");
-            var page = parseInt(s.scrollPosition.data("page"), 10)
+            var page = parseInt(s.scrollPosition.data("page"), 10);
             var keyword = s.scrollPosition.data("keyword");
 
             if (page % 5 === 0 && page != 0) {
                 $(".appendResult .portfolio-item").slice(0, 48).remove();
-                SEMICOLON.documentOnResize.init()
+                SEMICOLON.documentOnResize.init();
             }
 
             Museum.showElemBottomLoading();
@@ -146,7 +146,7 @@
                         Museum.bindUIActions();
                         Museum.hideElemBottomLoading();
 
-                        SEMICOLON.documentOnResize.init()
+                        SEMICOLON.documentOnResize.init();
                         SEMICOLON.widget.loadFlexSlider();
                     } else {
                         $(".page-bottom-loading h4").text("Az összes elem betöltődött!");
@@ -157,6 +157,7 @@
 
                 }
             });
+            SEMICOLON.documentOnResize.init();
         },
 
         search: function (keyword) {
@@ -183,13 +184,15 @@
                     Museum.unbindUIActions();
                     Museum.bindUIActions();
 
-                    SEMICOLON.documentOnResize.init()
+                    SEMICOLON.documentOnResize.init();
                     SEMICOLON.widget.loadFlexSlider();
                 },
                 error: function () {
 
                 }
             });
+
+            SEMICOLON.documentOnResize.init();
         },
 
         getElementsByCategory: function (category) {
@@ -217,14 +220,14 @@
                     Museum.unbindUIActions();
                     Museum.bindUIActions();
 
-                    SEMICOLON.documentOnResize.init()
                     SEMICOLON.widget.loadFlexSlider();
-
+                    SEMICOLON.documentOnResize.init();
                 },
                 error: function () {
 
                 }
             });
+            SEMICOLON.documentOnResize.init();
         },
 
         getElement: function (id) {
