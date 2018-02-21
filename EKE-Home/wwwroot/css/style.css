@@ -1033,12 +1033,12 @@ body.stretched #header.full-header .container {
 
 
 #logo {
-	position: relative;
-	float: left;
-	font-family: 'Raleway', sans-serif;
-	font-size: 36px;
-	line-height: 100%;
-	margin-right: 40px;
+    position: relative;
+    float: left;
+    font-family: 'Raleway', sans-serif;
+    font-size: 36px;
+    line-height: 100%;
+    margin: 10px 40px 10px 0;
 }
 
 #header.full-header #logo {
@@ -2020,13 +2020,13 @@ body:not(.device-md):not(.device-sm):not(.device-xs) #header.transparent-header:
 #header,
 #header-wrap,
 #logo img {
-	height: 100px;
+	height: 180px;
 	-webkit-transition: height .4s ease, opacity .3s ease;
 	-o-transition: height .4s ease, opacity .3s ease;
 	transition: height .4s ease, opacity .3s ease;
 }
 
-#header.sticky-style-2 { height: 161px; }
+#header.sticky-style-2 { height: 261px; }
 
 #header.sticky-style-3 { height: 181px; }
 
@@ -12520,11 +12520,10 @@ label.checkbox { padding-left: 20px; }
 /* ----------------------------------------------------------------
 	Page Transitions
 -----------------------------------------------------------------*/
-
 body:not(.no-transition) #wrapper,
 .animsition-overlay {
 	position: relative;
-	opacity: 0;
+	opacity: 1;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
 }

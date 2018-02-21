@@ -1,10 +1,21 @@
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-3'>
-            <nav-menu></nav-menu>
+<div id="wrapper" class="clearfix">
+    <nav-menu></nav-menu>
+    <app-header></app-header>
+
+    <section id="content">
+        <div class="content-wrap">
+            <div class="container clearfix">
+                <div class="postcontent nobottommargin">
+                    <router-outlet></router-outlet>
+                </div>
+                <div class="sidebar nobottommargin col_last">
+                    <div class="sidebar-widgets-wrap">
+                        <div class="widget clearfix">
+                            <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FEnvato&amp;width=240&amp;height=240&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true&amp;appId=499481203443583" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:240px; height:240px;" allowTransparency="true"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class='col-sm-9 body-content'>
-            <router-outlet></router-outlet>
-        </div>
-    </div>
+    </section>
 </div>
