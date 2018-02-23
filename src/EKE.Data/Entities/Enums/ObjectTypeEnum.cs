@@ -9,4 +9,9 @@ namespace EKE.Data.Entities.Enums
         Magazine = 0,
         Article = 1
     }
+
+    public enum NewsCategories
+    {
+        Vandortabor = 0,
+    }
 }

@@ -16,7 +16,7 @@ using EKE.Service.ServiceModel;
 
 namespace EKE.Service.Services
 {
-    public interface IGeneralService : IBaseService
+    public interface IGeneralService
     {
         string GenerateSlug(string phrase, int year, string section);
         string RemoveAccent(string txt);
@@ -32,18 +32,17 @@ namespace EKE.Service.Services
         Result UpdateSynonym(XEditSM model);
     }
 
-    public class GeneralService : BaseService, IGeneralService
+    public class GeneralService : IGeneralService
     {
         private readonly IHostingEnvironment _environment;
-        private readonly IEntityBaseRepository<Synonym> _synonymRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GeneralService(
             IHostingEnvironment environment,
-            IEntityBaseRepository<Synonym> synonymRepo,
-        IUnitOfWork unitOfWork) : base(unitOfWork)
+            IUnitOfWork unitOfWork)
         {
             _environment = environment;
-            _synonymRepo = synonymRepo;
+            _unitOfWork = unitOfWork;
         }
 
         #region General
@@ -92,7 +91,7 @@ namespace EKE.Service.Services
                     break;
             }
 
-            var relativePath = String.Format("Uploads/{0}/{1}", year.ToString().Trim(), section.Trim());
+            var relativePath = $"Uploads/{year.ToString().Trim()}/{section.Trim()}";
             var uploads = Path.Combine(gyoparPath, relativePath);
             if (!Directory.Exists(uploads))
                 Directory.CreateDirectory(uploads);
@@ -181,80 +180,84 @@ namespace EKE.Service.Services
         #region Synonyms
         public Result<List<Synonym>> GetAllSynonyms()
         {
-            var result = _synonymRepo.GetAllIncludingPred(x => x.Main, x => x.Synonyms).ToList();
+            var result = _unitOfWork.SynonymRepository.GetAllIncludingPred(x => x.Main, x => x.Synonyms).ToList();
             return new Result<List<Synonym>>(result);
         }
 
         public Result<Synonym> AddSynonym(string text)
         {
-            var exists = _synonymRepo.FindBy(x => x.Name == text);
-            if (exists.Count() > 0) return new Result<Synonym>(ResultStatus.ALREADYEXISTS);
+            var exists = _unitOfWork.SynonymRepository.FindBy(x => x.Name == text);
+            if (exists.Any()) return new Result<Synonym>(ResultStatus.ALREADYEXISTS);
 
-            Synonym model = new Synonym();
-            model.Name = text;
-            model.Main = true;
+            var model = new Synonym
+            {
+                Name = text,
+                Main = true
+            };
 
-            _synonymRepo.Add(model);
-            SaveChanges();
+            _unitOfWork.SynonymRepository.Add(model);
+            _unitOfWork.SaveChanges();
             return new Result<Synonym>(model);
         }
 
         public Result DeleteSynonym(int id)
         {
-            var result = _synonymRepo.GetByIdIncluding(id, x => x.Synonyms);
+            var result = _unitOfWork.SynonymRepository.GetByIdIncluding(id, x => x.Synonyms);
             if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
             foreach (var item in result.Synonyms)
             {
-                _synonymRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.SynonymRepository.Delete(item);
+                _unitOfWork.SaveChanges();
             }
 
-            _synonymRepo.Delete(result);
-            SaveChanges();
+            _unitOfWork.SynonymRepository.Delete(result);
+            _unitOfWork.SaveChanges();
             return new Result(ResultStatus.OK);
         }
 
         public Result ConnectSynonym(int id, string text)
         {
-            var result = _synonymRepo.GetByIdIncluding(id, x => x.Synonyms);
+            var result = _unitOfWork.SynonymRepository.GetByIdIncluding(id, x => x.Synonyms);
             if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-            var newSynonym = new Synonym();
-            newSynonym.Name = text;
-            newSynonym.Main = false;
+            var newSynonym = new Synonym
+            {
+                Name = text,
+                Main = false
+            };
 
             result.Synonyms.Add(newSynonym);
-            _synonymRepo.Update(result);
-            SaveChanges();
+            _unitOfWork.SynonymRepository.Update(result);
+            _unitOfWork.SaveChanges();
             return new Result(ResultStatus.OK);
         }
 
         public Result UpdateSynonym(XEditSM model)
         {
-            var result = _synonymRepo.GetByIdIncluding(model.PrimaryKey, x => x.Synonyms);
+            var result = _unitOfWork.SynonymRepository.GetByIdIncluding(model.PrimaryKey, x => x.Synonyms);
             if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
             if (String.IsNullOrEmpty(model.Value))
             {
-                _synonymRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.SynonymRepository.Delete(result);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
 
             result.Name = model.Value;
-            _synonymRepo.Update(result);
-            SaveChanges();
+            _unitOfWork.SynonymRepository.Update(result);
+            _unitOfWork.SaveChanges();
             return new Result(ResultStatus.OK);
         }
 
         public List<Synonym> GetAllSynonymsByName(string name)
         {
-            var result = _synonymRepo.GetAllIncludingPred(x => x.Name == name.Trim(), x => x.Synonyms).FirstOrDefault();
+            var result = _unitOfWork.SynonymRepository.GetAllIncludingPred(x => x.Name == name.Trim(), x => x.Synonyms).FirstOrDefault();
             if (result == null) return new List<Synonym>();
             if (result.Synonyms.Count == 0)
             {
-                result = _synonymRepo.GetAllIncluding(x => x.Synonyms).FirstOrDefault(e => e.Synonyms
+                result = _unitOfWork.SynonymRepository.GetAllIncluding(x => x.Synonyms).FirstOrDefault(e => e.Synonyms
                                  .Any(a => a.Name == name));
                 if (result == null) return new List<Synonym>();
                 result.Synonyms = result.Synonyms.Where(x => x.Name != name).ToList();

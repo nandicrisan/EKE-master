@@ -3,6 +3,7 @@ using EKE.Data.Entities.Gyopar;
 using EKE.Data.Entities.Identity;
 using EKE.Data.Infrastructure;
 using EKE.Data.Repository;
+using EKE.Data.Repository.Base;
 using EKE.Service.Services;
 using EKE.Service.Services.Admin;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +34,7 @@ namespace EKE_Gyopar.Web
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        private IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

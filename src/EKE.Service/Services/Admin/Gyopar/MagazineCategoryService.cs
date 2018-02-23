@@ -1,15 +1,13 @@
 ﻿using EKE.Data.Entities.Gyopar;
 using EKE.Data.Infrastructure;
-using EKE.Data.Repository;
 using EKE.Service.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EKE.Service.Services.Admin
 {
-    public interface IMagazineCategoryService : IBaseService
+    public interface IMagazineCategoryService
     {
         Result<MagazineCategory> Add(MagazineCategory model);
         Result<List<MagazineCategory>> GetAllMagazineCategories();
@@ -17,18 +15,14 @@ namespace EKE.Service.Services.Admin
         Result<bool> DeleteMagazineCategory(int id);
     }
 
-    public class MagazineCategoryService : BaseService, IMagazineCategoryService
+    public class MagazineCategoryService : IMagazineCategoryService
     {
-        private readonly IEntityBaseRepository<Magazine> _magazineRepo;
-        private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public MagazineCategoryService(
-            IEntityBaseRepository<Magazine> magazineRepository,
-            IEntityBaseRepository<MagazineCategory> magazineCatRepository,
-            IUnitOfWork unitOfWork) : base(unitOfWork)
+            IUnitOfWork unitOfWork)
         {
-            _magazineRepo = magazineRepository;
-            _magazineCatRepo = magazineCatRepository;
+            _unitOfWork = unitOfWork;
         }
 
         #region MagazineCategories
@@ -36,11 +30,8 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazineCategories = _magazineCatRepo.GetAllIncluding(x => x.Magazines).ToList();
-                if (magazineCategories.Count == 0)
-                    return new Result<List<MagazineCategory>>(ResultStatus.NOT_FOUND);
-
-                return new Result<List<MagazineCategory>>(magazineCategories);
+                var magazineCategories = _unitOfWork.MagazineCategoryRepository.GetAllIncluding(x => x.Magazines).ToList();
+                return magazineCategories.Count == 0 ? new Result<List<MagazineCategory>>(ResultStatus.NOT_FOUND) : new Result<List<MagazineCategory>>(magazineCategories);
             }
             catch (Exception ex)
             {
@@ -52,12 +43,12 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var exists = _magazineCatRepo.FindBy(x => x.Name == model.Name);
-                if (exists.Count() > 0)
+                var exists = _unitOfWork.MagazineCategoryRepository.FindBy(x => x.Name == model.Name);
+                if (exists.Any())
                     return new Result<MagazineCategory>(ResultStatus.ALREADYEXISTS, "A folyóirat már létezik! Kérem ellenőrizze az adatokat!");
 
-                _magazineCatRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.MagazineCategoryRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result<MagazineCategory>(model);
             }
             catch (Exception ex)
@@ -70,7 +61,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazine = _magazineCatRepo.GetByIdIncluding(id, x => x.Magazines);
+                var magazine = _unitOfWork.MagazineCategoryRepository.GetByIdIncluding(id, x => x.Magazines);
 
                 if (magazine == null)
                     return new Result<bool>(ResultStatus.NOT_FOUND, "Folyóirat nem található!");
@@ -79,12 +70,12 @@ namespace EKE.Service.Services.Admin
                 {
                     foreach (var item in magazine.Magazines)
                     {
-                        _magazineRepo.Delete(item);
+                        _unitOfWork.MagazineRepository.Delete(item);
                     }
                 }
 
-                _magazineCatRepo.Delete(magazine);
-                SaveChanges();
+                _unitOfWork.MagazineCategoryRepository.Delete(magazine);
+                _unitOfWork.SaveChanges();
                 return new Result<bool>(true);
             }
             catch (Exception ex)
@@ -98,7 +89,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                return new Result<MagazineCategory>(_magazineCatRepo.GetById(id));
+                return new Result<MagazineCategory>(_unitOfWork.MagazineCategoryRepository.GetById(id));
             }
             catch (Exception ex)
             {

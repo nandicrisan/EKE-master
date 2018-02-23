@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace EKE.Service.Services.Admin.Muzeum
 {
-    public interface IMuseumService : IBaseService
+    public interface IMuseumService
     {
         Result<Element> GetElementById(int id);
         Result<Element> GetNeighbourElementById(int id, bool nextTo);
@@ -45,41 +45,33 @@ namespace EKE.Service.Services.Admin.Muzeum
         Result<Element> UpdateCover(ICollection<IFormFile> files, int id);
     }
 
-    public class MuseumService : BaseService, IMuseumService
+    public class MuseumService : IMuseumService
     {
-        private readonly IEntityBaseRepository<Element> _elementRepo;
-        private readonly IEntityBaseRepository<ElementCategory> _elementCategoryRepo;
-        private readonly IEntityBaseRepository<ElementTag> _elementTagsRepo;
-
         private readonly IGeneralService _generalService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public MuseumService(
-            IEntityBaseRepository<Element> elementRepository,
-            IEntityBaseRepository<ElementCategory> elementCategoryRepository,
-            IEntityBaseRepository<ElementTag> elementTagRepository,
             IGeneralService generalService,
-            IUnitOfWork unitOfWork) : base(unitOfWork)
+            IUnitOfWork unitOfWork)
         {
             _generalService = generalService;
-            _elementCategoryRepo = elementCategoryRepository;
-            _elementRepo = elementRepository;
-            _elementTagsRepo = elementTagRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Result AddElement(MuseumSM model)
         {
             try
             {
-                var result = _elementRepo.FindBy(x => x.Title.Trim().ToLower() == model.Element.Title.Trim().ToLower());
+                var result = _unitOfWork.ElementRepository.FindBy(x => x.Title.Trim().ToLower() == model.Element.Title.Trim().ToLower());
                 if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
-                var category = _elementCategoryRepo.GetById(model.SelectedCategoryId);
+                var category = _unitOfWork.ElementCategoryRepository.GetById(model.SelectedCategoryId);
                 if (category == null) return new Result(ResultStatus.NOT_FOUND, "Category");
 
                 var tags = new List<ElementTag>();
                 foreach (var item in model.SelectedTagId)
                 {
-                    var tag = _elementTagsRepo.GetById(item);
+                    var tag = _unitOfWork.ElementTagRepository.GetById(item);
                     if (tag == null) return new Result(ResultStatus.NOT_FOUND, "Category");
                     tags.Add(tag);
                 }
@@ -90,8 +82,8 @@ namespace EKE.Service.Services.Admin.Muzeum
                 elem.Publisher = model.Publisher;
                 elem.Tags = tags;
 
-                _elementRepo.Add(elem);
-                SaveChanges();
+                _unitOfWork.ElementRepository.Add(elem);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -104,7 +96,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementCategoryRepo.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
+                var result = _unitOfWork.ElementCategoryRepository.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
                 if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
                 var model = new ElementCategory
@@ -115,13 +107,13 @@ namespace EKE.Service.Services.Admin.Muzeum
 
                 if (parentCategoryId != 0)
                 {
-                    var categoryResult = _elementCategoryRepo.GetById(parentCategoryId);
+                    var categoryResult = _unitOfWork.ElementCategoryRepository.GetById(parentCategoryId);
                     if (categoryResult == null) return new Result(ResultStatus.NOT_FOUND);
                     model.Parent = categoryResult;
                 }
 
-                _elementCategoryRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.ElementCategoryRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -134,11 +126,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.MediaElement, x => x.Tags);
+                var result = _unitOfWork.ElementRepository.GetByIdIncluding(id, x => x.Category, x => x.MediaElement, x => x.Tags);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.ElementRepository.Delete(result);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -151,11 +143,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementCategoryRepo.GetById(id);
+                var result = _unitOfWork.ElementCategoryRepository.GetById(id);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementCategoryRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.ElementCategoryRepository.Delete(result);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -168,7 +160,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<ElementCategory>>(_elementCategoryRepo.GetAllIncluding(x => x.Parent).OrderBy(x => x.OrderNo).ToList());
+                return new Result<List<ElementCategory>>(_unitOfWork.ElementCategoryRepository.GetAllIncluding(x => x.Parent).OrderBy(x => x.OrderNo).ToList());
             }
             catch (Exception ex)
             {
@@ -180,7 +172,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementCategoryRepo.GetAllIncludingPred(predicate, inclProp).ToList();
+                var result = _unitOfWork.ElementCategoryRepository.GetAllIncludingPred(predicate, inclProp).ToList();
                 return new Result<List<ElementCategory>>(result);
             }
             catch (Exception ex)
@@ -193,7 +185,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<Element>>(_elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList());
+                return new Result<List<Element>>(_unitOfWork.ElementRepository.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList());
             }
             catch (Exception ex)
             {
@@ -205,7 +197,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<Element>>(_elementRepo.GetAllIncludingPred(x => x.Selected, x => x.Category, x => x.MediaElement, x => x.Tags).Take(12).ToList());
+                return new Result<List<Element>>(_unitOfWork.ElementRepository.GetAllIncludingPred(x => x.Selected, x => x.Category, x => x.MediaElement, x => x.Tags).Take(12).ToList());
             }
             catch (Exception ex)
             {
@@ -217,7 +209,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetAllIncludingPred(predicate, inclProp).ToList();
+                var result = _unitOfWork.ElementRepository.GetAllIncludingPred(predicate, inclProp).ToList();
                 return new Result<List<Element>>(result);
             }
             catch (Exception ex)
@@ -230,9 +222,8 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetByIdIncluding(id, x => x.Category, x => x.Tags, x => x.MediaElement);
-                if (result == null) return new Result<Element>(ResultStatus.NOT_FOUND);
-                return new Result<Element>(result);
+                var result = _unitOfWork.ElementRepository.GetByIdIncluding(id, x => x.Category, x => x.Tags, x => x.MediaElement);
+                return result == null ? new Result<Element>(ResultStatus.NOT_FOUND) : new Result<Element>(result);
             }
             catch (Exception ex)
             {
@@ -244,9 +235,8 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementCategoryRepo.GetByIdIncluding(id);
-                if (result == null) return new Result<ElementCategory>(ResultStatus.NOT_FOUND);
-                return new Result<ElementCategory>(result);
+                var result = _unitOfWork.ElementCategoryRepository.GetByIdIncluding(id);
+                return result == null ? new Result<ElementCategory>(ResultStatus.NOT_FOUND) : new Result<ElementCategory>(result);
             }
             catch (Exception ex)
             {
@@ -258,11 +248,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementRepo.GetByIdIncluding(model.Id, x => x.MediaElement, x => x.Category);
+                var result = _unitOfWork.ElementRepository.GetByIdIncluding(model.Id, x => x.MediaElement, x => x.Category);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementRepo.Update(model);
-                SaveChanges();
+                _unitOfWork.ElementRepository.Update(model);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -275,11 +265,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementCategoryRepo.GetByIdIncluding(model.Id);
+                var result = _unitOfWork.ElementCategoryRepository.GetByIdIncluding(model.Id);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementCategoryRepo.Update(model);
-                SaveChanges();
+                _unitOfWork.ElementCategoryRepository.Update(model);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -297,23 +287,24 @@ namespace EKE.Service.Services.Admin.Muzeum
                 {
                     if (String.IsNullOrEmpty(category))
                     {
-                        var resultList = _elementRepo.GetAllIncludingPred(x => !x.Selected, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
+                        var resultList = _unitOfWork.ElementRepository.GetAllIncludingPred(x => !x.Selected, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
                         return new Result<List<Element>>(resultList);
                     }
 
-                    var childCategories = _elementCategoryRepo.GetAllIncludingPred(x => x.Parent.Name.ToLower().Trim() == category.ToLower().Trim(), x => x.Parent);
+                    var childCategories = _unitOfWork.ElementCategoryRepository.GetAllIncludingPred(x => x.Parent.Name.ToLower().Trim() == category.ToLower().Trim(), x => x.Parent);
 
                     var predicate = PredicateBuilder.New<Element>(true);
-                    predicate.And(x => x.Category.Name.ToLower() == category.ToLower());
-                    if (childCategories.Count() > 0)
+                    predicate.And(x => String.Equals(x.Category.Name, category, StringComparison.CurrentCultureIgnoreCase));
+                    var elementCategories = childCategories as IList<ElementCategory> ?? childCategories.ToList();
+                    if (elementCategories.Any())
                     {
-                        foreach (var item in childCategories)
+                        foreach (var item in elementCategories)
                         {
                             predicate.Or(x => x.Category.Name.ToLower() == item.Name.ToLower());
                         }
                     }
 
-                    var result = _elementRepo.GetAllIncludingPred(predicate, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
+                    var result = _unitOfWork.ElementRepository.GetAllIncludingPred(predicate, x => x.MediaElement, x => x.Category, x => x.Tags).Skip(skip).Take(12).ToList();
                     return new Result<List<Element>>(result);
                 }
 
@@ -330,7 +321,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                return new Result<List<ElementTag>>(_elementTagsRepo.GetAll().ToList());
+                return new Result<List<ElementTag>>(_unitOfWork.ElementTagRepository.GetAll().ToList());
             }
             catch (Exception ex)
             {
@@ -342,7 +333,7 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementTagsRepo.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
+                var result = _unitOfWork.ElementTagRepository.FindBy(x => x.Name.Trim().ToLower() == text.Trim().ToLower());
                 if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
                 var model = new ElementTag
@@ -351,8 +342,8 @@ namespace EKE.Service.Services.Admin.Muzeum
                     Name = text
                 };
 
-                _elementTagsRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.ElementTagRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -365,11 +356,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementTagsRepo.GetByIdIncluding(model.Id);
+                var result = _unitOfWork.ElementTagRepository.GetByIdIncluding(model.Id);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementTagsRepo.Update(model);
-                SaveChanges();
+                _unitOfWork.ElementTagRepository.Update(model);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -382,11 +373,11 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var result = _elementTagsRepo.GetById(id);
+                var result = _unitOfWork.ElementTagRepository.GetById(id);
                 if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
-                _elementTagsRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.ElementTagRepository.Delete(result);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -416,7 +407,7 @@ namespace EKE.Service.Services.Admin.Muzeum
                 }
 
 
-                var result = _elementRepo.GetAllIncludingPred(predicate, x => x.Category, x => x.MediaElement, x => x.Tags).Skip(skip).Take(12).ToList();
+                var result = _unitOfWork.ElementRepository.GetAllIncludingPred(predicate, x => x.Category, x => x.MediaElement, x => x.Tags).Skip(skip).Take(12).ToList();
                 return new Result<List<Element>>(result);
             }
             catch (Exception ex)
@@ -431,58 +422,58 @@ namespace EKE.Service.Services.Admin.Muzeum
             switch (model.Name)
             {
                 case "CategoryName":
-                    var catResult = _elementCategoryRepo.GetById(model.PrimaryKey);
+                    var catResult = _unitOfWork.ElementCategoryRepository.GetById(model.PrimaryKey);
                     if (catResult == null) return new Result(ResultStatus.NOT_FOUND);
                     catResult.Name = model.Value;
-                    _elementCategoryRepo.Update(catResult);
-                    SaveChanges();
+                    _unitOfWork.ElementCategoryRepository.Update(catResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemTitle":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
                     elemResult.Title = model.Value;
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemAuthor":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
                     elemResult.Author = model.Value;
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemDescription":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
                     elemResult.Description = model.Value;
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemVisible":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
                     elemResult.Selected = Convert.ToBoolean(model.Value);
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemCategory":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
 
-                    var elemCategory = _elementCategoryRepo.GetById(Convert.ToInt32(model.Value));
+                    var elemCategory = _unitOfWork.ElementCategoryRepository.GetById(Convert.ToInt32(model.Value));
                     if (elemCategory == null) return new Result(ResultStatus.NOT_FOUND);
 
                     elemResult.Category = elemCategory;
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 case "ElemDate":
-                    elemResult = _elementRepo.GetById(model.PrimaryKey);
+                    elemResult = _unitOfWork.ElementRepository.GetById(model.PrimaryKey);
                     if (elemResult == null) return new Result(ResultStatus.NOT_FOUND);
 
                     elemResult.DatePublished = Convert.ToDateTime(model.Value);
-                    _elementRepo.Update(elemResult);
-                    SaveChanges();
+                    _unitOfWork.ElementRepository.Update(elemResult);
+                    _unitOfWork.SaveChanges();
                     return new Result(ResultStatus.OK);
                 default:
                     return new Result(ResultStatus.NOT_FOUND);
@@ -491,7 +482,7 @@ namespace EKE.Service.Services.Admin.Muzeum
 
         public Result<Element> UpdateCover(ICollection<IFormFile> files, int id)
         {
-            var result = _elementRepo.GetByIdIncluding(id, x => x.MediaElement);
+            var result = _unitOfWork.ElementRepository.GetByIdIncluding(id, x => x.MediaElement);
 
             if (result == null) return new Result<Element>(ResultStatus.NOT_FOUND);
 
@@ -499,8 +490,8 @@ namespace EKE.Service.Services.Admin.Muzeum
 
             result.MediaElement = _generalService.CreateMediaElements(files, result.DateCreated.Year, "1", ProjectBaseEnum.Muzeum);
 
-            _elementRepo.Update(result);
-            SaveChanges();
+            _unitOfWork.ElementRepository.Update(result);
+            _unitOfWork.SaveChanges();
             return new Result<Element>(result);
         }
 
@@ -508,9 +499,9 @@ namespace EKE.Service.Services.Admin.Muzeum
         {
             try
             {
-                var results = _elementRepo.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList();
-                Element prev = results.FirstOrDefault();
-                Element nx = results.LastOrDefault();
+                var results = _unitOfWork.ElementRepository.GetAllIncluding(x => x.Category, x => x.MediaElement, x => x.Tags).ToList();
+                var prev = results.FirstOrDefault();
+                var nx = results.LastOrDefault();
                 foreach (var item in results)
                 {
                     if (item.Id < id && item.Id > prev.Id) { prev = item; }

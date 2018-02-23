@@ -17,7 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NonFactors.Mvc.Grid;
 using System;
+using EKE.Data.Repository.Base;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace EKE_Admin.Web
 {
@@ -63,6 +65,7 @@ namespace EKE_Admin.Web
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
             services.AddTransient<UserSeed>();
             services.AddTransient<IMagazineService, MagazineService>();
             services.AddTransient<IArticleService, ArticleService>();
@@ -110,8 +113,13 @@ namespace EKE_Admin.Web
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/Account/LogIn";
-                options.LogoutPath = "/Account/LogOff";
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.SlidingExpiration = true;
             });
         }
 

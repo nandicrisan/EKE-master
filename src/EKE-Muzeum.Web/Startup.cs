@@ -11,6 +11,7 @@ using EKE.Data.Entities.Museum;
 using EKE.Service.Services.Admin.Muzeum;
 using EKE.Service.Services;
 using EKE.Data.Entities.Gyopar;
+using EKE.Data.Repository.Base;
 
 namespace EKE_Muzeum.Web
 {

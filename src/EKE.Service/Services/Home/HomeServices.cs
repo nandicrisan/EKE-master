@@ -3,14 +3,16 @@ using EKE.Data.Infrastructure;
 
 namespace EKE.Service.Services.Home
 {
-    public interface IHomeServices : IBaseService
+    public interface IHomeServices
     {
-
     }
-    public class HomeServices : BaseService, IHomeServices
+
+    public class HomeServices : IHomeServices
     {
-        public HomeServices(IUnitOfWork unitOfWork) : base(unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        public HomeServices(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
         }
     }
 }

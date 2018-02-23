@@ -16,7 +16,7 @@ using EKE.Data.Entities.Enums;
 
 namespace EKE.Service.Services.Admin
 {
-    public interface IMagazineService : IBaseService
+    public interface IMagazineService
     {
         Result<List<Magazine>> GetAllMagazines();
         Result<List<Magazine>> GetAllMagazinesIncluding();
@@ -43,57 +43,40 @@ namespace EKE.Service.Services.Admin
         Result<List<Author>> GetAllAuthors();
     }
 
-    public class MagazineService : BaseService, IMagazineService
+    public class MagazineService : IMagazineService
     {
-        private readonly IEntityBaseRepository<Magazine> _magazineRepo;
-        private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
-        private readonly IEntityBaseRepository<Tag> _tagRepo;
-        private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
-        private readonly IEntityBaseRepository<Author> _authorRepo;
-        private readonly IEntityBaseRepository<Order> _orderRepo;
-
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IHostingEnvironment _environment;
         private readonly IGeneralService _generalService;
 
         public MagazineService(
-            IEntityBaseRepository<Magazine> magazineRepository,
-            IEntityBaseRepository<Article> articleRepository,
-            IEntityBaseRepository<MagazineCategory> magazineCatRepository,
-            IEntityBaseRepository<Tag> tagRepository,
-            IEntityBaseRepository<MediaElement> mediaElementRepository,
-            IEntityBaseRepository<Author> authorRepository,
-            IEntityBaseRepository<Order> orderRepository,
             IHostingEnvironment environment,
             IGeneralService generalService,
-            IUnitOfWork unitOfWork) : base(unitOfWork)
+            IUnitOfWork unitOfWork)
         {
-            _magazineRepo = magazineRepository;
-            _magazineCatRepo = magazineCatRepository;
-            _tagRepo = tagRepository;
-            _mediaElementRepo = mediaElementRepository;
-            _authorRepo = authorRepository;
-            _orderRepo = orderRepository;
             _environment = environment;
             _generalService = generalService;
+            _unitOfWork = unitOfWork;
+
         }
 
         #region Magazines
         #region CRUD
         public Result<List<Magazine>> GetAllMagazines()
         {
-            return new Result<List<Magazine>>(_magazineRepo.GetAll().ToList());
+            return new Result<List<Magazine>>(_unitOfWork.MagazineRepository.GetAll().ToList());
         }
 
         public Result<List<Magazine>> GetAllMagazinesIncluding()
         {
-            return new Result<List<Magazine>>(_magazineRepo.GetAllIncluding(x => x.Articles, x => x.Category, x => x.MediaElements).ToList());
+            return new Result<List<Magazine>>(_unitOfWork.MagazineRepository.GetAllIncluding(x => x.Articles, x => x.Category, x => x.MediaElements).ToList());
         }
 
         public Result<List<Magazine>> GetLastMagazines(int count)
         {
             try
             {
-                var result = _magazineRepo.GetAllIncludingPred(x => x.Visible, x => x.Articles, x => x.Category, x => x.MediaElements).OrderByDescending(x => x.DateCreated).Take(count).ToList();
+                var result = _unitOfWork.MagazineRepository.GetAllIncludingPred(x => x.Visible, x => x.Articles, x => x.Category, x => x.MediaElements).OrderByDescending(x => x.DateCreated).Take(count).ToList();
                 CheckMediaElements(result);
                 return new Result<List<Magazine>>(result);
             }
@@ -107,7 +90,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles, x => x.MediaElements).ToList();
+                var result = _unitOfWork.MagazineRepository.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles, x => x.MediaElements).ToList();
                 CheckMediaElements(result);
                 return new Result<List<Magazine>>(result);
             }
@@ -121,7 +104,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _magazineRepo.GetByIdIncluding(id, x => x.Articles, x => x.MediaElements);
+                var result = _unitOfWork.MagazineRepository.GetByIdIncluding(id, x => x.Articles, x => x.MediaElements);
                 CheckMediaElements(result);
                 return new Result<Magazine>(result);
             }
@@ -136,13 +119,13 @@ namespace EKE.Service.Services.Admin
             try
             {
 
-                var category = _magazineCatRepo.GetById(model.Category.Id);
+                var category = _unitOfWork.MagazineCategoryRepository.GetById(model.Category.Id);
                 if (category == null)
                     return new Result<Magazine>(ResultStatus.ERROR, "Hiba a kategória lekérése során");
 
                 model.Category = category;
 
-                var exists = _magazineRepo.FindBy(x => x.PublishYear == model.PublishYear && x.PublishSection.Contains(model.PublishSection) && x.Category.Id == model.Category.Id);
+                var exists = _unitOfWork.MagazineRepository.FindBy(x => x.PublishYear == model.PublishYear && x.PublishSection.Contains(model.PublishSection) && x.Category.Id == model.Category.Id);
                 if (exists.Any())
                     return new Result<Magazine>(ResultStatus.ALREADYEXISTS, "A lapszám már létezik! Kérem ellenőrizze az adatokat!");
 
@@ -155,8 +138,8 @@ namespace EKE.Service.Services.Admin
 
                 model.DateCreated = DateTime.Now;
                 model.Slug = _generalService.GenerateSlug(model.Title, model.PublishYear, model.PublishSection);
-                _magazineRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.MagazineRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result<Magazine>(model);
             }
             catch (Exception ex)
@@ -167,8 +150,8 @@ namespace EKE.Service.Services.Admin
 
         public Result<Magazine> Update(Magazine model)
         {
-            _magazineRepo.Update(model);
-            SaveChanges();
+            _unitOfWork.MagazineRepository.Update(model);
+            _unitOfWork.SaveChanges();
             return new Result<Magazine>(model);
         }
 
@@ -176,9 +159,9 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var magazine = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements, x => x.Articles);
-                _magazineRepo.Delete(magazine);
-                SaveChanges();
+                var magazine = _unitOfWork.MagazineRepository.GetByIdIncluding(id, x => x.MediaElements, x => x.Articles);
+                _unitOfWork.MagazineRepository.Delete(magazine);
+                _unitOfWork.SaveChanges();
                 return new Result<bool>(true);
             }
             catch (Exception ex)
@@ -191,7 +174,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _magazineRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles).FirstOrDefault();
+                var result = _unitOfWork.MagazineRepository.GetAllIncludingPred(predicate, x => x.Author, x => x.Articles).FirstOrDefault();
                 return new Result<Magazine>(result);
             }
             catch (Exception ex)
@@ -207,7 +190,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _tagRepo.GetAll();
+                var result = _unitOfWork.TagRepository.GetAll();
                 if (result == null)
                     return new Result<List<Tag>>(ResultStatus.NOT_FOUND);
                 return new Result<List<Tag>>(result.ToList());
@@ -223,12 +206,12 @@ namespace EKE.Service.Services.Admin
             try
             {
                 model.Name = model.Name.Trim();
-                var exists = _tagRepo.FindBy(x => x.Name == model.Name.Trim());
-                if (exists.Count() > 0)
+                var exists = _unitOfWork.TagRepository.FindBy(x => x.Name == model.Name.Trim());
+                if (exists.Any())
                     return new Result<Tag>(ResultStatus.ALREADYEXISTS, "A megadott kulcsszó már létezik!");
 
-                _tagRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.TagRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result<Tag>(model);
             }
             catch (Exception ex)
@@ -241,12 +224,12 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _tagRepo.GetById(id);
+                var result = _unitOfWork.TagRepository.GetById(id);
                 if (result == null)
                     return new Result(ResultStatus.NOT_FOUND);
 
-                _tagRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.TagRepository.Delete(result);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -261,7 +244,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _authorRepo.GetAll();
+                var result = _unitOfWork.AuthorRepository.GetAll();
                 if (result == null)
                     return new Result<List<Author>>(ResultStatus.NOT_FOUND);
                 return new Result<List<Author>>(result.ToList());
@@ -277,7 +260,7 @@ namespace EKE.Service.Services.Admin
         #region XEdit
         public Result<Magazine> Update(XEditSM model)
         {
-            var result = _magazineRepo.GetById(model.PrimaryKey);
+            var result = _unitOfWork.MagazineRepository.GetById(model.PrimaryKey);
             if (result == null) return new Result<Magazine>(ResultStatus.NOT_FOUND);
 
             switch (model.Name)
@@ -304,14 +287,14 @@ namespace EKE.Service.Services.Admin
                     return new Result<Magazine>(result);
             }
 
-            _magazineRepo.Update(result);
-            SaveChanges();
+            _unitOfWork.MagazineRepository.Update(result);
+            _unitOfWork.SaveChanges();
             return new Result<Magazine>(result);
         }
 
         public Result<Magazine> UpdateCover(IFormFile files, int id)
         {
-            var result = _magazineRepo.GetByIdIncluding(id, x => x.MediaElements);
+            var result = _unitOfWork.MagazineRepository.GetByIdIncluding(id, x => x.MediaElements);
 
             if (result == null) return new Result<Magazine>(ResultStatus.NOT_FOUND);
 
@@ -321,8 +304,8 @@ namespace EKE.Service.Services.Admin
             filesCollection.Add(files);
             result.MediaElements = _generalService.CreateMediaElements(filesCollection, result.PublishYear, result.PublishSection, ProjectBaseEnum.Gyopar);
 
-            _magazineRepo.Update(result);
-            SaveChanges();
+            _unitOfWork.MagazineRepository.Update(result);
+            _unitOfWork.SaveChanges();
             return new Result<Magazine>(result);
         }
         #endregion
@@ -330,29 +313,29 @@ namespace EKE.Service.Services.Admin
         #region Orders
         public Result AddOrder(Order model)
         {
-            var result = _orderRepo.FindBy(x => x.Email == model.Email && x.PhoneNumber == model.PhoneNumber && x.Name == model.Name);
-            if (result.Count() > 0) return new Result(ResultStatus.ALREADYEXISTS);
+            var result = _unitOfWork.OrderRepository.FindBy(x => x.Email == model.Email && x.PhoneNumber == model.PhoneNumber && x.Name == model.Name);
+            if (result.Any()) return new Result(ResultStatus.ALREADYEXISTS);
 
-            _orderRepo.Add(model);
-            SaveChanges();
+            _unitOfWork.OrderRepository.Add(model);
+            _unitOfWork.SaveChanges();
             return new Result(ResultStatus.OK);
         }
 
         public Result<List<Order>> GetAllOrders()
         {
-            var result = _orderRepo.GetAll().ToList();
+            var result = _unitOfWork.OrderRepository.GetAll().ToList();
             return new Result<List<Order>>(result);
         }
 
         public Result DeleteOrder(int id)
         {
-            var result = _orderRepo.GetById(id);
+            var result = _unitOfWork.OrderRepository.GetById(id);
             if (result == null) return new Result(ResultStatus.NOT_FOUND);
 
             try
             {
-                _orderRepo.Delete(result);
-                SaveChanges();
+                _unitOfWork.OrderRepository.Delete(result);
+                _unitOfWork.SaveChanges();
 
                 return new Result(ResultStatus.OK);
             }

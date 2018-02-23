@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace EKE.Service.Services.Admin
 {
-    public interface IArticleService : IBaseService
+    public interface IArticleService
     {
         Result<List<Article>> Get(ArticleSearch model);
         Result<List<Article>> GetSelected();
@@ -30,37 +30,22 @@ namespace EKE.Service.Services.Admin
         Result FormatHtml();
     }
 
-    public class ArticleService : BaseService, IArticleService
+    public class ArticleService : IArticleService
     {
-        private readonly IEntityBaseRepository<Article> _articleRepo;
-        private readonly IEntityBaseRepository<MagazineCategory> _magazineCatRepo;
-        private readonly IEntityBaseRepository<Magazine> _magazineRepo;
-        private readonly IEntityBaseRepository<Author> _authorRepo;
-        private readonly IEntityBaseRepository<MediaElement> _mediaElementRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         private readonly IGeneralService _generalService;
         private readonly IHostingEnvironment _environment;
 
         public ArticleService(
-            IEntityBaseRepository<Magazine> magazineRepository,
-            IEntityBaseRepository<Article> articleRepo,
-            IEntityBaseRepository<MagazineCategory> magazineCatRepository,
-            IEntityBaseRepository<Author> authorRepository,
-            IEntityBaseRepository<MediaElement> mediaElementRepository,
-            IEntityBaseRepository<Synonym> synonymRepository,
-
             IHostingEnvironment environment,
-            IGeneralService generalService,
-            IUnitOfWork unitOfWork) : base(unitOfWork)
-        {
-            _magazineRepo = magazineRepository;
-            _articleRepo = articleRepo;
-            _magazineCatRepo = magazineCatRepository;
-            _authorRepo = authorRepository;
-            _mediaElementRepo = mediaElementRepository;
 
+            IGeneralService generalService,
+            IUnitOfWork unitOfWork)
+        {
             _environment = environment;
             _generalService = generalService;
+            _unitOfWork = unitOfWork;
         }
 
         #region ArticleSearch
@@ -69,7 +54,7 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var predicate = GetSearchPredicate(filter);
-                var result = _articleRepo.FindByIncluding(predicate, GetSortedFunction(filter), filter.OrderDirection, filter.Page, filter.Display, p => p.Magazine, p => p.Author);
+                var result = _unitOfWork.ArticleRepository.FindByIncluding(predicate, GetSortedFunction(filter), filter.OrderDirection, filter.Page, filter.Display, p => p.Magazine, p => p.Author);
                 return new Result<List<Article>>(result.Distinct().ToList());
             }
             catch (Exception ex)
@@ -83,7 +68,7 @@ namespace EKE.Service.Services.Admin
             try
             {
                 var predicate = GetSearchPredicate(filter);
-                var result = _articleRepo.Count(predicate);
+                var result = _unitOfWork.ArticleRepository.Count(predicate);
                 return new Result<int>(result);
             }
             catch (Exception ex)
@@ -157,7 +142,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncludingPred(x => x.Selected, p => p.Magazine, p => p.Author).OrderByDescending(x => x.DateCreated).Take(6).ToList();
+                var result = _unitOfWork.ArticleRepository.GetAllIncludingPred(x => x.Selected, p => p.Magazine, p => p.Author).OrderByDescending(x => x.DateCreated).Take(6).ToList();
                 return new Result<List<Article>>(result);
             }
             catch (Exception ex)
@@ -173,7 +158,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                return new Result<List<Article>>(_articleRepo.GetAll().ToList());
+                return new Result<List<Article>>(_unitOfWork.ArticleRepository.GetAll().ToList());
             }
             catch (Exception ex)
             {
@@ -185,7 +170,7 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncludingPred(predicate, x => x.Author, x => x.Magazine).ToList();
+                var result = _unitOfWork.ArticleRepository.GetAllIncludingPred(predicate, x => x.Author, x => x.Magazine).ToList();
                 return new Result<List<Article>>(result);
             }
             catch (Exception ex)
@@ -198,9 +183,8 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category);
-                if (result == null) return new Result<Article>(ResultStatus.NOT_FOUND);
-                return new Result<Article>(result);
+                var result = _unitOfWork.ArticleRepository.GetByIdIncluding(id, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category);
+                return result == null ? new Result<Article>(ResultStatus.NOT_FOUND) : new Result<Article>(result);
             }
             catch (Exception ex)
             {
@@ -212,9 +196,8 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var result = _articleRepo.GetAllIncludingPred(x => x.Slug == slug, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category).FirstOrDefault();
-                if (result == null) return new Result<Article>(ResultStatus.NOT_FOUND);
-                return new Result<Article>(result);
+                var result = _unitOfWork.ArticleRepository.GetAllIncludingPred(x => x.Slug == slug, x => x.Author, x => x.MediaElement, x => x.ArticleTag, x => x.Magazine, x => x.Magazine.Category).FirstOrDefault();
+                return result == null ? new Result<Article>(ResultStatus.NOT_FOUND) : new Result<Article>(result);
             }
             catch (Exception ex)
             {
@@ -254,11 +237,11 @@ namespace EKE.Service.Services.Admin
                     model.MediaElement = mediaElements;
                 }
 
-                var magCat = _magazineCatRepo.GetById(model.Magazine.Category.Id);
+                var magCat = _unitOfWork.MagazineCategoryRepository.GetById(model.Magazine.Category.Id);
                 if (magCat == null)
                     return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
 
-                var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
+                var magazine = _unitOfWork.MagazineRepository.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
                 var enumerable = magazine as IList<Magazine> ?? magazine.ToList();
                 if (!enumerable.Any())
                 {
@@ -272,7 +255,7 @@ namespace EKE.Service.Services.Admin
                     model.Magazine = enumerable.FirstOrDefault();
                 }
 
-                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _authorRepo.GetById(model.Author.Id);
+                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _unitOfWork.AuthorRepository.GetById(model.Author.Id);
                 model.Author = author;
                 if (model.Magazine != null)
                     model.Slug = _generalService.GenerateSlug(model.Title, model.Magazine.PublishYear,
@@ -280,8 +263,8 @@ namespace EKE.Service.Services.Admin
                 model.PublishedBy = userName;
                 model.DateCreated = DateTime.Now;
 
-                _articleRepo.Add(model);
-                SaveChanges();
+                _unitOfWork.ArticleRepository.Add(model);
+                _unitOfWork.SaveChanges();
                 return new Result<Article>(model);
             }
             catch (Exception ex)
@@ -323,11 +306,11 @@ namespace EKE.Service.Services.Admin
                     model.MediaElement = mediaElements;
                 }
 
-                var magCat = _magazineCatRepo.GetById(model.Magazine.Category.Id);
+                var magCat = _unitOfWork.MagazineCategoryRepository.GetById(model.Magazine.Category.Id);
                 if (magCat == null)
                     return new Result<Article>(ResultStatus.NOT_FOUND, "Folyóirat nem található");
 
-                var magazine = _magazineRepo.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
+                var magazine = _unitOfWork.MagazineRepository.FindBy(x => x.PublishYear == model.Magazine.PublishYear && x.PublishSection.Contains(model.Magazine.PublishSection) && x.Category.Id == model.Magazine.Category.Id);
                 var enumerable = magazine as IList<Magazine> ?? magazine.ToList();
                 if (!enumerable.Any())
                 {
@@ -341,12 +324,12 @@ namespace EKE.Service.Services.Admin
                     model.Magazine = enumerable.FirstOrDefault();
                 }
 
-                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _authorRepo.GetById(model.Author.Id);
+                var author = model.Author.Id == 0 ? new Author { Name = model.Author.Name } : _unitOfWork.AuthorRepository.GetById(model.Author.Id);
                 model.Author = author;
                 model.PublishedBy = username;
 
-                _articleRepo.Update(model);
-                SaveChanges();
+                _unitOfWork.ArticleRepository.Update(model);
+                _unitOfWork.SaveChanges();
                 return new Result<Article>(model);
             }
             catch (Exception ex)
@@ -360,13 +343,13 @@ namespace EKE.Service.Services.Admin
         {
             try
             {
-                var article = _articleRepo.GetByIdIncluding(id, x => x.MediaElement);
+                var article = _unitOfWork.ArticleRepository.GetByIdIncluding(id, x => x.MediaElement);
                 foreach (var item in article.MediaElement)
                 {
-                    _mediaElementRepo.Delete(item);
+                    _unitOfWork.MediaElementRepository.Delete(item);
                 }
-                _articleRepo.Delete(article);
-                SaveChanges();
+                _unitOfWork.ArticleRepository.Delete(article);
+                _unitOfWork.SaveChanges();
                 return new Result(ResultStatus.OK);
             }
             catch (Exception ex)
@@ -380,7 +363,7 @@ namespace EKE.Service.Services.Admin
         #region Other
         public Result FormatHtml()
         {
-            var articles = _articleRepo.GetAll();
+            var articles = _unitOfWork.ArticleRepository.GetAll();
             foreach (var item in articles)
             {
                 if (string.IsNullOrEmpty(item.Content)) continue;
@@ -389,8 +372,8 @@ namespace EKE.Service.Services.Admin
                 content = content.Replace("\r\n", "<br />");
                 item.Content = content;
 
-                _articleRepo.Update(item);
-                SaveChanges();
+                _unitOfWork.ArticleRepository.Update(item);
+                _unitOfWork.SaveChanges();
             }
             return new Result(ResultStatus.OK);
         }
